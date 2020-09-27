@@ -52,9 +52,9 @@ export class Diagnostic
      */
     public get Start(): ts.server.protocol.Location
     {
-        return Diagnostic.IsNormalDiagnostic(this.diagnostic) ?
-            this.diagnostic.start :
-            this.diagnostic.startLocation;
+        return Diagnostic.IsNormalDiagnostic(this.Diagnostic) ?
+            this.Diagnostic.start :
+            this.Diagnostic.startLocation;
     }
 
     /**
@@ -62,9 +62,9 @@ export class Diagnostic
      */
     public get End(): ts.server.protocol.Location
     {
-        return Diagnostic.IsNormalDiagnostic(this.diagnostic) ?
-            this.diagnostic.end :
-            this.diagnostic.endLocation;
+        return Diagnostic.IsNormalDiagnostic(this.Diagnostic) ?
+            this.Diagnostic.end :
+            this.Diagnostic.endLocation;
     }
 
     /**
@@ -72,7 +72,7 @@ export class Diagnostic
      */
     public get Code(): number
     {
-        return this.diagnostic.code;
+        return this.Diagnostic.code;
     }
 
     /**
@@ -80,8 +80,8 @@ export class Diagnostic
      */
     public get Source(): string
     {
-        return Diagnostic.IsNormalDiagnostic(this.diagnostic) ?
-            this.diagnostic.source :
+        return Diagnostic.IsNormalDiagnostic(this.Diagnostic) ?
+            this.Diagnostic.source :
             null;
     }
 
@@ -90,9 +90,9 @@ export class Diagnostic
      */
     public get Message(): string
     {
-        return Diagnostic.IsNormalDiagnostic(this.diagnostic) ?
-            this.diagnostic.text :
-            this.diagnostic.message;
+        return Diagnostic.IsNormalDiagnostic(this.Diagnostic) ?
+            this.Diagnostic.text :
+            this.Diagnostic.message;
     }
 
     /**
@@ -100,7 +100,7 @@ export class Diagnostic
      */
     public get Category(): string
     {
-        return this.diagnostic.category;
+        return this.Diagnostic.category;
     }
 
     /**
@@ -108,7 +108,7 @@ export class Diagnostic
      */
     public get RelatedInformation(): ts.server.protocol.DiagnosticRelatedInformation[]
     {
-        return this.diagnostic.relatedInformation;
+        return this.Diagnostic.relatedInformation;
     }
 
     /**
