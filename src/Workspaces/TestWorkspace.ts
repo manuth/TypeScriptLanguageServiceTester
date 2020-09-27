@@ -1,6 +1,6 @@
 import { ensureFile } from "fs-extra";
 import ts = require("typescript/lib/tsserverlibrary");
-import Path = require("upath");
+import { join } from "upath";
 import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer";
 import { LanguageServiceTester } from "../LanguageServiceTester";
 import { TSServer } from "../TSServer";
@@ -78,7 +78,7 @@ export class TestWorkspace
      */
     public MakePath(...path: string[]): string
     {
-        return Path.join(this.WorkspacePath, ...path);
+        return join(this.WorkspacePath, ...path);
     }
 
     /**
