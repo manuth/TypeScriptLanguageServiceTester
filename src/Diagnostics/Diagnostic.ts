@@ -52,7 +52,7 @@ export class Diagnostic
      */
     public get Start(): ts.server.protocol.Location
     {
-        return this.IsNormalDiagnostic(this.diagnostic) ?
+        return Diagnostic.IsNormalDiagnostic(this.diagnostic) ?
             this.diagnostic.start :
             this.diagnostic.startLocation;
     }
@@ -62,7 +62,7 @@ export class Diagnostic
      */
     public get End(): ts.server.protocol.Location
     {
-        return this.IsNormalDiagnostic(this.diagnostic) ?
+        return Diagnostic.IsNormalDiagnostic(this.diagnostic) ?
             this.diagnostic.end :
             this.diagnostic.endLocation;
     }
@@ -80,7 +80,7 @@ export class Diagnostic
      */
     public get Source(): string
     {
-        return this.IsNormalDiagnostic(this.diagnostic) ?
+        return Diagnostic.IsNormalDiagnostic(this.diagnostic) ?
             this.diagnostic.source :
             null;
     }
@@ -90,7 +90,7 @@ export class Diagnostic
      */
     public get Message(): string
     {
-        return this.IsNormalDiagnostic(this.diagnostic) ?
+        return Diagnostic.IsNormalDiagnostic(this.diagnostic) ?
             this.diagnostic.text :
             this.diagnostic.message;
     }
@@ -120,7 +120,7 @@ export class Diagnostic
      * @returns
      * A value indicating whether the diagnostic is a normal diagnostic.
      */
-    public IsNormalDiagnostic(diagnostic: ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition): diagnostic is ts.server.protocol.Diagnostic
+    public static IsNormalDiagnostic(diagnostic: ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition): diagnostic is ts.server.protocol.Diagnostic
     {
         return "text" in diagnostic;
     }
