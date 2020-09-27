@@ -2,17 +2,18 @@ import { ensureFile } from "fs-extra";
 import ts = require("typescript/lib/tsserverlibrary");
 import Path = require("upath");
 import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer";
+import { LanguageServiceTester } from "../LanguageServiceTester";
 import { TSServer } from "../TSServer";
 
 /**
  * Represents a workspace for testing purposes.
  */
-export abstract class TestWorkspace
+export class TestWorkspace
 {
     /**
-     * The typescript-server for testing the workspace.
+     * The tester of the workspace.
      */
-    private readonly tsServer: TSServer;
+    private readonly tester: LanguageServiceTester;
 
     /**
      * The path to the directory of the workspace.
@@ -22,15 +23,15 @@ export abstract class TestWorkspace
     /**
      * Initializes a new instance of the `TestWorkspace` class.
      *
-     * @param server
-     * The typescript-server for testing the workspace.
+     * @param tester
+     * The tester of the workspace.
      *
      * @param workspacePath
      * The path to the directory of the workspace.
      */
-    public constructor(server: TSServer, workspacePath: string)
+    public constructor(tester: LanguageServiceTester, workspacePath: string)
     {
-        this.tsServer = server;
+        this.tester = tester;
         this.workspacePath = workspacePath;
     }
 
@@ -43,17 +44,28 @@ export abstract class TestWorkspace
     }
 
     /**
+     * Gets the tester of the workspace.
+     */
+    public get Tester(): LanguageServiceTester
+    {
+        return this.tester;
+    }
+
+    /**
      * Gets the typescript-server to test.
      */
     public get TSServer(): TSServer
     {
-        return this.tsServer;
+        return this.Tester.TSServer;
     }
 
     /**
      * Gets the error-codes to test.
      */
-    public abstract get ErrorCodes(): number[];
+    public get ErrorCodes(): number[]
+    {
+        return this.Tester.ErrorCodes;
+    }
 
     /**
      * Creates a path relative to the workspace-directory.
@@ -78,7 +90,7 @@ export abstract class TestWorkspace
      * @param configuration
      * The configuration to apply.
      */
-    public async ConfigurePlugin<TName extends string>(name: TName, configuration: any): Promise<void>
+    public async ConfigurePlugin<TName extends string>(name: TName, configuration: unknown): Promise<void>
     {
         await this.TSServer.Send<ts.server.protocol.ConfigurePluginRequest>(
             {
