@@ -53,7 +53,8 @@ export abstract class LanguageServiceTester
     {
         if (this.tsServer === null)
         {
-            this.tsServer = new TSServer(this.workingDirectory);
+            ensureDirSync(this.WorkingDirectory);
+            this.tsServer = new TSServer(this.WorkingDirectory);
         }
 
         return this.tsServer;
@@ -74,7 +75,7 @@ export abstract class LanguageServiceTester
     {
         if (this.defaultWorkspace === null)
         {
-            ensureDirSync(this.workingDirectory);
+            ensureDirSync(this.WorkingDirectory);
             this.defaultWorkspace = new TestWorkspace(this, this.workingDirectory);
         }
 
