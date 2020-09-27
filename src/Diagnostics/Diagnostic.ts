@@ -1,5 +1,7 @@
 import ts = require("typescript/lib/tsserverlibrary");
 import { TSServer } from "../TSServer";
+import { TestWorkspace } from "../Workspaces/TestWorkspace";
+import { FixResponseAnalyzer } from "./Actions/FixResponseAnalyzer";
 import { DiagnosticsResponseAnalyzer } from "./DiagnosticsResponseAnalyzer";
 
 /**
@@ -46,6 +48,14 @@ export class Diagnostic
     public get TSServer(): TSServer
     {
         return this.Response.TSServer;
+    }
+
+    /**
+     * Gets the workspace of the diagnostic.
+     */
+    public get Workspace(): TestWorkspace
+    {
+        return this.Response.Workspace;
     }
 
     /**
@@ -132,5 +142,30 @@ export class Diagnostic
     public static IsNormalDiagnostic(diagnostic: ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition): diagnostic is ts.server.protocol.Diagnostic
     {
         return "text" in diagnostic;
+    }
+
+    /**
+     * Looks for code-fixes for this diagnostic.
+     *
+     * @returns
+     * The code-fixes for this diagnostic.
+     */
+    public async GetCodeFixes(): Promise<FixResponseAnalyzer>
+    {
+        return new FixResponseAnalyzer(
+            await this.TSServer.Send<ts.server.protocol.CodeFixRequest>(
+                {
+                    type: "request",
+                    command: ts.server.protocol.CommandTypes.GetCodeFixes,
+                    arguments: {
+                        file: this.Response.FileName,
+                        startLine: this.Start.line,
+                        startOffset: this.Start.offset,
+                        endLine: this.End.line,
+                        endOffset: this.End.offset,
+                        errorCodes: this.Workspace.ErrorCodes
+                    }
+                },
+                true));
     }
 }
