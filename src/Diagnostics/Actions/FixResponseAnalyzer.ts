@@ -1,5 +1,6 @@
 import isEqual = require("lodash.isequal");
 import { CodeAction } from "./CodeAction";
+import { CodeActionPredicate } from "./CodeActionPredicate";
 
 /**
  * Provides the functionality to analyze a fix-response.
@@ -39,17 +40,32 @@ export class FixResponseAnalyzer
     }
 
     /**
-     * Filters the fixes with the specified name.
+     * Looks for code-actions which apply to the specified `predicate`.
      *
-     * @param fixName
-     * The name of the fix to get.
+     * @param predicate
+     * A predicate for filtering the code-actions.
      *
      * @returns
-     * The fix-actions with the specified name.
+     * The diagnostics which apply to the specified `predicate`.
      */
-    public Filter(fixName: string): CodeAction[]
+    public Filter(predicate: CodeActionPredicate): CodeAction[]
     {
-        return this.Fixes.filter((codeAction) => codeAction.FixName === fixName);
+        return this.Fixes.filter(predicate);
+    }
+
+    /**
+     * Checks whether a fix with the specified `fixName` exists.
+     *
+     * @param fixName
+     * The name of the fix to look for.
+     *
+     * @returns
+     * A value indicating whether a fix with the specified name exists.
+     */
+    public HasFix(fixName: string): boolean
+    {
+        return this.Fixes.some(
+            (codeAction) => codeAction.FixName === fixName);
     }
 
     /**
