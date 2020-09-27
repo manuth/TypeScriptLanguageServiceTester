@@ -279,6 +279,13 @@ export class TSServer
 
         if (this.requestResolverCollection.size === 0)
         {
+            this.Send<ts.server.protocol.ExitRequest>(
+                {
+                    type: "request",
+                    command: ts.server.protocol.CommandTypes.Exit
+                },
+                false);
+
             this.serverProcess.stdin.end();
             this.disposed = true;
             this.disposalRequested = false;
