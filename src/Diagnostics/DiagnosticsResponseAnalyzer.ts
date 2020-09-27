@@ -1,6 +1,7 @@
 import ts = require("typescript/lib/tsserverlibrary");
 import { TSServer } from "../TSServer";
 import { TestWorkspace } from "../Workspaces/TestWorkspace";
+import { CodeAction } from "./Actions/CodeAction";
 import { Diagnostic } from "./Diagnostic";
 import { DiagnosticPredicate } from "./DiagnosticPredicate";
 
@@ -100,6 +101,20 @@ export class DiagnosticsResponseAnalyzer
         let diagnostics: Array<ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition>;
         diagnostics = this.DiagnosticsResponse.body;
         return diagnostics.map((diagnostic) => new Diagnostic(this, diagnostic));
+    }
+
+    /**
+     * Gets the code-fixes of the diagnostics.
+     *
+     * @returns
+     * The code-fixes of the diagnostics.
+     */
+    public async GetCodeFixes(): Promise<CodeAction[]>
+    {
+        return (await Promise.all(
+            this.Diagnostics.map(
+                (diagnostic) => diagnostic.GetCodeFixes()))).flatMap(
+                    (fixResponse) => fixResponse.Fixes);
     }
 
     /**
