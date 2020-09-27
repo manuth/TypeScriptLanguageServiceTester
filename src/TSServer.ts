@@ -70,12 +70,16 @@ export class TSServer
 
         this.serverProcess = fork(
             createRequire(this.MakePath(".js")).resolve("typescript/lib/tsserver"),
-            [
-                "--logVerbosity",
-                "verbose",
-                "--logFile",
-                this.LogFileName
-            ],
+            (
+                this.LogLevel ?
+                [
+                    "--logVerbosity",
+                    this.TypeScript.server.LogLevel[this.LogLevel],
+                    "--logFile",
+                    this.LogFileName
+                ] :
+                []
+            ),
             {
                 cwd: this.WorkingDirectory,
                 stdio: ["pipe", "pipe", "pipe", "ipc"]
@@ -146,6 +150,30 @@ export class TSServer
                         { }
                     }
                 });
+    }
+
+    /**
+     * Gets the path to the typescript-server.
+     */
+    public get TypeScriptPath(): string
+    {
+        return createRequire(this.MakePath(".js")).resolve("typescript/lib/tsserver");
+    }
+
+    /**
+     * Gets the typescript-server.
+     */
+    public get TypeScript(): typeof ts
+    {
+        return require(this.TypeScriptPath);
+    }
+
+    /**
+     * Gets the verbosity of the log.
+     */
+    public get LogLevel(): ts.server.LogLevel
+    {
+        return this.TypeScript.server.LogLevel.verbose;
     }
 
     /**
