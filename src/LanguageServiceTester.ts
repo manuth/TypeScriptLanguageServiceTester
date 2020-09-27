@@ -60,6 +60,14 @@ export abstract class LanguageServiceTester
     }
 
     /**
+     * Gets the working directory of the tester.
+     */
+    public get WorkingDirectory(): string
+    {
+        return this.workingDirectory;
+    }
+
+    /**
      * Gets the default workspace for testing.
      */
     public get DefaultWorkspace(): TestWorkspace
