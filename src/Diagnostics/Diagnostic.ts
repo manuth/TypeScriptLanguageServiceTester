@@ -1,6 +1,6 @@
 import ts = require("typescript/lib/tsserverlibrary");
 import { TSServer } from "../TSServer";
-import { TestWorkspace } from "../Workspaces/TestWorkspace";
+import { DiagnosticsResponseAnalyzer } from "./DiagnosticsResponseAnalyzer";
 
 /**
  * Represents a typescript-diagnostic.
@@ -8,14 +8,9 @@ import { TestWorkspace } from "../Workspaces/TestWorkspace";
 export class Diagnostic
 {
     /**
-     * The typescript-server.
+     * The response this diagnostic belongs to.
      */
-    private workspace: TestWorkspace;
-
-    /**
-     * The script-kind of the file containing this diagnostic.
-     */
-    private scriptKind: ts.ScriptKind;
+    private response: DiagnosticsResponseAnalyzer;
 
     /**
      * The original diagnostic represented by this instance.
@@ -25,35 +20,24 @@ export class Diagnostic
     /**
      * Initializes a new instance of the `Diagnostic` class.
      *
-     * @param workspace
-     * The workspace of the diagnostic.
-     *
-     * @param scriptKind
-     * The kind of the script this diagnostic belongs to.
+     * @param response
+     * The response this diagnostic belongs to.
      *
      * @param diagnostic
      * The diagnostic to represent by this instance.
      */
-    public constructor(workspace: TestWorkspace, scriptKind: ts.ScriptKind, diagnostic: ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition)
+    public constructor(response: DiagnosticsResponseAnalyzer, diagnostic: ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition)
     {
-        this.workspace = workspace;
+        this.response = response;
         this.diagnostic = diagnostic;
     }
 
     /**
-     * Gets the workspace of the diagnostic.
+     * Gets the response this diagnostic belongs to.
      */
-    public get Workspace(): TestWorkspace
+    public get Response(): DiagnosticsResponseAnalyzer
     {
-        return this.workspace;
-    }
-
-    /**
-     * Gets the kind of the script of this diagnostic.
-     */
-    public get ScriptKind(): ts.ScriptKind
-    {
-        return this.scriptKind;
+        return this.response;
     }
 
     /**
@@ -61,7 +45,7 @@ export class Diagnostic
      */
     public get TSServer(): TSServer
     {
-        return this.Workspace.TSServer;
+        return this.Response.TSServer;
     }
 
     /**

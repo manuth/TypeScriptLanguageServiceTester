@@ -52,7 +52,7 @@ export class DiagnosticsResponseAnalyzer
     {
         let diagnostics: Array<ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition>;
         diagnostics = this.DiagnosticsResponse.body;
-        return diagnostics.map((diagnostic) => new Diagnostic(this.TSServer, diagnostic));
+        return diagnostics.map((diagnostic) => new Diagnostic(this, diagnostic));
     }
 
     /**
