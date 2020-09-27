@@ -72,13 +72,13 @@ export class TSServer
             createRequire(this.MakePath(".js")).resolve("typescript/lib/tsserver"),
             (
                 this.LogLevel ?
-                [
-                    "--logVerbosity",
-                    this.TypeScript.server.LogLevel[this.LogLevel],
-                    "--logFile",
-                    this.LogFileName
-                ] :
-                []
+                    [
+                        "--logVerbosity",
+                        this.TypeScript.server.LogLevel[this.LogLevel],
+                        "--logFile",
+                        this.LogFileName
+                    ] :
+                    []
             ),
             {
                 cwd: this.WorkingDirectory,
