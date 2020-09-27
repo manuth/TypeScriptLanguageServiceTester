@@ -1,13 +1,8 @@
-import Assert = require("assert");
+import { TSServerTests } from "./TSServer.test";
 
 suite(
     "TypeScriptLanguageServiceTester",
     () =>
     {
-        test(
-            "Example…",
-            () =>
-            {
-                Assert.strictEqual(1, 1);
-            });
+        TSServerTests();
     });
