@@ -69,12 +69,12 @@ export class TSServer
         ensureDirSync(dirname(this.LogFileName));
 
         this.serverProcess = fork(
-            createRequire(this.MakePath(".js")).resolve("typescript/lib/tsserver"),
+            this.TypeScriptPath,
             (
                 this.LogLevel ?
                     [
                         "--logVerbosity",
-                        this.TypeScript.server.LogLevel[this.LogLevel],
+                        this.LogLevel,
                         "--logFile",
                         this.LogFileName
                     ] :
@@ -161,19 +161,11 @@ export class TSServer
     }
 
     /**
-     * Gets the typescript-server.
-     */
-    public get TypeScript(): typeof ts
-    {
-        return require(this.TypeScriptPath);
-    }
-
-    /**
      * Gets the verbosity of the log.
      */
-    public get LogLevel(): ts.server.LogLevel
+    public get LogLevel(): keyof typeof ts.server.LogLevel
     {
-        return this.TypeScript.server.LogLevel.verbose;
+        return "verbose";
     }
 
     /**
