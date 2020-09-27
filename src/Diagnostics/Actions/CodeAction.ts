@@ -40,7 +40,7 @@ export class CodeAction
     /**
      * Gets the id of the fix.
      */
-    public get FixID(): any
+    public get FixID(): unknown
     {
         return CodeAction.IsCodeFixAction(this.CodeAction) ?
             this.CodeAction.fixId :
@@ -76,7 +76,7 @@ export class CodeAction
     /**
      * Gets the commands to pass to the `ApplyCodeActionCommandRequest`.
      */
-    public get Commands(): any[]
+    public get Commands(): unknown[]
     {
         return this.CodeAction.commands;
     }
