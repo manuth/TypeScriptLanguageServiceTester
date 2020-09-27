@@ -1,4 +1,5 @@
 import ts = require("typescript/lib/tsserverlibrary");
+import { TSServer } from "../TSServer";
 
 /**
  * Represents a typescript-diagnostic.
@@ -8,7 +9,7 @@ export class Diagnostic
     /**
      * The typescript-server.
      */
-    private tsServer: typeof ts;
+    private tsServer: TSServer;
 
     /**
      * The original diagnostic represented by this instance.
@@ -24,7 +25,7 @@ export class Diagnostic
      * @param diagnostic
      * The diagnostic to represent by this instance.
      */
-    public constructor(tsServer: typeof ts, diagnostic: ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition)
+    public constructor(tsServer: TSServer, diagnostic: ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition)
     {
         this.tsServer = tsServer;
         this.diagnostic = diagnostic;
@@ -33,7 +34,7 @@ export class Diagnostic
     /**
      * Gets the typescript-server of the diagnostic.
      */
-    public get TSServer(): typeof ts
+    public get TSServer(): TSServer
     {
         return this.tsServer;
     }
