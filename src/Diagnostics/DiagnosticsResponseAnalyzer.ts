@@ -121,7 +121,7 @@ export class DiagnosticsResponseAnalyzer
      * Looks for diagnostics which apply to the specified `predicate`.
      *
      * @param predicate
-     * A predicate for filtering the diagnostics
+     * A predicate for filtering the diagnostics.
      *
      * @returns
      * The diagnostics which apply to the specified `predicate`.
