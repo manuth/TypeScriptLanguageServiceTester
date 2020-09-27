@@ -8,5 +8,5 @@ export class TestConstants
     /**
      * Gets the path to the directory of this package.
      */
-    public static readonly PackageDirectory = join(__dirname, "..", "..");
+    public static readonly PackageDirectory = join(__dirname, "..", "..", "test");
 }

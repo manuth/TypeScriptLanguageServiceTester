@@ -24,8 +24,24 @@ export function TSServerTests(): void
             teardown(
                 async function()
                 {
-                    this.timeout(0);
+                    this.timeout(5 * 1000);
                     await tsServer.Dispose();
+                });
+
+            suite(
+                "General",
+                () =>
+                {
+                    suite(
+                        "Logging",
+                        () =>
+                        {
+                            test(
+                                "Checking whether the logging can be customized",
+                                async () =>
+                                {
+                                });
+                        });
                 });
 
             suite(
