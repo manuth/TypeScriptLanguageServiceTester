@@ -141,7 +141,7 @@ export abstract class TestWorkspace
      * @returns
      * The response of the code-analysis.
      */
-    public async AnalyzeCode(code: string, scriptKind?: ts.server.protocol.ScriptKindName, fileName?: string): Promise<DiagnosticsResponseAnalyzer>
+    public async AnalyzeCode(code: string, scriptKind: ts.server.protocol.ScriptKindName = "TS", fileName?: string): Promise<DiagnosticsResponseAnalyzer>
     {
         let file = fileName ?? this.GetTestFileName(scriptKind);
         await ensureFile(file);
@@ -157,7 +157,10 @@ export abstract class TestWorkspace
                         includeLinePosition: false
                     }
                 },
-                true));
+                true),
+                this,
+                scriptKind,
+                file);
     }
 
     /**
