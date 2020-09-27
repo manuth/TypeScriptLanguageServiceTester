@@ -1,5 +1,6 @@
 import ts = require("typescript/lib/tsserverlibrary");
 import { TSServer } from "../TSServer";
+import { TestWorkspace } from "../Workspaces/TestWorkspace";
 
 /**
  * Represents a typescript-diagnostic.
@@ -9,7 +10,12 @@ export class Diagnostic
     /**
      * The typescript-server.
      */
-    private tsServer: TSServer;
+    private workspace: TestWorkspace;
+
+    /**
+     * The script-kind of the file containing this diagnostic.
+     */
+    private scriptKind: ts.ScriptKind;
 
     /**
      * The original diagnostic represented by this instance.
@@ -19,16 +25,35 @@ export class Diagnostic
     /**
      * Initializes a new instance of the `Diagnostic` class.
      *
-     * @param tsServer
-     * The typescript-server.
+     * @param workspace
+     * The workspace of the diagnostic.
+     *
+     * @param scriptKind
+     * The kind of the script this diagnostic belongs to.
      *
      * @param diagnostic
      * The diagnostic to represent by this instance.
      */
-    public constructor(tsServer: TSServer, diagnostic: ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition)
+    public constructor(workspace: TestWorkspace, scriptKind: ts.ScriptKind, diagnostic: ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition)
     {
-        this.tsServer = tsServer;
+        this.workspace = workspace;
         this.diagnostic = diagnostic;
+    }
+
+    /**
+     * Gets the workspace of the diagnostic.
+     */
+    public get Workspace(): TestWorkspace
+    {
+        return this.workspace;
+    }
+
+    /**
+     * Gets the kind of the script of this diagnostic.
+     */
+    public get ScriptKind(): ts.ScriptKind
+    {
+        return this.scriptKind;
     }
 
     /**
@@ -36,7 +61,7 @@ export class Diagnostic
      */
     public get TSServer(): TSServer
     {
-        return this.tsServer;
+        return this.Workspace.TSServer;
     }
 
     /**
