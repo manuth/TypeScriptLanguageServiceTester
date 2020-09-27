@@ -196,8 +196,8 @@ export function LanguageServiceTesterTests(): void
                         "Checking whether diagnostics can be looked up…",
                         async function()
                         {
-                            this.timeout(30 * 1000);
-                            this.slow(20 * 1000);
+                            this.timeout(1.5 * 60 * 1000);
+                            this.slow(45 * 1000);
                             Assert.ok((await tester.AnalyzeCode("let x: sting")).Diagnostics.length > 0);
                         });
                 });
