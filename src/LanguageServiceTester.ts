@@ -95,11 +95,12 @@ export abstract class LanguageServiceTester
     }
 
     /**
-     * Initializes the language-service tester.
+     * Gets the package for installing a new environment for the languageservice tester.
      */
-    public async Install(): Promise<void>
+    protected get InstallerPackage(): Package
     {
-        let npmPackage = new Package();
+        let result = new Package();
+        let basePackage = new Package(join(__dirname, "..", "package.json"));
 
         let dependencies = [
             "typescript"
@@ -107,12 +108,21 @@ export abstract class LanguageServiceTester
 
         for (let dependency of dependencies)
         {
-            npmPackage.DevelpomentDependencies.Add(
+            result.DevelpomentDependencies.Add(
                 dependency,
-                new Package(join(__dirname, "..", "package.json")).AllDependencies.Get(dependency));
+                basePackage.AllDependencies.Get(dependency));
         }
 
-        npmPackage.Private = true;
+        result.Private = true;
+        return result;
+    }
+
+    /**
+     * Initializes the languageservice tester.
+     */
+    public async Install(): Promise<void>
+    {
+        let npmPackage = this.InstallerPackage;
         await writeFile(this.MakePath("package.json"), JSON.stringify(npmPackage.ToJSON(), null, 2));
 
         spawnSync(
