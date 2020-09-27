@@ -74,7 +74,7 @@ export abstract class LanguageServiceTester
     }
 
     /**
-     * The error-codes to test.
+     * Gets the error-codes to test.
      */
     public abstract get ErrorCodes(): number[];
 
