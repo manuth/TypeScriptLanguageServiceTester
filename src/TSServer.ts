@@ -275,12 +275,15 @@ export class TSServer
      */
     public async Dispose(): Promise<number>
     {
-        this.Send<ts.server.protocol.ExitRequest>(
-            {
-                type: "request",
-                command: ts.server.protocol.CommandTypes.Exit
-            },
-            false);
+        if (!this.disposed && !this.disposalRequested)
+        {
+            this.Send<ts.server.protocol.ExitRequest>(
+                {
+                    type: "request",
+                    command: ts.server.protocol.CommandTypes.Exit
+                },
+                false);
+        }
 
         this.disposalRequested = true;
 
