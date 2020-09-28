@@ -2,7 +2,6 @@ import Assert = require("assert");
 import { server } from "typescript/lib/tsserverlibrary";
 import { FixResponseAnalyzer } from "../../Diagnostics/Actions/FixResponseAnalyzer";
 import { Diagnostic } from "../../Diagnostics/Diagnostic";
-import { TestWorkspace } from "../../Workspaces/TestWorkspace";
 import { ESLintLanguageServiceTester } from "../ESLintLanguageServiceTester";
 import { ITestContext } from "../ITestContext";
 
@@ -44,7 +43,7 @@ export function DiagnosticTests(context: ITestContext): void
                 async function()
                 {
                     this.timeout(20 * 1000);
-                    let response = await tester.AnalyzeCode(incorrectCode, "JS");
+                    let response = await tester.AnalyzeCode(incorrectCode);
 
                     diagnostic = (await tester.TSServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
                         {
