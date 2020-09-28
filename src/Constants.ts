@@ -14,5 +14,8 @@ export abstract class Constants
     /**
      * The `package.json` file.
      */
-    public static readonly Package = new Package(join(Constants.PackageDirectory, "package.json"));
+    public static get Package(): Package
+    {
+        return new Package(join(Constants.PackageDirectory, "package.json"));
+    }
 }
