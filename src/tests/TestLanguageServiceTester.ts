@@ -17,7 +17,7 @@ export class TestLanguageServiceTester extends LanguageServiceTester
      * @param workingDirectory
      * The working directory to set for the default workspace.
      */
-    public constructor(workingDirectory = TestConstants.PackageDirectory)
+    public constructor(workingDirectory = TestConstants.TestWorkspaceDirectory)
     {
         super(workingDirectory);
     }
