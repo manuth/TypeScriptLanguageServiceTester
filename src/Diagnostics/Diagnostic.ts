@@ -99,9 +99,10 @@ export class Diagnostic
      */
     public get Source(): string
     {
-        return Diagnostic.IsNormalDiagnostic(this.Diagnostic) ?
-            this.Diagnostic.source :
-            null;
+        return {
+            source: null,
+            ...this.Diagnostic
+        }.source;
     }
 
     /**
