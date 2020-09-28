@@ -1,16 +1,19 @@
 import Assert = require("assert");
-import { writeJSON } from "fs-extra";
 import { Diagnostic } from "../../Diagnostics/Diagnostic";
 import { DiagnosticsResponseAnalyzer } from "../../Diagnostics/DiagnosticsResponseAnalyzer";
 import { TestWorkspace } from "../../Workspaces/TestWorkspace";
+import { ITestContext } from "../ITestContext";
 import { TestLanguageServiceTester } from "../TestLanguageServiceTester";
 
 /**
  * Registers tests for the `TestWorkspace` class.
+ *
+ * @param testContext
+ * The test-context.
  */
-export function TestWorkspaceTests(): void
+export function TestWorkspaceTests(testContext: ITestContext): void
 {
-    suite.only(
+    suite(
         "TestWorkspace",
         () =>
         {
@@ -45,14 +48,27 @@ export function TestWorkspaceTests(): void
                 "ConfigurePlugin",
                 () =>
                 {
+                    setup(
+                        async () =>
+                        {
+                            workspace = new TestWorkspace(testContext.ESLintTester, testContext.ESLintTester.WorkingDirectory);
+                            await testContext.ESLintTester.Configure(workspace);
+                        });
+
+                    teardown(
+                        async () =>
+                        {
+                            await workspace.Dispose();
+                        });
+
                     test(
                         "Checking whether plugins can be configured…",
                         async function()
                         {
                             this.timeout(1.5 * 60 * 1000);
                             this.slow(45 * 1000);
-                            let pluginName = "typescript-eslint-plugin";
                             let incorrectCode = "let x;;;";
+                            let ruleName = "no-extra-semi";
 
                             /**
                              * Filters the diagnostics for `eslint`-diagnostics.
@@ -69,39 +85,21 @@ export function TestWorkspaceTests(): void
                                     (diagnostic) => diagnostic.Source === "eslint");
                             }
 
-                            await writeJSON(
-                                workspace.MakePath("tsconfig.json"),
+                            testContext.ESLintTester.Configure(
+                                workspace,
                                 {
-                                    compilerOptions: {
-                                        allowJs: true,
-                                        plugins: [
-                                            {
-                                                name: pluginName,
-                                                logLevel: "verbose"
-                                            }
-                                        ]
-                                    }
-                                });
-
-                            await writeJSON(
-                                workspace.MakePath(".eslintrc"),
-                                {
-                                    rules: {
-                                        "no-extra-semi": "warn"
-                                    }
+                                    [ruleName]: "warn"
                                 });
 
                             Assert.ok(FilterESLintDiagnostics(await workspace.AnalyzeCode(incorrectCode, "JS")).length > 0);
 
                             await workspace.ConfigurePlugin(
-                                pluginName,
+                                testContext.ESLintTester.TypeScriptPluginName,
                                 {
                                     ignoreJavaScript: true
                                 });
 
-                            Assert.strictEqual(
-                                FilterESLintDiagnostics(await workspace.AnalyzeCode(incorrectCode, "JS")).length,
-                                0);
+                            Assert.strictEqual(FilterESLintDiagnostics(await workspace.AnalyzeCode(incorrectCode, "JS")).length, 0);
                         });
                 });
 
