@@ -1,4 +1,4 @@
-import { DiagnosticTests } from "./Diagnostics/Diagnostic.test";
+import { DiagnosticTests } from "./Diagnostics";
 import { ESLintLanguageServiceTester } from "./ESLintLanguageServiceTester";
 import { ITestContext } from "./ITestContext";
 import { LanguageServiceTesterTests } from "./LanguageServiceTester.test";
