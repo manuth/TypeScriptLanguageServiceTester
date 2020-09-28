@@ -37,7 +37,7 @@ export class ESLintLanguageServiceTester extends TestLanguageServiceTester
                 basePackage.AllDependencies.Get(dependency));
         }
 
-        return basePackage;
+        return result;
     }
 
     /**
