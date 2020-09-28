@@ -21,7 +21,7 @@ export class TempWorkspace extends TestWorkspace
      * @param tempDirectory
      * The directory of the workspace.
      */
-    public constructor(tester: LanguageServiceTester, tempDirectory: TempDirectory)
+    public constructor(tester: LanguageServiceTester, tempDirectory = new TempDirectory())
     {
         super(tester, tempDirectory.FullName);
         this.tempDirectory = tempDirectory;

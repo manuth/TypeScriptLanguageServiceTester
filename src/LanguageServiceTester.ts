@@ -1,6 +1,5 @@
 import { spawnSync } from "child_process";
 import { Package } from "@manuth/package-json-editor";
-import { TempDirectory } from "@manuth/temp-files";
 import { ensureDirSync, writeFile } from "fs-extra";
 import npmWhich = require("npm-which");
 import ts = require("typescript/lib/tsserverlibrary");
@@ -159,8 +158,7 @@ export abstract class LanguageServiceTester
      */
     public async CreateTemporaryWorkspace(): Promise<TestWorkspace>
     {
-        let tempDir = new TempDirectory();
-        let result = new TempWorkspace(this, tempDir);
+        let result = new TempWorkspace(this);
         this.tempWorkspaces.push(result);
         return result;
     }
