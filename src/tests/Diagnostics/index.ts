@@ -1,5 +1,6 @@
 import { ITestContext } from "../ITestContext";
 import { DiagnosticTests as DiagnosticClassTests } from "./Diagnostic.test";
+import { DiagnosticResponseAnalyzerTests } from "./DiagnosticResponseAnalyzer.test";
 
 /**
  * Registers tests for diagnostics.
@@ -14,5 +15,6 @@ export function DiagnosticTests(context: ITestContext): void
         () =>
         {
             DiagnosticClassTests(context);
+            DiagnosticResponseAnalyzerTests(context);
         });
 }
