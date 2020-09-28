@@ -1,3 +1,4 @@
+import { DiagnosticTests } from "./Diagnostics/Diagnostic.test";
 import { ESLintLanguageServiceTester } from "./ESLintLanguageServiceTester";
 import { ITestContext } from "./ITestContext";
 import { LanguageServiceTesterTests } from "./LanguageServiceTester.test";
@@ -16,18 +17,19 @@ suite(
             async function()
             {
                 this.timeout(1.5 * 60 * 1000);
-                this.slow(45 * 1000);
                 testContext.ESLintTester = new ESLintLanguageServiceTester();
                 await testContext.ESLintTester.Install();
             });
 
         suiteTeardown(
-            async () =>
+            async function()
             {
+                this.timeout(10 * 1000);
                 await testContext.ESLintTester.Dispose();
             });
 
         TSServerTests();
         LanguageServiceTesterTests();
         WorkspaceTests(testContext);
+        DiagnosticTests(testContext);
     });
