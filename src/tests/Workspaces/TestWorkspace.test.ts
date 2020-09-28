@@ -81,7 +81,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                              */
                             function FilterESLintDiagnostics(response: DiagnosticsResponseAnalyzer): Diagnostic[]
                             {
-                                return response.Filter(
+                                return response.Diagnostics.filter(
                                     (diagnostic) => diagnostic.Source === "eslint");
                             }
 

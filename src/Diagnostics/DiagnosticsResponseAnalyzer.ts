@@ -3,7 +3,6 @@ import { TSServer } from "../TSServer";
 import { TestWorkspace } from "../Workspaces/TestWorkspace";
 import { CodeAction } from "./Actions/CodeAction";
 import { Diagnostic } from "./Diagnostic";
-import { DiagnosticPredicate } from "./DiagnosticPredicate";
 
 /**
  * Provides the functionality to analyze a diagnostic-response.
@@ -115,19 +114,5 @@ export class DiagnosticsResponseAnalyzer
             this.Diagnostics.map(
                 (diagnostic) => diagnostic.GetCodeFixes()))).flatMap(
                     (fixResponse) => fixResponse.Fixes);
-    }
-
-    /**
-     * Looks for diagnostics which apply to the specified `predicate`.
-     *
-     * @param predicate
-     * A predicate for filtering the diagnostics.
-     *
-     * @returns
-     * The diagnostics which apply to the specified `predicate`.
-     */
-    public Filter(predicate: DiagnosticPredicate): Diagnostic[]
-    {
-        return this.Diagnostics.filter((diagnostic) => predicate(diagnostic));
     }
 }
