@@ -2,7 +2,7 @@ import { ChildProcess, fork } from "child_process";
 import { EventEmitter } from "events";
 import { createRequire } from "module";
 import { createInterface } from "readline";
-import { TempFileSystem } from "@manuth/temp-files";
+import { TempFile } from "@manuth/temp-files";
 import { ensureDirSync } from "fs-extra";
 import ts = require("typescript/lib/tsserverlibrary");
 import { dirname, join } from "upath";
@@ -18,9 +18,9 @@ export class TSServer
     public WorkingDirectory: string;
 
     /**
-     * The path to the log-file.
+     * The log-file.
      */
-    private logFileName: string = null;
+    private logFile: TempFile = null;
 
     /**
      * The server-process.
@@ -173,15 +173,15 @@ export class TSServer
      */
     public get LogFileName(): string
     {
-        if (this.logFileName === null)
+        if (this.logFile === null)
         {
-            this.logFileName = TempFileSystem.TempName(
+            this.logFile = new TempFile(
                 {
                     Suffix: ".log"
                 });
         }
 
-        return this.logFileName;
+        return this.logFile.FullName;
     }
 
     /**
