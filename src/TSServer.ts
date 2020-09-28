@@ -175,7 +175,10 @@ export class TSServer
     {
         if (this.logFileName === null)
         {
-            this.logFileName = TempFileSystem.TempName();
+            this.logFileName = TempFileSystem.TempName(
+                {
+                    Suffix: ".log"
+                });
         }
 
         return this.logFileName;
