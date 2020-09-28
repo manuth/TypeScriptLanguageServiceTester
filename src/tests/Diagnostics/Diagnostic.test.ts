@@ -45,7 +45,26 @@ export function DiagnosticTests(context: ITestContext): void
                     this.timeout(20 * 1000);
                     let response = await tester.AnalyzeCode(incorrectCode);
 
-                    diagnostic = (await tester.TSServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
+                    let eslintFilter = (rawResponse: server.protocol.SemanticDiagnosticsSyncResponse): Array<server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition> =>
+                    {
+                        let result: Array<server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition> = [];
+
+                        for (let diagnostic of rawResponse.body)
+                        {
+                            let parsedDiagnostic = new Diagnostic(response, diagnostic);
+
+                            if (
+                                parsedDiagnostic.Source === "eslint" &&
+                                parsedDiagnostic.Message.includes(fixableRule))
+                            {
+                                result.push(diagnostic);
+                            }
+                        }
+
+                        return result;
+                    };
+
+                    diagnostic = eslintFilter(await tester.TSServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
                         {
                             type: "request",
                             command: server.protocol.CommandTypes.SemanticDiagnosticsSync,
@@ -54,9 +73,9 @@ export function DiagnosticTests(context: ITestContext): void
                                 includeLinePosition: false
                             }
                         },
-                        true)).body[0];
+                        true))[0] as any;
 
-                    diagnosticWithLinePosition = (await tester.TSServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
+                    diagnosticWithLinePosition = eslintFilter(await tester.TSServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
                         {
                             type: "request",
                             command: server.protocol.CommandTypes.SemanticDiagnosticsSync,
@@ -65,7 +84,7 @@ export function DiagnosticTests(context: ITestContext): void
                                 includeLinePosition: true
                             }
                         },
-                        true)).body[0];
+                        true))[0] as any;
 
                     diagnosticWrapper = new Diagnostic(response, diagnostic);
                     diagnosticWithLinePositionWrapper = new Diagnostic(response, diagnosticWithLinePosition);
