@@ -76,6 +76,11 @@ export class ESLintLanguageServiceTester extends TestLanguageServiceTester
         return writeJSON(
             workspace.MakePath(".eslintrc"),
             {
+                root: true,
+                env: {
+                    node: true,
+                    es6: true
+                },
                 rules: {
                     ...eslintRules
                 }
