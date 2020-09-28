@@ -1,10 +1,8 @@
 import Assert = require("assert");
 import { spawnSync } from "child_process";
 import { TempDirectory, TempFile } from "@manuth/temp-files";
-import { copy, pathExists, remove, writeJSON } from "fs-extra";
+import { copy, pathExists, remove } from "fs-extra";
 import npmWhich = require("npm-which");
-import { Diagnostic } from "../Diagnostics/Diagnostic";
-import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer";
 import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
 
 /**
@@ -122,83 +120,6 @@ export function LanguageServiceTesterTests(): void
                             Assert.throws(() => tester.TSServer);
                             await tester.Install();
                             Assert.doesNotThrow(() => tester.TSServer);
-                        });
-                });
-
-            suite(
-                "ConfigurePlugin",
-                () =>
-                {
-                    test(
-                        "Checking whether plugins can be configured…",
-                        async function()
-                        {
-                            this.timeout(1.5 * 60 * 1000);
-                            this.slow(45 * 1000);
-                            let pluginName = "typescript-eslint-plugin";
-                            let incorrectCode = "let x;;;";
-
-                            /**
-                             * Filters the diagnostics for `eslint`-diagnostics.
-                             *
-                             * @param response
-                             * The response to filter.
-                             *
-                             * @returns
-                             * All diagnostics related to `eslint`.
-                             */
-                            function FilterESLintDiagnostics(response: DiagnosticsResponseAnalyzer): Diagnostic[]
-                            {
-                                return response.Filter(
-                                    (diagnostic) => diagnostic.Source === "eslint");
-                            }
-
-                            await writeJSON(
-                                tester.MakePath("tsconfig.json"),
-                                {
-                                    compilerOptions: {
-                                        allowJs: true,
-                                        plugins: [
-                                            {
-                                                name: pluginName
-                                            }
-                                        ]
-                                    }
-                                });
-
-                            await writeJSON(
-                                tester.MakePath(".eslintrc"),
-                                {
-                                    rules: {
-                                        "no-extra-semi": "warn"
-                                    }
-                                });
-
-                            Assert.ok(FilterESLintDiagnostics(await tester.AnalyzeCode(incorrectCode, "JS")).length > 0);
-
-                            await tester.ConfigurePlugin(
-                                pluginName,
-                                {
-                                    ignoreJavaScript: true
-                                });
-
-                            Assert.strictEqual(
-                                FilterESLintDiagnostics(await tester.AnalyzeCode(incorrectCode, "JS")).length,
-                                0);
-                        });
-                });
-
-            suite(
-                "AnalyzeCode",
-                () =>
-                {
-                    test(
-                        "Checking whether diagnostics can be looked up…",
-                        async function()
-                        {
-                            this.timeout(1.5 * 60 * 1000);
-                            this.slow(45 * 1000);
-                            Assert.ok((await tester.AnalyzeCode("let x: sting")).Diagnostics.length > 0);
                         });
                 });
         });
