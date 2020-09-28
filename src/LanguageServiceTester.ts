@@ -3,7 +3,7 @@ import { Package } from "@manuth/package-json-editor";
 import { ensureDirSync, writeFile } from "fs-extra";
 import npmWhich = require("npm-which");
 import ts = require("typescript/lib/tsserverlibrary");
-import { join } from "upath";
+import { Constants } from "./Constants";
 import { DiagnosticsResponseAnalyzer } from "./Diagnostics/DiagnosticsResponseAnalyzer";
 import { TSServer } from "./TSServer";
 import { TempWorkspace } from "./Workspaces/TempWorkspace";
@@ -100,7 +100,7 @@ export abstract class LanguageServiceTester
     protected get InstallerPackage(): Package
     {
         let result = new Package();
-        let basePackage = new Package(join(__dirname, "..", "package.json"));
+        let basePackage = Constants.Package;
 
         let dependencies = [
             "typescript"
