@@ -1,6 +1,14 @@
 # TypeScriptLanguageServiceTester
 Provides components for testing the typescript language-server and language-services.
 
+
+## Installing the package
+This package can be added to your dependencies by invoking:
+
+```bash
+npm i -D @manuth/interceptor
+```
+
 ## General
 The `TypeScriptLanguageServiceTester` allows you to test and analyze languageservice plugins, diagnostics and code-actions.
 
