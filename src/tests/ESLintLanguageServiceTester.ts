@@ -1,7 +1,4 @@
-import { Package } from "@manuth/package-json-editor";
-import { writeJSON } from "fs-extra";
-import { Constants } from "../Constants";
-import { TestWorkspace } from "../Workspaces/TestWorkspace";
+import { ESLintWorkspace } from "./ESLintWorkspace";
 import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
 
 /**
@@ -10,80 +7,32 @@ import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
 export class ESLintLanguageServiceTester extends TestLanguageServiceTester
 {
     /**
-     * Gets the name of the typescript-plugin.
+     * @inheritdoc
      */
-    public get TypeScriptPluginName(): string
+    public get DefaultWorkspace(): ESLintWorkspace
     {
-        return "typescript-eslint-plugin";
+        return super.DefaultWorkspace as ESLintWorkspace;
     }
 
     /**
      * @inheritdoc
      */
-    public get InstallerPackage(): Package
+    public get TempWorkspaces(): readonly ESLintWorkspace[]
     {
-        let result = super.InstallerPackage;
-        let basePackage = Constants.Package;
-
-        let dependencies = [
-            "eslint",
-            this.TypeScriptPluginName
-        ];
-
-        for (let dependency of dependencies)
-        {
-            result.DevelpomentDependencies.Add(
-                dependency,
-                basePackage.AllDependencies.Get(dependency));
-        }
-
-        return result;
+        return super.TempWorkspaces as ESLintWorkspace[];
     }
 
     /**
      * @inheritdoc
-     */
-    public async Install(): Promise<void>
-    {
-        await super.Install();
-        return this.Configure(this.DefaultWorkspace);
-    }
-
-    /**
-     * Configures thespecified `workspace`.
      *
-     * @param workspace
-     * The workspace to configure.
+     * @param workspacePath
+     * The path to the workspace to create.
      *
-     * @param eslintRules
-     * The eslint-rules to configure.
+     * @returns
+     * The newly created workspace.
      */
-    public async Configure(workspace: TestWorkspace, eslintRules?: Record<string, any>): Promise<void>
+    protected CreateWorkspace(workspacePath: string): ESLintWorkspace
     {
-        await writeJSON(
-            workspace.MakePath("tsconfig.json"),
-            {
-                compilerOptions: {
-                    allowJs: true,
-                    plugins: [
-                        {
-                            name: this.TypeScriptPluginName
-                        }
-                    ]
-                }
-            });
-
-        return writeJSON(
-            workspace.MakePath(".eslintrc"),
-            {
-                root: true,
-                env: {
-                    node: true,
-                    es6: true
-                },
-                rules: {
-                    ...eslintRules
-                }
-            });
+        return new ESLintWorkspace(this, workspacePath);
     }
 }
