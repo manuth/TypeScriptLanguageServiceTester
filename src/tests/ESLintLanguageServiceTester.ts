@@ -23,6 +23,17 @@ export class ESLintLanguageServiceTester extends TestLanguageServiceTester
     }
 
     /**
+     * Configures the default workspace.
+     *
+     * @param eslintRules
+     * The eslint-rules to apply.
+     */
+    public async Configure(eslintRules?: Record<string, unknown>): Promise<void>
+    {
+        return this.DefaultWorkspace.Configure(eslintRules);
+    }
+
+    /**
      * @inheritdoc
      *
      * @param workspacePath

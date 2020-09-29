@@ -3,12 +3,18 @@ import { spawnSync } from "child_process";
 import { TempDirectory, TempFile } from "@manuth/temp-files";
 import { copy, pathExists, remove } from "fs-extra";
 import npmWhich = require("npm-which");
+import { Diagnostic } from "../Diagnostics/Diagnostic";
+import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer";
+import { ITestContext } from "./ITestContext";
 import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
 
 /**
  * Registers tests for the `LanguageServiceTester` class.
+ *
+ * @param context
+ * The test-context.
  */
-export function LanguageServiceTesterTests(): void
+export function LanguageServiceTesterTests(context: ITestContext): void
 {
     suite(
         "LanguageServiceTester",
@@ -120,6 +126,57 @@ export function LanguageServiceTesterTests(): void
                             Assert.throws(() => tester.TSServer);
                             await tester.Install();
                             Assert.doesNotThrow(() => tester.TSServer);
+                        });
+                });
+
+            suite(
+                "ConfigurePlugin",
+                () =>
+                {
+                    setup(
+                        async () =>
+                        {
+                            await context.ESLintTester.Configure();
+                        });
+
+                    test(
+                        "Checking whether plugins can be configured…",
+                        async function()
+                        {
+                            this.timeout(1.5 * 60 * 1000);
+                            this.slow(45 * 1000);
+                            let incorrectCode = "let x;;;";
+                            let ruleName = "no-extra-semi";
+
+                            /**
+                             * Filters the diagnostics for `eslint`-diagnostics.
+                             *
+                             * @param response
+                             * The response to filter.
+                             *
+                             * @returns
+                             * All diagnostics related to `eslint`.
+                             */
+                            function FilterESLintDiagnostics(response: DiagnosticsResponseAnalyzer): Diagnostic[]
+                            {
+                                return response.Diagnostics.filter(
+                                    (diagnostic) => diagnostic.Source === "eslint");
+                            }
+
+                            context.ESLintTester.Configure(
+                                {
+                                    [ruleName]: "warn"
+                                });
+
+                            Assert.ok(FilterESLintDiagnostics(await context.ESLintTester.AnalyzeCode(incorrectCode, "JS")).length > 0);
+
+                            await context.ESLintTester.ConfigurePlugin(
+                                context.ESLintTester.DefaultWorkspace.TypeScriptPluginName,
+                                {
+                                    ignoreJavaScript: true
+                                });
+
+                            Assert.strictEqual(FilterESLintDiagnostics(await context.ESLintTester.AnalyzeCode(incorrectCode, "JS")).length, 0);
                         });
                 });
         });
