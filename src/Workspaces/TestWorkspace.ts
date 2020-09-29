@@ -1,6 +1,10 @@
-import { ensureFile } from "fs-extra";
+import { spawnSync } from "child_process";
+import { Package } from "@manuth/package-json-editor";
+import { ensureFile, writeFile } from "fs-extra";
+import npmWhich = require("npm-which");
 import ts = require("typescript/lib/tsserverlibrary");
 import { join } from "upath";
+import { Constants } from "../Constants";
 import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer";
 import { LanguageServiceTester } from "../LanguageServiceTester";
 import { TSServer } from "../TSServer";
@@ -65,6 +69,48 @@ export class TestWorkspace
     public get ErrorCodes(): number[]
     {
         return this.Tester.ErrorCodes;
+    }
+
+    /**
+     * Gets the package for installing a new environment for the languageservice tester.
+     */
+    protected get InstallerPackage(): Package
+    {
+        let result = new Package();
+        let basePackage = Constants.Package;
+
+        let dependencies = [
+            "typescript"
+        ];
+
+        for (let dependency of dependencies)
+        {
+            result.DevelpomentDependencies.Add(
+                dependency,
+                basePackage.AllDependencies.Get(dependency));
+        }
+
+        result.Private = true;
+        return result;
+    }
+
+    /**
+     * Initializes the languageservice tester.
+     */
+    public async Install(): Promise<void>
+    {
+        let npmPackage = this.InstallerPackage;
+        await writeFile(this.MakePath("package.json"), JSON.stringify(npmPackage.ToJSON(), null, 2));
+
+        spawnSync(
+            npmWhich(this.MakePath()).sync("npm"),
+            [
+                "install",
+                "--silent"
+            ],
+            {
+                cwd: this.MakePath()
+            });
     }
 
     /**
