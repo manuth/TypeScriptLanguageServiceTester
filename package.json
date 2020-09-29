@@ -1,0 +1,60 @@
+{
+  "name": "@manuth/typescript-languageservice-tester",
+  "version": "1.0.0",
+  "description": "Provides components for testing the typescript language-server and language-services.",
+  "author": "Manuel Thalmann <m@nuth.ch>",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "homepage": "https://github.com/manuth/TypeScriptLanguageServiceTester#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manuth/TypeScriptLanguageServiceTester.git"
+  },
+  "bugs": {
+    "url": "https://github.com/manuth/TypeScriptLanguageServiceTester/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "rebuild": "npm run clean && npm run build",
+    "watch": "npm run build -- --watch",
+    "clean": "npm run build -- --clean && rimraf ./lib",
+    "lint-base": "eslint --max-warnings 0 --ignore-pattern \"!.eslintrc.js\"",
+    "lint": "npm run lint-base -- --ext .js,.jsx,.ts,.tsx ./src .eslintrc.js",
+    "lint-ide": "npm run lint || exit 0",
+    "test": "mocha",
+    "prepare": "npm run rebuild"
+  },
+  "dependencies": {
+    "@manuth/package-json-editor": "^1.4.1",
+    "@manuth/temp-files": "^2.0.0",
+    "fs-extra": "^9.0.1",
+    "lodash.isequal": "^4.5.0",
+    "npm-which": "^3.0.1",
+    "upath": "^1.2.0"
+  },
+  "devDependencies": {
+    "@manuth/eslint-plugin-typescript": "^2.3.2",
+    "@manuth/tsconfig": "^1.2.3",
+    "@types/fs-extra": "^9.0.1",
+    "@types/lodash.isequal": "^4.5.5",
+    "@types/mocha": "^8.0.3",
+    "@types/node": "^14.11.1",
+    "@types/npm-which": "^3.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/eslint-plugin-tslint": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "eslint": "^7.9.0",
+    "eslint-plugin-deprecation": "^1.1.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsdoc": "^30.5.1",
+    "mocha": "^8.1.3",
+    "random-js": "^2.1.0",
+    "rimraf": "^3.0.2",
+    "tslint": "^6.1.3",
+    "typescript": "^4.0.3",
+    "typescript-eslint-plugin": "^1.2.1"
+  }
+}
