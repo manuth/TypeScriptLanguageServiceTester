@@ -36,7 +36,7 @@ export abstract class LanguageServiceTester
     private readonly tempDirectories: TempDirectory[] = [];
 
     /**
-     * Initializes a new instance of the `PluginTester` class.
+     * Initializes a new instance of the `LanguageServiceTester` class.
      *
      * @param workingDirectory
      * The working directory to set for the default workspace.
