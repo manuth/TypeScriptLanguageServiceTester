@@ -1,5 +1,4 @@
 import { ITestContext } from "../ITestContext";
-import { TempWorkspaceTests } from "./TempWorkspace.test";
 import { TestWorkspaceTests } from "./TestWorkspace.test";
 
 /**
@@ -15,6 +14,5 @@ export function WorkspaceTests(testContext: ITestContext): void
         () =>
         {
             TestWorkspaceTests(testContext);
-            TempWorkspaceTests();
         });
 }

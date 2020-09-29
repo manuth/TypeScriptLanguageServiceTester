@@ -1,12 +1,12 @@
 import { spawnSync } from "child_process";
 import { Package } from "@manuth/package-json-editor";
+import { TempDirectory } from "@manuth/temp-files";
 import { ensureDirSync, writeFile } from "fs-extra";
 import npmWhich = require("npm-which");
 import ts = require("typescript/lib/tsserverlibrary");
 import { Constants } from "./Constants";
 import { DiagnosticsResponseAnalyzer } from "./Diagnostics/DiagnosticsResponseAnalyzer";
 import { TSServer } from "./TSServer";
-import { TempWorkspace } from "./Workspaces/TempWorkspace";
 import { TestWorkspace } from "./Workspaces/TestWorkspace";
 
 /**
@@ -33,6 +33,11 @@ export abstract class LanguageServiceTester
      * A set of temporary workspaces which are attached to this tester.
      */
     private readonly tempWorkspaces: TestWorkspace[] = [];
+
+    /**
+     * A set of temporary directories containing the temporary workspaces.
+     */
+    private readonly tempDirectories: TempDirectory[] = [];
 
     /**
      * Initializes a new instance of the `PluginTester` class.
@@ -75,7 +80,7 @@ export abstract class LanguageServiceTester
         if (this.defaultWorkspace === null)
         {
             ensureDirSync(this.WorkingDirectory);
-            this.defaultWorkspace = new TestWorkspace(this, this.workingDirectory);
+            this.defaultWorkspace = this.CreateWorkspace(this.WorkingDirectory);
         }
 
         return this.defaultWorkspace;
@@ -158,8 +163,10 @@ export abstract class LanguageServiceTester
      */
     public async CreateTemporaryWorkspace(): Promise<TestWorkspace>
     {
-        let result = new TempWorkspace(this);
+        let tempDir = new TempDirectory();
+        let result = this.CreateWorkspace(tempDir.FullName);
         this.tempWorkspaces.push(result);
+        this.tempDirectories.push(tempDir);
         return result;
     }
 
@@ -226,5 +233,28 @@ export abstract class LanguageServiceTester
         {
             await tempWorkspace.Dispose();
         }
+
+        for (let tempDirectory of this.tempDirectories)
+        {
+            try
+            {
+                tempDirectory.Dispose();
+            }
+            catch { }
+        }
+    }
+
+    /**
+     * Creates a new workspace.
+     *
+     * @param workspacePath
+     * The path to the workspace to create.
+     *
+     * @returns
+     * The newly created workspace.
+     */
+    protected CreateWorkspace(workspacePath: string): TestWorkspace
+    {
+        return new TestWorkspace(this, workspacePath);
     }
 }
