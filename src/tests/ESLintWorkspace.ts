@@ -40,18 +40,15 @@ export class ESLintWorkspace extends TestWorkspace
     }
 
     /**
-     * Configures thespecified `workspace`.
-     *
-     * @param workspace
-     * The workspace to configure.
+     * Configures the workspace.
      *
      * @param eslintRules
      * The eslint-rules to configure.
      */
-    public async Configure(workspace: TestWorkspace, eslintRules?: Record<string, any>): Promise<void>
+    public async Configure(eslintRules?: Record<string, any>): Promise<void>
     {
         await writeJSON(
-            workspace.MakePath("tsconfig.json"),
+            this.MakePath("tsconfig.json"),
             {
                 compilerOptions: {
                     allowJs: true,
@@ -64,7 +61,7 @@ export class ESLintWorkspace extends TestWorkspace
             });
 
         return writeJSON(
-            workspace.MakePath(".eslintrc"),
+            this.MakePath(".eslintrc"),
             {
                 root: true,
                 env: {

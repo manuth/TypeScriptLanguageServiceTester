@@ -29,7 +29,7 @@ suite(
             });
 
         TSServerTests();
-        LanguageServiceTesterTests();
+        LanguageServiceTesterTests(testContext);
         WorkspaceTests(testContext);
         DiagnosticTests(testContext);
     });

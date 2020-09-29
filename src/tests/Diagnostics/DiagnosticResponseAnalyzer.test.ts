@@ -33,7 +33,6 @@ export function DiagnosticResponseAnalyzerTests(context: ITestContext): void
                     incorrectCode2 = "//Hello World";
 
                     await tester.Configure(
-                        tester.DefaultWorkspace,
                         {
                             [fixableRule1]: "warn",
                             [fixableRule2]: "warn"
