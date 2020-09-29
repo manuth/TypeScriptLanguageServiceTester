@@ -260,13 +260,16 @@ export class TSServer
      *
      * @param eventName
      * The event to wait for.
+     *
+     * @returns
+     * The emitted event.
      */
-    public async WaitEvent(eventName: string): Promise<void>
+    public async WaitEvent(eventName: string): Promise<ts.server.Event>
     {
-        return new Promise<void>(
+        return new Promise(
             (resolve) =>
             {
-                this.eventEmitter.once(eventName, () => resolve());
+                this.eventEmitter.once(eventName, (event) => resolve(event));
             });
     }
 
