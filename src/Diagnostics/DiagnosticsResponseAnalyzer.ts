@@ -32,7 +32,7 @@ export class DiagnosticsResponseAnalyzer
     /**
      * Initializes a new instance of the `DiagnosticsResponseAnalyzer` class.
      *
-     * @param diagnostsResponse
+     * @param diagnosticsResponse
      * The response to analyze.
      *
      * @param workspace
@@ -44,9 +44,9 @@ export class DiagnosticsResponseAnalyzer
      * @param fileName
      * The name of the file of the response.
      */
-    public constructor(diagnostsResponse: ts.server.protocol.SemanticDiagnosticsSyncResponse, workspace: TestWorkspace, scriptKind: ts.server.protocol.ScriptKindName, fileName: string)
+    public constructor(diagnosticsResponse: ts.server.protocol.SemanticDiagnosticsSyncResponse, workspace: TestWorkspace, scriptKind: ts.server.protocol.ScriptKindName, fileName: string)
     {
-        this.diagnosticsResponse = diagnostsResponse;
+        this.diagnosticsResponse = diagnosticsResponse;
         this.workspace = workspace;
         this.scriptKind = scriptKind;
         this.fileName = fileName;
