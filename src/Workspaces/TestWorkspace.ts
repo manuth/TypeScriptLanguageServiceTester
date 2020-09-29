@@ -128,29 +128,6 @@ export class TestWorkspace
     }
 
     /**
-     * Performs an on-the-fly configuration update of the specified plugin.
-     *
-     * @param name
-     * The name of the plugin to configure.
-     *
-     * @param configuration
-     * The configuration to apply.
-     */
-    public async ConfigurePlugin<TName extends string>(name: TName, configuration: unknown): Promise<void>
-    {
-        await this.TSServer.Send<ts.server.protocol.ConfigurePluginRequest>(
-            {
-                type: "request",
-                command: ts.server.protocol.CommandTypes.ConfigurePlugin,
-                arguments: {
-                    pluginName: name,
-                    configuration
-                }
-            },
-            true);
-    }
-
-    /**
      * Sends a file to the server.
      *
      * @param file
