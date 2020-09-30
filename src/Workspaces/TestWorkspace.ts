@@ -2,7 +2,7 @@ import { spawnSync } from "child_process";
 import { Package } from "@manuth/package-json-editor";
 import { ensureFile, writeFile } from "fs-extra";
 import npmWhich = require("npm-which");
-import ts = require("typescript/lib/tsserverlibrary");
+import { server } from "typescript/lib/tsserverlibrary";
 import { join } from "upath";
 import { Constants } from "../Constants";
 import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer";
@@ -139,12 +139,12 @@ export class TestWorkspace
      * @param scriptKind
      * The type of the file to send.
      */
-    public async SendFile(file: string, code: string, scriptKind?: ts.server.protocol.ScriptKindName): Promise<void>
+    public async SendFile(file: string, code: string, scriptKind?: server.protocol.ScriptKindName): Promise<void>
     {
-        await this.TSServer.Send<ts.server.protocol.OpenRequest>(
+        await this.TSServer.Send<server.protocol.OpenRequest>(
             {
                 type: "request",
-                command: ts.server.protocol.CommandTypes.Open,
+                command: server.protocol.CommandTypes.Open,
                 arguments: {
                     file,
                     fileContent: code,
@@ -156,7 +156,7 @@ export class TestWorkspace
         await this.TSServer.Send(
             {
                 type: "request",
-                command: ts.server.protocol.CommandTypes.ReloadProjects
+                command: server.protocol.CommandTypes.ReloadProjects
             },
             false);
     }
@@ -176,17 +176,17 @@ export class TestWorkspace
      * @returns
      * The response of the code-analysis.
      */
-    public async AnalyzeCode(code: string, scriptKind: ts.server.protocol.ScriptKindName = "TS", fileName?: string): Promise<DiagnosticsResponseAnalyzer>
+    public async AnalyzeCode(code: string, scriptKind: server.protocol.ScriptKindName = "TS", fileName?: string): Promise<DiagnosticsResponseAnalyzer>
     {
         let file = fileName ?? this.GetTestFileName(scriptKind);
         await ensureFile(file);
         await this.SendFile(file, code, scriptKind);
 
         return new DiagnosticsResponseAnalyzer(
-            await this.TSServer.Send<ts.server.protocol.SemanticDiagnosticsSyncRequest>(
+            await this.TSServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
                 {
                     type: "request",
-                    command: ts.server.protocol.CommandTypes.SemanticDiagnosticsSync,
+                    command: server.protocol.CommandTypes.SemanticDiagnosticsSync,
                     arguments: {
                         file,
                         includeLinePosition: false
@@ -213,7 +213,7 @@ export class TestWorkspace
      * @returns
      * The file-name for the specified script-kind.
      */
-    protected GetTestFileName(scriptKind: ts.server.protocol.ScriptKindName): string
+    protected GetTestFileName(scriptKind: server.protocol.ScriptKindName): string
     {
         let fileName: string;
 

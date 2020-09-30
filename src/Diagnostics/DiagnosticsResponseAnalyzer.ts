@@ -1,4 +1,4 @@
-import ts = require("typescript/lib/tsserverlibrary");
+import { server } from "typescript/lib/tsserverlibrary";
 import { TSServer } from "../TSServer";
 import { TestWorkspace } from "../Workspaces/TestWorkspace";
 import { CodeAction } from "./Actions/CodeAction";
@@ -12,7 +12,7 @@ export class DiagnosticsResponseAnalyzer
     /**
      * The response to analyze.
      */
-    private diagnosticsResponse: ts.server.protocol.SemanticDiagnosticsSyncResponse;
+    private diagnosticsResponse: server.protocol.SemanticDiagnosticsSyncResponse;
 
     /**
      * The workspace of this diagnostic-response.
@@ -22,7 +22,7 @@ export class DiagnosticsResponseAnalyzer
     /**
      * The script-kind of the file of this response.
      */
-    private scriptKind: ts.server.protocol.ScriptKindName;
+    private scriptKind: server.protocol.ScriptKindName;
 
     /**
      * The name of the file of this response.
@@ -44,7 +44,7 @@ export class DiagnosticsResponseAnalyzer
      * @param fileName
      * The name of the file of the response.
      */
-    public constructor(diagnosticsResponse: ts.server.protocol.SemanticDiagnosticsSyncResponse, workspace: TestWorkspace, scriptKind: ts.server.protocol.ScriptKindName, fileName: string)
+    public constructor(diagnosticsResponse: server.protocol.SemanticDiagnosticsSyncResponse, workspace: TestWorkspace, scriptKind: server.protocol.ScriptKindName, fileName: string)
     {
         this.diagnosticsResponse = diagnosticsResponse;
         this.workspace = workspace;
@@ -63,7 +63,7 @@ export class DiagnosticsResponseAnalyzer
     /**
      * Gets the script-kind of the file of this diagnostic.
      */
-    public get ScriptKind(): ts.server.protocol.ScriptKindName
+    public get ScriptKind(): server.protocol.ScriptKindName
     {
         return this.scriptKind;
     }
@@ -87,7 +87,7 @@ export class DiagnosticsResponseAnalyzer
     /**
      * Gets the response to analyze.
      */
-    public get DiagnosticsResponse(): ts.server.protocol.SemanticDiagnosticsSyncResponse
+    public get DiagnosticsResponse(): server.protocol.SemanticDiagnosticsSyncResponse
     {
         return this.diagnosticsResponse;
     }
@@ -97,7 +97,7 @@ export class DiagnosticsResponseAnalyzer
      */
     public get Diagnostics(): Diagnostic[]
     {
-        let diagnostics: Array<ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition>;
+        let diagnostics: Array<server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition>;
         diagnostics = this.DiagnosticsResponse.body;
         return diagnostics.map((diagnostic) => new Diagnostic(this, diagnostic));
     }
