@@ -13,7 +13,7 @@ export class ESLintWorkspace extends TestWorkspace
      */
     public get TypeScriptPluginName(): string
     {
-        return "typescript-eslint-plugin";
+        return "@manuth/typescript-eslint-plugin";
     }
 
     /**
