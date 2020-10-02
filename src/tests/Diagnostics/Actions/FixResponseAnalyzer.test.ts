@@ -1,4 +1,4 @@
-import Assert = require("assert");
+import { ok } from "assert";
 import { Random } from "random-js";
 import { server } from "typescript/lib/tsserverlibrary";
 import { CodeAction } from "../../../Diagnostics/Actions/CodeAction";
@@ -71,7 +71,7 @@ export function FixResponseAnalyzerTests(): void
                         "Checking whether all fixes are returned…",
                         () =>
                         {
-                            Assert.ok(
+                            ok(
                                 fixes.every(
                                     (fix) =>
                                     {
@@ -96,11 +96,11 @@ export function FixResponseAnalyzerTests(): void
                             {
                                 if (CodeAction.IsCodeFixAction(fix))
                                 {
-                                    Assert.ok(response.HasFix(fix.fixName));
+                                    ok(response.HasFix(fix.fixName));
                                 }
                             }
 
-                            Assert.ok(!response.HasFix(random.string(11)));
+                            ok(!response.HasFix(random.string(11)));
                         });
                 });
 
@@ -116,11 +116,11 @@ export function FixResponseAnalyzerTests(): void
                             {
                                 if (CodeAction.IsCodeFixAction(fix))
                                 {
-                                    Assert.ok(response.HasCombinedFix(fix.fixId));
+                                    ok(response.HasCombinedFix(fix.fixId));
                                 }
                             }
 
-                            Assert.ok(!response.HasCombinedFix(random.string(11)));
+                            ok(!response.HasCombinedFix(random.string(11)));
                         });
 
                     test(
@@ -138,7 +138,7 @@ export function FixResponseAnalyzerTests(): void
                             };
 
                             response.FixResponse.body.push(fix);
-                            Assert.ok(response.HasCombinedFix(fixId));
+                            ok(response.HasCombinedFix(fixId));
                         });
                 });
         });

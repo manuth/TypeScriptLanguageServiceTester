@@ -1,4 +1,4 @@
-import ts = require("typescript/lib/tsserverlibrary");
+import { server } from "typescript/lib/tsserverlibrary";
 import { TSServer } from "../TSServer";
 import { TestWorkspace } from "../Workspaces/TestWorkspace";
 import { FixResponseAnalyzer } from "./Actions/FixResponseAnalyzer";
@@ -17,7 +17,7 @@ export class Diagnostic
     /**
      * The original diagnostic represented by this instance.
      */
-    private diagnostic: ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition;
+    private diagnostic: server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition;
 
     /**
      * Initializes a new instance of the `Diagnostic` class.
@@ -28,7 +28,7 @@ export class Diagnostic
      * @param diagnostic
      * The diagnostic to represent by this instance.
      */
-    public constructor(response: DiagnosticsResponseAnalyzer, diagnostic: ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition)
+    public constructor(response: DiagnosticsResponseAnalyzer, diagnostic: server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition)
     {
         this.response = response;
         this.diagnostic = diagnostic;
@@ -61,7 +61,7 @@ export class Diagnostic
     /**
      * Gets the original diagnostic represented by this instance.
      */
-    public get Diagnostic(): ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition
+    public get Diagnostic(): server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition
     {
         return this.diagnostic;
     }
@@ -69,7 +69,7 @@ export class Diagnostic
     /**
      * Gets the location of the start of the diagnostic.
      */
-    public get Start(): ts.server.protocol.Location
+    public get Start(): server.protocol.Location
     {
         return Diagnostic.IsNormalDiagnostic(this.Diagnostic) ?
             this.Diagnostic.start :
@@ -79,7 +79,7 @@ export class Diagnostic
     /**
      * Gets the location of the end of the diagnostic.
      */
-    public get End(): ts.server.protocol.Location
+    public get End(): server.protocol.Location
     {
         return Diagnostic.IsNormalDiagnostic(this.Diagnostic) ?
             this.Diagnostic.end :
@@ -126,7 +126,7 @@ export class Diagnostic
     /**
      * Gets related diagnostics.
      */
-    public get RelatedInformation(): ts.server.protocol.DiagnosticRelatedInformation[]
+    public get RelatedInformation(): server.protocol.DiagnosticRelatedInformation[]
     {
         return this.Diagnostic.relatedInformation;
     }
@@ -140,9 +140,9 @@ export class Diagnostic
      * @returns
      * A value indicating whether the diagnostic is a normal diagnostic.
      */
-    public static IsNormalDiagnostic(diagnostic: ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition): diagnostic is ts.server.protocol.Diagnostic
+    public static IsNormalDiagnostic(diagnostic: server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition): diagnostic is server.protocol.Diagnostic
     {
-        let key: keyof ts.server.protocol.Diagnostic = "text";
+        let key: keyof server.protocol.Diagnostic = "text";
         return key in diagnostic;
     }
 
@@ -155,10 +155,10 @@ export class Diagnostic
     public async GetCodeFixes(): Promise<FixResponseAnalyzer>
     {
         return new FixResponseAnalyzer(
-            await this.TSServer.Send<ts.server.protocol.CodeFixRequest>(
+            await this.TSServer.Send<server.protocol.CodeFixRequest>(
                 {
                     type: "request",
-                    command: ts.server.protocol.CommandTypes.GetCodeFixes,
+                    command: server.protocol.CommandTypes.GetCodeFixes,
                     arguments: {
                         file: this.Response.FileName,
                         startLine: this.Start.line,

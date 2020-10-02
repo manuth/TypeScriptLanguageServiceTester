@@ -1,4 +1,4 @@
-import Assert = require("assert");
+import { ok } from "assert";
 import { TestWorkspace } from "../../Workspaces/TestWorkspace";
 import { ITestContext } from "../ITestContext";
 import { TestLanguageServiceTester } from "../TestLanguageServiceTester";
@@ -52,7 +52,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         {
                             this.timeout(1.5 * 60 * 1000);
                             this.slow(45 * 1000);
-                            Assert.ok((await tester.AnalyzeCode("let x: sting")).Diagnostics.length > 0);
+                            ok((await tester.AnalyzeCode("let x: sting")).Diagnostics.length > 0);
                         });
                 });
         });

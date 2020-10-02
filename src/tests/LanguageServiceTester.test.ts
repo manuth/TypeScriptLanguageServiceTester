@@ -1,4 +1,4 @@
-import Assert = require("assert");
+import { doesNotThrow, ok, strictEqual, throws } from "assert";
 import { spawnSync } from "child_process";
 import { TempDirectory, TempFile } from "@manuth/temp-files";
 import { copy, pathExists, remove } from "fs-extra";
@@ -43,7 +43,7 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                         "Checking whether the default workspace is located at the working directory of the languageservice-tester…",
                         () =>
                         {
-                            Assert.strictEqual(tester.WorkingDirectory, tester.DefaultWorkspace.WorkspacePath);
+                            strictEqual(tester.WorkingDirectory, tester.DefaultWorkspace.WorkspacePath);
                         });
                 });
 
@@ -123,9 +123,9 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                         {
                             this.timeout(1.5 * 60 * 1000);
                             this.slow(1 * 60 * 1000);
-                            Assert.throws(() => tester.TSServer);
+                            throws(() => tester.TSServer);
                             await tester.Install();
-                            Assert.doesNotThrow(() => tester.TSServer);
+                            doesNotThrow(() => tester.TSServer);
                         });
                 });
 
@@ -168,7 +168,7 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                                     [ruleName]: "warn"
                                 });
 
-                            Assert.ok(FilterESLintDiagnostics(await context.ESLintTester.AnalyzeCode(incorrectCode, "JS")).length > 0);
+                            ok(FilterESLintDiagnostics(await context.ESLintTester.AnalyzeCode(incorrectCode, "JS")).length > 0);
 
                             await context.ESLintTester.ConfigurePlugin(
                                 context.ESLintTester.DefaultWorkspace.TypeScriptPluginName,
@@ -176,7 +176,7 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                                     ignoreJavaScript: true
                                 });
 
-                            Assert.strictEqual(FilterESLintDiagnostics(await context.ESLintTester.AnalyzeCode(incorrectCode, "JS")).length, 0);
+                            strictEqual(FilterESLintDiagnostics(await context.ESLintTester.AnalyzeCode(incorrectCode, "JS")).length, 0);
                         });
                 });
         });
