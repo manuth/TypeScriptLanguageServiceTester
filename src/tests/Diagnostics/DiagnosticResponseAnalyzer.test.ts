@@ -1,4 +1,4 @@
-import Assert = require("assert");
+import { ok, strictEqual } from "assert";
 import isEqual = require("lodash.isequal");
 import { DiagnosticsResponseAnalyzer } from "../../Diagnostics/DiagnosticsResponseAnalyzer";
 import { ESLintLanguageServiceTester } from "../ESLintLanguageServiceTester";
@@ -56,7 +56,7 @@ export function DiagnosticResponseAnalyzerTests(context: ITestContext): void
                         "Checking whether all diagnostics are returned…",
                         () =>
                         {
-                            Assert.strictEqual(response.Diagnostics.length, response.DiagnosticsResponse.body.length);
+                            strictEqual(response.Diagnostics.length, response.DiagnosticsResponse.body.length);
                         });
                 });
 
@@ -70,7 +70,7 @@ export function DiagnosticResponseAnalyzerTests(context: ITestContext): void
                         {
                             let fixes = await response.GetCodeFixes();
 
-                            Assert.ok(
+                            ok(
                                 (await Promise.all(
                                     response.Diagnostics.flatMap(
                                         (diagnostic) =>

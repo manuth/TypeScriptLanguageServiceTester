@@ -4,7 +4,7 @@ import { createRequire } from "module";
 import { createInterface } from "readline";
 import { TempFile } from "@manuth/temp-files";
 import { ensureDirSync } from "fs-extra";
-import ts = require("typescript/lib/tsserverlibrary");
+import { server } from "typescript/lib/tsserverlibrary";
 import { dirname, join } from "upath";
 
 /**
@@ -35,7 +35,7 @@ export class TSServer
     /**
      * The methods for resolving the requests.
      */
-    private requestResolverCollection = new Map<number, (response: ts.server.protocol.Response) => void>();
+    private requestResolverCollection = new Map<number, (response: server.protocol.Response) => void>();
 
     /**
      * A component for emitting events.
@@ -121,12 +121,12 @@ export class TSServer
                     {
                         try
                         {
-                            let result = JSON.parse(input) as ts.server.protocol.Message;
+                            let result = JSON.parse(input) as server.protocol.Message;
 
                             switch (result.type)
                             {
                                 case "response":
-                                    let response = result as ts.server.protocol.Response;
+                                    let response = result as server.protocol.Response;
 
                                     if (this.requestResolverCollection.has(response.request_seq))
                                     {
@@ -141,7 +141,7 @@ export class TSServer
                                     }
                                     break;
                                 case "event":
-                                    let event = result as ts.server.protocol.Event;
+                                    let event = result as server.protocol.Event;
                                     this.eventEmitter.emit(event.event, event);
                                     break;
                             }
@@ -163,7 +163,7 @@ export class TSServer
     /**
      * Gets the verbosity of the log.
      */
-    public get LogLevel(): keyof typeof ts.server.LogLevel
+    public get LogLevel(): keyof typeof server.LogLevel
     {
         return "verbose";
     }
@@ -218,7 +218,7 @@ export class TSServer
      * @returns
      * The response of the server.
      */
-    public async Send<T extends ts.server.protocol.Request>(request: Omit<T, "seq"> & Partial<T>, responseExpected: boolean): Promise<ts.server.protocol.Response>
+    public async Send<T extends server.protocol.Request>(request: Omit<T, "seq"> & Partial<T>, responseExpected: boolean): Promise<server.protocol.Response>
     {
         request.seq = request.seq ?? this.sequenceNumber++;
 
@@ -232,7 +232,7 @@ export class TSServer
         }
         else
         {
-            let result = new Promise<ts.server.protocol.Response>(
+            let result = new Promise<server.protocol.Response>(
                 (resolve) =>
                 {
                     if (responseExpected)
@@ -264,7 +264,7 @@ export class TSServer
      * @returns
      * The emitted event.
      */
-    public async WaitEvent(eventName: string): Promise<ts.server.Event>
+    public async WaitEvent(eventName: string): Promise<server.Event>
     {
         return new Promise(
             (resolve) =>
@@ -283,10 +283,10 @@ export class TSServer
     {
         if (!this.disposed && !this.disposalRequested)
         {
-            this.Send<ts.server.protocol.ExitRequest>(
+            this.Send<server.protocol.ExitRequest>(
                 {
                     type: "request",
-                    command: ts.server.protocol.CommandTypes.Exit
+                    command: server.protocol.CommandTypes.Exit
                 },
                 false);
         }

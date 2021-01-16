@@ -1,4 +1,4 @@
-import Assert = require("assert");
+import { ok, strictEqual } from "assert";
 import { Random } from "random-js";
 import { server } from "typescript/lib/tsserverlibrary";
 import { CodeAction } from "../../../Diagnostics/Actions/CodeAction";
@@ -52,8 +52,8 @@ export function CodeActionTests(): void
                         "Checking whether the origin of the code-action can be determined…",
                         () =>
                         {
-                            Assert.strictEqual(codeAction, codeActionWrapper.CodeAction);
-                            Assert.strictEqual(codeFixAction, codeFixActionWrapper.CodeAction);
+                            strictEqual(codeAction, codeActionWrapper.CodeAction);
+                            strictEqual(codeFixAction, codeFixActionWrapper.CodeAction);
                         });
                 });
 
@@ -65,8 +65,8 @@ export function CodeActionTests(): void
                         "Checking whether the type of code-fixes can be determined correctly…",
                         () =>
                         {
-                            Assert.ok(!CodeAction.IsCodeFixAction(codeAction));
-                            Assert.ok(CodeAction.IsCodeFixAction(codeFixAction));
+                            ok(!CodeAction.IsCodeFixAction(codeAction));
+                            ok(CodeAction.IsCodeFixAction(codeFixAction));
                         });
                 });
         });

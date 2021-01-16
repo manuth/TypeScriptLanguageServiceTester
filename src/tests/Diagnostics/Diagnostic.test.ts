@@ -1,4 +1,4 @@
-import Assert = require("assert");
+import { deepStrictEqual, ok, strictEqual } from "assert";
 import { server } from "typescript/lib/tsserverlibrary";
 import { FixResponseAnalyzer } from "../../Diagnostics/Actions/FixResponseAnalyzer";
 import { Diagnostic } from "../../Diagnostics/Diagnostic";
@@ -97,8 +97,8 @@ export function DiagnosticTests(context: ITestContext): void
                         "Checking whether the `Diagnostic` property resolves to the original diagnostic…",
                         () =>
                         {
-                            Assert.strictEqual(diagnosticWrapper.Diagnostic, diagnostic);
-                            Assert.strictEqual(diagnosticWithLinePositionWrapper.Diagnostic, diagnosticWithLinePosition);
+                            strictEqual(diagnosticWrapper.Diagnostic, diagnostic);
+                            strictEqual(diagnosticWithLinePositionWrapper.Diagnostic, diagnosticWithLinePosition);
                         });
                 });
 
@@ -122,7 +122,7 @@ export function DiagnosticTests(context: ITestContext): void
                             `Checking whether the \`${property}\`-property is resolved correctly for all kinds of diagnostics…`,
                             () =>
                             {
-                                Assert.deepStrictEqual(
+                                deepStrictEqual(
                                     diagnosticWrapper[property],
                                     diagnosticWithLinePositionWrapper[property]);
                             });
@@ -137,8 +137,8 @@ export function DiagnosticTests(context: ITestContext): void
                         "Checking whether the method determines whether a diagnostic is normal correctly…",
                         () =>
                         {
-                            Assert.ok(Diagnostic.IsNormalDiagnostic(diagnostic));
-                            Assert.ok(!Diagnostic.IsNormalDiagnostic(diagnosticWithLinePosition));
+                            ok(Diagnostic.IsNormalDiagnostic(diagnostic));
+                            ok(!Diagnostic.IsNormalDiagnostic(diagnosticWithLinePosition));
                         });
                 });
 
@@ -160,15 +160,15 @@ export function DiagnosticTests(context: ITestContext): void
                         "Checking whether code-fixes for a diagnostic can be looked up…",
                         () =>
                         {
-                            Assert.ok(fixResponse.Fixes.length > 0);
-                            Assert.ok(fixWithLinePositionResponse.Fixes.length > 0);
+                            ok(fixResponse.Fixes.length > 0);
+                            ok(fixWithLinePositionResponse.Fixes.length > 0);
                         });
 
                     test(
                         "Checking whether code-fixes are looked up correctly for all sorts of diagnostics…",
                         () =>
                         {
-                            Assert.strictEqual(fixResponse.Fixes.length, fixWithLinePositionResponse.Fixes.length);
+                            strictEqual(fixResponse.Fixes.length, fixWithLinePositionResponse.Fixes.length);
                         });
                 });
         });
