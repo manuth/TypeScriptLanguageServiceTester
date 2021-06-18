@@ -19,7 +19,7 @@ export class ESLintWorkspace extends TestWorkspace
     /**
      * @inheritdoc
      */
-    public get InstallerPackage(): Package
+    public override get InstallerPackage(): Package
     {
         let result = super.InstallerPackage;
         let basePackage = Constants.Package;
