@@ -1,6 +1,6 @@
 import { TempDirectory } from "@manuth/temp-files";
 import { ensureDirSync } from "fs-extra";
-import { server } from "typescript/lib/tsserverlibrary";
+import type ts = require("typescript/lib/tsserverlibrary");
 import { DiagnosticsResponseAnalyzer } from "./Diagnostics/DiagnosticsResponseAnalyzer";
 import { TSServer } from "./TSServer";
 import { TestWorkspace } from "./Workspaces/TestWorkspace";
@@ -58,6 +58,14 @@ export abstract class LanguageServiceTester
         }
 
         return this.tsServer;
+    }
+
+    /**
+     * Gets the typescript-server library.
+     */
+    public get TSServerLibrary(): typeof ts
+    {
+        return this.TSServer.TSServerLibrary;
     }
 
     /**
@@ -143,10 +151,10 @@ export abstract class LanguageServiceTester
      */
     public async ConfigurePlugin<TName extends string>(name: TName, configuration: unknown): Promise<void>
     {
-        await this.TSServer.Send<server.protocol.ConfigurePluginRequest>(
+        await this.TSServer.Send<ts.server.protocol.ConfigurePluginRequest>(
             {
                 type: "request",
-                command: server.protocol.CommandTypes.ConfigurePlugin,
+                command: this.TSServerLibrary.server.protocol.CommandTypes.ConfigurePlugin,
                 arguments: {
                     pluginName: name,
                     configuration
@@ -167,7 +175,7 @@ export abstract class LanguageServiceTester
      * @param scriptKind
      * The type of the file to send.
      */
-    public async SendFile(file: string, code: string, scriptKind?: server.protocol.ScriptKindName): Promise<void>
+    public async SendFile(file: string, code: string, scriptKind?: ts.server.protocol.ScriptKindName): Promise<void>
     {
         return this.DefaultWorkspace.SendFile(file, code, scriptKind);
     }
@@ -187,7 +195,7 @@ export abstract class LanguageServiceTester
      * @returns
      * The response of the code-analysis.
      */
-    public async AnalyzeCode(code: string, scriptKind?: server.protocol.ScriptKindName, fileName?: string): Promise<DiagnosticsResponseAnalyzer>
+    public async AnalyzeCode(code: string, scriptKind?: ts.server.protocol.ScriptKindName, fileName?: string): Promise<DiagnosticsResponseAnalyzer>
     {
         return this.DefaultWorkspace.AnalyzeCode(code, scriptKind, fileName);
     }

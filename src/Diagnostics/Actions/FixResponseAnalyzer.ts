@@ -1,4 +1,5 @@
 import isEqual = require("lodash.isequal");
+import type { server } from "typescript/lib/tsserverlibrary";
 import { CodeAction } from "./CodeAction";
 
 /**
@@ -9,7 +10,7 @@ export class FixResponseAnalyzer
     /**
      * The response to analyze.
      */
-    private fixResponse: ts.server.protocol.GetCodeFixesResponse;
+    private fixResponse: server.protocol.GetCodeFixesResponse;
 
     /**
      * Initializes a new instance of the {@link FixResponseAnalyzer `FixResponseAnalyzer`} class.
@@ -17,7 +18,7 @@ export class FixResponseAnalyzer
      * @param fixResponse
      * The response to analyze.
      */
-    public constructor(fixResponse: ts.server.protocol.GetCodeFixesResponse)
+    public constructor(fixResponse: server.protocol.GetCodeFixesResponse)
     {
         this.fixResponse = fixResponse;
     }
@@ -25,7 +26,7 @@ export class FixResponseAnalyzer
     /**
      * Gets the response to analyze.
      */
-    public get FixResponse(): ts.server.protocol.GetCodeFixesResponse
+    public get FixResponse(): server.protocol.GetCodeFixesResponse
     {
         return this.fixResponse;
     }
@@ -39,7 +40,7 @@ export class FixResponseAnalyzer
     }
 
     /**
-     * Checks whether a fix with the specified {@link fixName `fixName`} exists.
+     * Checks whether a fix with the specified {@link fixName `fixName`} exis
      *
      * @param fixName
      * The name of the fix to look for.
