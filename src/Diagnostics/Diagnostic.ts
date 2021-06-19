@@ -142,7 +142,7 @@ export class Diagnostic
      */
     public static IsNormalDiagnostic(diagnostic: server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition): diagnostic is server.protocol.Diagnostic
     {
-        let key: keyof server.protocol.Diagnostic = "text";
+        let key = nameof<ts.server.protocol.Diagnostic>((diagnostic) => diagnostic.text);
         return key in diagnostic;
     }
 
