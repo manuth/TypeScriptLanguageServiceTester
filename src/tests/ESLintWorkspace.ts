@@ -31,9 +31,12 @@ export class ESLintWorkspace extends TestWorkspace
 
         for (let dependency of dependencies)
         {
-            result.DevelpomentDependencies.Add(
-                dependency,
-                basePackage.AllDependencies.Get(dependency));
+            if (!result.AllDependencies.Has(dependency))
+            {
+                result.DevelpomentDependencies.Add(
+                    dependency,
+                    basePackage.AllDependencies.Get(dependency));
+            }
         }
 
         return result;
