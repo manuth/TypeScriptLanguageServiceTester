@@ -12,7 +12,7 @@ export class FixResponseAnalyzer
     private fixResponse: ts.server.protocol.GetCodeFixesResponse;
 
     /**
-     * Initializes a new instance of the `FixResponseAnalyzer` class.
+     * Initializes a new instance of the {@link FixResponseAnalyzer `FixResponseAnalyzer`} class.
      *
      * @param fixResponse
      * The response to analyze.
@@ -39,7 +39,7 @@ export class FixResponseAnalyzer
     }
 
     /**
-     * Checks whether a fix with the specified `fixName` exists.
+     * Checks whether a fix with the specified {@link fixName `fixName`} exists.
      *
      * @param fixName
      * The name of the fix to look for.

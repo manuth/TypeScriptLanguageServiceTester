@@ -7,7 +7,7 @@ import { ITestContext } from "../ITestContext";
 import { TestLanguageServiceTester } from "../TestLanguageServiceTester";
 
 /**
- * Registers tests for the `TestWorkspace` class.
+ * Registers tests for the {@link TestWorkspace `TestWorkspace`} class.
  *
  * @param testContext
  * The test-context.

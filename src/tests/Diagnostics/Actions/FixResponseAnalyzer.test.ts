@@ -5,7 +5,7 @@ import { CodeAction } from "../../../Diagnostics/Actions/CodeAction";
 import { FixResponseAnalyzer } from "../../../Diagnostics/Actions/FixResponseAnalyzer";
 
 /**
- * Registers tests for the `FixResponseAnalyzer` class.
+ * Registers tests for the {@link FixResponseAnalyzer `FixResponseAnalyzer`} class.
  */
 export function FixResponseAnalyzerTests(): void
 {
