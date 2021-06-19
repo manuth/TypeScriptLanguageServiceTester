@@ -25,7 +25,7 @@ export class TestWorkspace
     private readonly workspacePath: string;
 
     /**
-     * Initializes a new instance of the `TestWorkspace` class.
+     * Initializes a new instance of the {@link TestWorkspace `TestWorkspace`} class.
      *
      * @param tester
      * The tester of the workspace.

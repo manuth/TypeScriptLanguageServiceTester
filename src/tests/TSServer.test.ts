@@ -5,7 +5,7 @@ import { TSServer } from "../TSServer";
 import { TestConstants } from "./TestConstants";
 
 /**
- * Registers tests for the `TSServer` class.
+ * Registers tests for the {@link TSServer `TSServer`} class.
  */
 export function TSServerTests(): void
 {
