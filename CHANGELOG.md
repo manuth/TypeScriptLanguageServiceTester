@@ -6,7 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## TypeScriptLanguageServiceTester [Unreleased]
 
-[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v2.0.0...dev)
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v2.0.1...dev)
+
+## TypeScriptLanguageServiceTester v2.0.1
+### Removed
+  - All calls to `typescript/lib/tsserverlibrary` and replaced the with the module located in the working-directory provided by the user
+
+### Added
+  - `typescript` to the normal `dependencies` to provide type-declarations correctly
+
+### Updated
+  - All dependencies
+
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v2.0.0...v2.0.1)
 
 ## TypeScriptLanguageServiceTester v2.0.0
 ### Fixed

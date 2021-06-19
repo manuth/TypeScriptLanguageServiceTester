@@ -1,3 +1,5 @@
+import type { server } from "typescript/lib/tsserverlibrary";
+
 /**
  * Represents a code-action.
  */
@@ -6,7 +8,7 @@ export class CodeAction
     /**
      * The original code action represented by this instance.
      */
-    private codeAction: ts.server.protocol.CodeAction | ts.server.protocol.CodeFixAction;
+    private codeAction: server.protocol.CodeAction | server.protocol.CodeFixAction;
 
     /**
      * Initializes a new instance of the {@link CodeAction `CodeAction`} class.
@@ -14,7 +16,7 @@ export class CodeAction
      * @param codeAction
      * The code-action to represent.
      */
-    public constructor(codeAction: ts.server.protocol.CodeAction | ts.server.protocol.CodeFixAction)
+    public constructor(codeAction: server.protocol.CodeAction | server.protocol.CodeFixAction)
     {
         this.codeAction = codeAction;
     }
@@ -22,7 +24,7 @@ export class CodeAction
     /**
      * Gets the original code action represented by this instance.
      */
-    public get CodeAction(): ts.server.protocol.CodeAction | ts.server.protocol.CodeFixAction
+    public get CodeAction(): server.protocol.CodeAction | server.protocol.CodeFixAction
     {
         return this.codeAction;
     }
@@ -68,13 +70,13 @@ export class CodeAction
     /**
      * Gets the changes of the code-action.
      */
-    public get Changes(): ts.server.protocol.FileCodeEdits[]
+    public get Changes(): server.protocol.FileCodeEdits[]
     {
         return this.CodeAction.changes;
     }
 
     /**
-     * Gets the commands to pass to the {@link ts.server.protocol.ApplyCodeActionCommandRequest `ApplyCodeActionCommandRequest`}.
+     * Gets the commands to pass to the {@link server.protocol.ApplyCodeActionCommandRequest `ApplyCodeActionCommandRequest`}.
      */
     public get Commands(): unknown[]
     {
@@ -90,9 +92,9 @@ export class CodeAction
      * @returns
      * A value indicating whether the specified {@link codeAction `codeAction`} is a normal code-action.
      */
-    public static IsCodeFixAction(codeAction: ts.server.protocol.CodeAction | ts.server.protocol.CodeFixAction): codeAction is ts.server.protocol.CodeFixAction
+    public static IsCodeFixAction(codeAction: server.protocol.CodeAction | server.protocol.CodeFixAction): codeAction is server.protocol.CodeFixAction
     {
-        let key: keyof ts.server.protocol.CodeFixAction = "fixName";
+        let key: keyof server.protocol.CodeFixAction = "fixName";
         return key in codeAction;
     }
 }

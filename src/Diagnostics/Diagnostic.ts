@@ -1,4 +1,4 @@
-import { server } from "typescript/lib/tsserverlibrary";
+import type { server } from "typescript/lib/tsserverlibrary";
 import { TSServer } from "../TSServer";
 import { TestWorkspace } from "../Workspaces/TestWorkspace";
 import { FixResponseAnalyzer } from "./Actions/FixResponseAnalyzer";
@@ -142,7 +142,7 @@ export class Diagnostic
      */
     public static IsNormalDiagnostic(diagnostic: server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition): diagnostic is server.protocol.Diagnostic
     {
-        let key: keyof server.protocol.Diagnostic = "text";
+        let key = nameof<server.protocol.Diagnostic>((diagnostic) => diagnostic.text);
         return key in diagnostic;
     }
 
@@ -158,7 +158,7 @@ export class Diagnostic
             await this.TSServer.Send<server.protocol.CodeFixRequest>(
                 {
                     type: "request",
-                    command: server.protocol.CommandTypes.GetCodeFixes,
+                    command: this.TSServer.TSServerLibrary.server.protocol.CommandTypes.GetCodeFixes,
                     arguments: {
                         file: this.Response.FileName,
                         startLine: this.Start.line,
