@@ -6,7 +6,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## TypeScriptLanguageServiceTester [Unreleased]
 
-[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v1.0.2...dev)
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v2.0.0...dev)
+
+## TypeScriptLanguageServiceTester v2.0.0
+### Fixed
+  - Broken drone-pipelines
+  - Drone-pipelines for multi-digit version-numbers
+  - Broken dependabot-settings
+  - Vulnerabilities in dependencies
+
+### Added
+  - A workflow for analyzing the source-code
+  - A workflow for automatically merging dependabot-PRs
+
+### Updated
+  - Drone-pipeline to use smaller images
+  - The `TestWorkspace`-class to not tamper with existing `package.json`-files too much
+  - All dependencies
+
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v1.0.2...v2.0.0)
 
 ## TypeScriptLanguageServiceTester v1.0.2
 ### Updated

@@ -5,11 +5,13 @@ import { copy, pathExists, remove } from "fs-extra";
 import npmWhich = require("npm-which");
 import { Diagnostic } from "../Diagnostics/Diagnostic";
 import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { LanguageServiceTester } from "../LanguageServiceTester";
 import { ITestContext } from "./ITestContext";
 import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
 
 /**
- * Registers tests for the `LanguageServiceTester` class.
+ * Registers tests for the {@link LanguageServiceTester `LanguageServiceTester`} class.
  *
  * @param context
  * The test-context.

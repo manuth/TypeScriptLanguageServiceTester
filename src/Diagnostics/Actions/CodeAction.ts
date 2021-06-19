@@ -9,10 +9,10 @@ export class CodeAction
     private codeAction: ts.server.protocol.CodeAction | ts.server.protocol.CodeFixAction;
 
     /**
-     * Initializes a new instance of the `CodeAction` class.
+     * Initializes a new instance of the {@link CodeAction `CodeAction`} class.
      *
      * @param codeAction
-     * The code-action to represent by this instance.
+     * The code-action to represent.
      */
     public constructor(codeAction: ts.server.protocol.CodeAction | ts.server.protocol.CodeFixAction)
     {
@@ -74,7 +74,7 @@ export class CodeAction
     }
 
     /**
-     * Gets the commands to pass to the `ApplyCodeActionCommandRequest`.
+     * Gets the commands to pass to the {@link ts.server.protocol.ApplyCodeActionCommandRequest `ApplyCodeActionCommandRequest`}.
      */
     public get Commands(): unknown[]
     {
@@ -82,13 +82,13 @@ export class CodeAction
     }
 
     /**
-     * Determines whether the specified `codeAction` is a normal code-action.
+     * Determines whether the specified {@link codeAction `codeAction`} is a normal code-action.
      *
      * @param codeAction
      * The code-action to check.
      *
      * @returns
-     * A value indicating whether the specified `codeAction` is a normal code-action.
+     * A value indicating whether the specified {@link codeAction `codeAction`} is a normal code-action.
      */
     public static IsCodeFixAction(codeAction: ts.server.protocol.CodeAction | ts.server.protocol.CodeFixAction): codeAction is ts.server.protocol.CodeFixAction
     {

@@ -1,16 +1,15 @@
 # TypeScriptLanguageServiceTester
 Provides components for testing the typescript language-server and language-services.
 
-
 ## Installing the package
 This package can be added to your dependencies by invoking:
 
 ```bash
-npm i -D @manuth/interceptor
+npm i -D @manuth/typescript-languageservice-tester
 ```
 
 ## General
-The `TypeScriptLanguageServiceTester` allows you to test and analyze languageservice plugins, diagnostics and code-actions.
+The `LanguageServiceTester` allows you to test and analyze languageservice plugins, diagnostics and code-actions.
 
 ## `LanguageServiceTester`
 The `LanguageServiceTester` allows you to analyze code for ensuring all expected diagnostics are being delivered.
@@ -19,53 +18,70 @@ A `LanguageServiceTester` can be initialized by passing a directory to run the `
 
 ```ts
 import { join } from "upath";
+import { LanguageServiceTester } from "@manuth/typescript-languageservice-tester";
 
 let tester = new LanguageServiceTester(join(__dirname, "tmp"));
 ```
 
 ### Installing dependencies
-If `typescript` is not installed in your workspace, you can install it using the `LanguageServiceTester#Install` method:
+If `typescript` is not installed in your workspace, you can install it using the `LanguageServiceTester.Install` method:
 
 ```ts
-await tester.Install();
+(
+    async () =>
+    {
+        await tester.Install();
+    })();
 ```
 
 ### Live-Updating Plugins
-You can perform a live-update of the plugin-configuration by invoking the `LanguageServiceTester#ConfigurePlugin` by passing the plugin-name and the configuration to apply at runtime:
+You can perform a live-update of the plugin-configuration by invoking the `LanguageServiceTester.ConfigurePlugin` by passing the plugin-name and the configuration to apply at runtime:
 
 ```ts
-await tester.ConfigurePlugin("typescript-eslint-plugin", { logLevel: "verbose" });
+(
+    async () =>
+    {
+        await tester.ConfigurePlugin("@manuth/typescript-eslint-plugin", { logLevel: "verbose" });
+    })();
 ```
 
 ### Analyzing Diagnostics
-The `LanguageServiceTester#AnalyzeCode`-method allows you to analyze a code and getting all diagnostics for the specified code.
+The `LanguageServiceTester.AnalyzeCode`-method allows you to analyze a code and getting all diagnostics for the specified code.
 
 You can optionally pass a script-kind (such as `TS`, `JSX` etc.) and a file-name to be used. Otherwise the code is assumed to be `TS` and a generic file-name is used.
 
 ```ts
 import { writeFile } from "fs-extra";
 
-await writeFile(
-    tester.MakePath("tsconfig.json"),
+(
+    async () =>
     {
-        compilerOptions: {
-            plugins: [
-                {
-                    name: "typescript-eslint-plugin"
+        await writeFile(
+            tester.MakePath("tsconfig.json"),
+            {
+                compilerOptions: {
+                    plugins: [
+                        {
+                            name: "typescript-eslint-plugin"
+                        }
+                    ]
                 }
-            ]
-        }
-    });
+            });
 
-let diagnosticResponse = await AnalyzeCode("let x;;;");
+        let diagnosticResponse = await AnalyzeCode("let x;;;");
+    })();
 ```
 
 ### Getting Code-Fixes
 You can then either get all code-fixes for the analyzed code or code-fixes for a specific diagnostic:
 
 ```ts
-await diagnosticResponse.GetCodeFixes();
-await diagnosticResponse.Diagnostics[0].GetCodeFixes();
+(
+    async () =>
+    {
+        await diagnosticResponse.GetCodeFixes();
+        await diagnosticResponse.Diagnostics[0].GetCodeFixes();
+    })();
 ```
 
 ## Running and controlling a `TSServer`

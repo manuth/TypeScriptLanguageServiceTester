@@ -9,7 +9,7 @@ export class ESLintLanguageServiceTester extends TestLanguageServiceTester
     /**
      * @inheritdoc
      */
-    public get DefaultWorkspace(): ESLintWorkspace
+    public override get DefaultWorkspace(): ESLintWorkspace
     {
         return super.DefaultWorkspace as ESLintWorkspace;
     }
@@ -17,7 +17,7 @@ export class ESLintLanguageServiceTester extends TestLanguageServiceTester
     /**
      * @inheritdoc
      */
-    public get TempWorkspaces(): readonly ESLintWorkspace[]
+    public override get TempWorkspaces(): readonly ESLintWorkspace[]
     {
         return super.TempWorkspaces as ESLintWorkspace[];
     }
@@ -42,7 +42,7 @@ export class ESLintLanguageServiceTester extends TestLanguageServiceTester
      * @returns
      * The newly created workspace.
      */
-    protected CreateWorkspace(workspacePath: string): ESLintWorkspace
+    protected override CreateWorkspace(workspacePath: string): ESLintWorkspace
     {
         return new ESLintWorkspace(this, workspacePath);
     }

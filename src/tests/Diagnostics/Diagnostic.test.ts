@@ -6,7 +6,7 @@ import { ESLintLanguageServiceTester } from "../ESLintLanguageServiceTester";
 import { ITestContext } from "../ITestContext";
 
 /**
- * Registers tests for the `Diagnostic` class.
+ * Registers tests for the {@link Diagnostic `Diagnostic`} class.
  *
  * @param context
  * The test-context.

@@ -1,6 +1,6 @@
 import { spawnSync } from "child_process";
 import { Package } from "@manuth/package-json-editor";
-import { ensureFile, writeFile } from "fs-extra";
+import { ensureFile, pathExistsSync, writeFile } from "fs-extra";
 import npmWhich = require("npm-which");
 import { server } from "typescript/lib/tsserverlibrary";
 import { join } from "upath";
@@ -25,7 +25,7 @@ export class TestWorkspace
     private readonly workspacePath: string;
 
     /**
-     * Initializes a new instance of the `TestWorkspace` class.
+     * Initializes a new instance of the {@link TestWorkspace `TestWorkspace`} class.
      *
      * @param tester
      * The tester of the workspace.
@@ -72,11 +72,30 @@ export class TestWorkspace
     }
 
     /**
+     * Gets the full path to the `package.json`-file.
+     */
+    protected get PackageFileName(): string
+    {
+        return this.MakePath("package.json");
+    }
+
+    /**
      * Gets the package for installing a new environment for the languageservice tester.
      */
     protected get InstallerPackage(): Package
     {
-        let result = new Package();
+        let result: Package;
+
+        if (pathExistsSync(this.PackageFileName))
+        {
+            result = new Package(this.PackageFileName);
+        }
+        else
+        {
+            result = new Package();
+            result.Private = true;
+        }
+
         let basePackage = Constants.Package;
 
         let dependencies = [
@@ -85,12 +104,14 @@ export class TestWorkspace
 
         for (let dependency of dependencies)
         {
-            result.DevelpomentDependencies.Add(
-                dependency,
-                basePackage.AllDependencies.Get(dependency));
+            if (!result.AllDependencies.Has(dependency))
+            {
+                result.DevelpomentDependencies.Add(
+                    dependency,
+                    basePackage.AllDependencies.Get(dependency));
+            }
         }
 
-        result.Private = true;
         return result;
     }
 
@@ -193,9 +214,9 @@ export class TestWorkspace
                     }
                 },
                 true),
-                this,
-                scriptKind,
-                file);
+            this,
+            scriptKind,
+            file);
     }
 
     /**

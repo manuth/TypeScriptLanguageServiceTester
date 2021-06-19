@@ -19,7 +19,7 @@ export class ESLintWorkspace extends TestWorkspace
     /**
      * @inheritdoc
      */
-    public get InstallerPackage(): Package
+    public override get InstallerPackage(): Package
     {
         let result = super.InstallerPackage;
         let basePackage = Constants.Package;
@@ -31,9 +31,12 @@ export class ESLintWorkspace extends TestWorkspace
 
         for (let dependency of dependencies)
         {
-            result.DevelpomentDependencies.Add(
-                dependency,
-                basePackage.AllDependencies.Get(dependency));
+            if (!result.AllDependencies.Has(dependency))
+            {
+                result.DevelpomentDependencies.Add(
+                    dependency,
+                    basePackage.AllDependencies.Get(dependency));
+            }
         }
 
         return result;
