@@ -5,7 +5,6 @@ import { copy, pathExists, remove } from "fs-extra";
 import npmWhich = require("npm-which");
 import { Diagnostic } from "../Diagnostics/Diagnostic";
 import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { LanguageServiceTester } from "../LanguageServiceTester";
 import { ITestContext } from "./ITestContext";
 import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
@@ -19,7 +18,7 @@ import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
 export function LanguageServiceTesterTests(context: ITestContext): void
 {
     suite(
-        "LanguageServiceTester",
+        nameof<LanguageServiceTester>(),
         () =>
         {
             let tester: TestLanguageServiceTester;
@@ -38,7 +37,7 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                 });
 
             suite(
-                "DefaultWorkspace",
+                nameof<LanguageServiceTester>((tester) => tester.DefaultWorkspace),
                 () =>
                 {
                     test(
@@ -50,7 +49,7 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                 });
 
             suite(
-                "Install",
+                nameof<LanguageServiceTester>((tester) => tester.Install),
                 () =>
                 {
                     let npmPath: string;
@@ -132,7 +131,7 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                 });
 
             suite(
-                "ConfigurePlugin",
+                nameof<LanguageServiceTester>((tester) => tester.ConfigurePlugin),
                 () =>
                 {
                     setup(

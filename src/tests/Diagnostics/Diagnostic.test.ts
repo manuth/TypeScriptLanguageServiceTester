@@ -14,7 +14,7 @@ import { ITestContext } from "../ITestContext";
 export function DiagnosticTests(context: ITestContext): void
 {
     suite(
-        "Diagnostic",
+        nameof(Diagnostic),
         () =>
         {
             let tester: ESLintLanguageServiceTester;
@@ -90,11 +90,11 @@ export function DiagnosticTests(context: ITestContext): void
                 });
 
             suite(
-                "Diagnostic",
+                nameof<Diagnostic>((diagnostic) => diagnostic.Diagnostic),
                 () =>
                 {
                     test(
-                        "Checking whether the `Diagnostic` property resolves to the original diagnostic…",
+                        `Checking whether the \`${nameof<Diagnostic>((d) => d.Diagnostic)}\` property resolves to the original diagnostic…`,
                         () =>
                         {
                             strictEqual(diagnosticWrapper.Diagnostic, diagnostic);
@@ -102,15 +102,15 @@ export function DiagnosticTests(context: ITestContext): void
                         });
                 });
 
-            let properties: Array<keyof Diagnostic> = [
-                "Start",
-                "End",
-                "Code",
-                "Source",
-                "Message",
-                "Category",
-                "RelatedInformation"
-            ];
+            let properties = [
+                nameof<Diagnostic>((diagnostic) => diagnostic.Start),
+                nameof<Diagnostic>((diagnostic) => diagnostic.End),
+                nameof<Diagnostic>((diagnostic) => diagnostic.Code),
+                nameof<Diagnostic>((diagnostic) => diagnostic.Source),
+                nameof<Diagnostic>((diagnostic) => diagnostic.Message),
+                nameof<Diagnostic>((diagnostic) => diagnostic.Category),
+                nameof<Diagnostic>((diagnostic) => diagnostic.RelatedInformation)
+            ] as Array<keyof Diagnostic>;
 
             for (let property of properties)
             {
@@ -130,7 +130,7 @@ export function DiagnosticTests(context: ITestContext): void
             }
 
             suite(
-                "IsNormalDiagnostic",
+                nameof(Diagnostic.IsNormalDiagnostic),
                 () =>
                 {
                     test(
@@ -143,7 +143,7 @@ export function DiagnosticTests(context: ITestContext): void
                 });
 
             suite(
-                "GetCodeFixes",
+                nameof<Diagnostic>((diagnostic) => diagnostic.GetCodeFixes),
                 () =>
                 {
                     let fixResponse: FixResponseAnalyzer;

@@ -10,7 +10,7 @@ import { FixResponseAnalyzer } from "../../../Diagnostics/Actions/FixResponseAna
 export function FixResponseAnalyzerTests(): void
 {
     suite(
-        "FixResponseAnalyzer",
+        nameof(FixResponseAnalyzer),
         () =>
         {
             let random: Random;
@@ -64,7 +64,7 @@ export function FixResponseAnalyzerTests(): void
                 });
 
             suite(
-                "Fixes",
+                nameof<FixResponseAnalyzer>((analyzer) => analyzer.Fixes),
                 () =>
                 {
                     test(
@@ -85,7 +85,7 @@ export function FixResponseAnalyzerTests(): void
                 });
 
             suite(
-                "HasFix",
+                nameof<FixResponseAnalyzer>((analyzer) => analyzer.HasFix),
                 () =>
                 {
                     test(
@@ -105,7 +105,7 @@ export function FixResponseAnalyzerTests(): void
                 });
 
             suite(
-                "HasCombinedFix",
+                nameof<FixResponseAnalyzer>((analyzer => analyzer.HasCombinedFix)),
                 () =>
                 {
                     test(
@@ -124,7 +124,7 @@ export function FixResponseAnalyzerTests(): void
                         });
 
                     test(
-                        "Checking whether the existence of a combined fix can be determined correctly if the fix-id is an `object`…",
+                        `Checking whether the existence of a combined fix can be determined correctly if the fix-id is an \`${nameof(Object)}\`…`,
                         () =>
                         {
                             let fixId = {

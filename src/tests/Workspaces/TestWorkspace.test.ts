@@ -15,7 +15,7 @@ import { TestLanguageServiceTester } from "../TestLanguageServiceTester";
 export function TestWorkspaceTests(testContext: ITestContext): void
 {
     suite(
-        "TestWorkspace",
+        nameof(TestWorkspace),
         () =>
         {
             let tester: TestLanguageServiceTester;
@@ -46,7 +46,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                 });
 
             suite(
-                "Install",
+                nameof<TestWorkspace>((workspace) => workspace.Install),
                 () =>
                 {
                     let typeScriptPackageName: string;
@@ -130,7 +130,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                 });
 
             suite(
-                "AnalyzeCode",
+                nameof<TestWorkspace>((workspace) => workspace.AnalyzeCode),
                 () =>
                 {
                     test(

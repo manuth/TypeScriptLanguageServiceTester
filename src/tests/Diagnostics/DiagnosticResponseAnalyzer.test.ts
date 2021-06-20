@@ -13,7 +13,7 @@ import { ITestContext } from "../ITestContext";
 export function DiagnosticResponseAnalyzerTests(context: ITestContext): void
 {
     suite(
-        "DiagnosticsResponseAnalyzer",
+        nameof(DiagnosticsResponseAnalyzer),
         () =>
         {
             let tester: ESLintLanguageServiceTester;
@@ -49,7 +49,7 @@ export function DiagnosticResponseAnalyzerTests(context: ITestContext): void
                 });
 
             suite(
-                "Diagnostics",
+                nameof<DiagnosticsResponseAnalyzer>((analyzer) => analyzer.Diagnostics),
                 () =>
                 {
                     test(
@@ -61,7 +61,7 @@ export function DiagnosticResponseAnalyzerTests(context: ITestContext): void
                 });
 
             suite(
-                "GetCodeFixes",
+                nameof<DiagnosticsResponseAnalyzer>((analyzer) => analyzer.GetCodeFixes),
                 () =>
                 {
                     test(
