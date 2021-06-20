@@ -49,7 +49,7 @@ export function TSServerTests(): void
                 () =>
                 {
                     test(
-                        "Checking whether the value is `false` while the server is running…",
+                        `Checking whether the value is \`${false}\` while the server is running…`,
                         () =>
                         {
                             ok(!tsServer.Disposed);

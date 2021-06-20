@@ -52,12 +52,11 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                     let typeScriptPackageName: string;
                     let versionNumber: string;
                     let packageFileName: string;
-                    let tempPackageFileName: string;
+                    let tempPackageFileName = "typescript";
 
                     suiteSetup(
                         async () =>
                         {
-                            typeScriptPackageName = "typescript";
                             versionNumber = randexp(/\d+\.\d+\.\d+/);
                             packageFileName = tester.MakePath("package.json");
                             tempPackageFileName = tester.MakePath("_package.json");
@@ -84,7 +83,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         });
 
                     test(
-                        "Checking whether a `package.json`-file containing `typescript` is created if it doesn't exist…",
+                        `Checking whether a \`package.json\`-file containing \`${tempPackageFileName}\` is created if it doesn't exist…`,
                         async function()
                         {
                             this.slow(10 * 1000);
@@ -96,7 +95,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         });
 
                     test(
-                        "Checking whether `typescript` is added to existing `package.json`-files if it isn't present…",
+                        `Checking whether \`${tempPackageFileName}\` is added to existing \`package.json\`-files if it isn't present…`,
                         async function()
                         {
                             this.slow(10 * 1000);
@@ -110,7 +109,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         });
 
                     test(
-                        "Checking whether the `typescript`-dependency version is left untouched if it already exists in the `package.json`-file…",
+                        `Checking whether the \`${tempPackageFileName}\`-dependency version is left untouched if it already exists in the \`package.json\`-file…`,
                         async function()
                         {
                             this.slow(15 * 1000);
