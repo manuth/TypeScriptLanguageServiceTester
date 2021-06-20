@@ -8,13 +8,10 @@ This package can be added to your dependencies by invoking:
 npm i -D @manuth/typescript-languageservice-tester
 ```
 
-## General
-The `LanguageServiceTester` allows you to test and analyze languageservice plugins, diagnostics and code-actions.
-
 ## `LanguageServiceTester`
 The `LanguageServiceTester` allows you to analyze code for ensuring all expected diagnostics are being delivered.
 
-A `LanguageServiceTester` can be initialized by passing a directory to run the `tsserver` in it:
+A `LanguageServiceTester` can be initialized by passing a directory to run the `tsserver` in:
 
 ```ts
 import { join } from "upath";
@@ -35,7 +32,7 @@ If `typescript` is not installed in your workspace, you can install it using the
 ```
 
 ### Live-Updating Plugins
-You can perform a live-update of the plugin-configuration by invoking the `LanguageServiceTester.ConfigurePlugin` by passing the plugin-name and the configuration to apply at runtime:
+You can perform a live-update of plugin-configurations by invoking the `LanguageServiceTester.ConfigurePlugin` by passing the plugin-name and the configuration to apply at runtime:
 
 ```ts
 (
@@ -62,7 +59,7 @@ import { writeFile } from "fs-extra";
                 compilerOptions: {
                     plugins: [
                         {
-                            name: "typescript-eslint-plugin"
+                            name: "@manuth/typescript-eslint-plugin"
                         }
                     ]
                 }
@@ -93,7 +90,7 @@ let tsServer = new TSServer(__dirname);
 ```
 
 ### Sending Requests
-The `TSServer#Send`-method allows you to send requests to the `tsserver` easily:
+The `TSServer.Send`-method allows you to send requests to the `tsserver` easily:
 
 ```ts
 import { server } from "typescript/lib/tsserverlibrary";
