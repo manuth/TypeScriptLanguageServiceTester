@@ -5,7 +5,7 @@ import { ESLintLanguageServiceTester } from "../ESLintLanguageServiceTester";
 import { ITestContext } from "../ITestContext";
 
 /**
- * Registers tests for the {@link DiagnosticResponseAnalyzer `DiagnosticResponseAnalyzer`} class.
+ * Registers tests for the {@link DiagnosticsResponseAnalyzer `DiagnosticsResponseAnalyzer`} class.
  *
  * @param context
  * The test-context.
@@ -13,7 +13,7 @@ import { ITestContext } from "../ITestContext";
 export function DiagnosticResponseAnalyzerTests(context: ITestContext): void
 {
     suite(
-        "DiagnosticResponseAnalyzer",
+        "DiagnosticsResponseAnalyzer",
         () =>
         {
             let tester: ESLintLanguageServiceTester;
