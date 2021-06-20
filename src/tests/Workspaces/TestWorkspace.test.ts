@@ -122,7 +122,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                             await workspace.Install();
                             strictEqual(new Package(npmPackage.FileName).AllDependencies.Get(typeScriptPackageName), versionNumber);
                             npmPackage.Dependencies.Remove(typeScriptPackageName);
-                            npmPackage.DevelpomentDependencies.Add(typeScriptPackageName, versionNumber);
+                            npmPackage.DevelopmentDependencies.Add(typeScriptPackageName, versionNumber);
                             await writeJSON(npmPackage.FileName, npmPackage.ToJSON());
                             await workspace.Install();
                             strictEqual(new Package(npmPackage.FileName).AllDependencies.Get(typeScriptPackageName), versionNumber);

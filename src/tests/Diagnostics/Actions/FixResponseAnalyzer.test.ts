@@ -124,7 +124,7 @@ export function FixResponseAnalyzerTests(): void
                         });
 
                     test(
-                        "Checking whether the existenc of a combined fix can be determined correctly if the fix-id is an `object`…",
+                        "Checking whether the existence of a combined fix can be determined correctly if the fix-id is an `object`…",
                         () =>
                         {
                             let fixId = {

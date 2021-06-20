@@ -40,7 +40,7 @@ export class FixResponseAnalyzer
     }
 
     /**
-     * Checks whether a fix with the specified {@link fixName `fixName`} exis
+     * Checks whether a fix with the specified {@link fixName `fixName`} exists.
      *
      * @param fixName
      * The name of the fix to look for.
@@ -58,7 +58,7 @@ export class FixResponseAnalyzer
      * Gets a value indicating whether a combined fix with the specified id exists.
      *
      * @param fixId
-     * The id of the combinded fix.
+     * The id of the combined fix.
      *
      * @returns
      * A value indicating whether a combined fix is present.
