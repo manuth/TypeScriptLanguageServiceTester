@@ -17,7 +17,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "ttsc -b tsconfig.build.json",
+    "build": "tsc -b tsconfig.build.json",
     "rebuild": "npm run clean && npm run build",
     "watch": "npm run build -- --watch",
     "clean": "npm run build -- --clean && rimraf ./lib",
@@ -25,7 +25,8 @@
     "lint": "npm run lint-base -- --ext .js,.jsx,.ts,.tsx ./src .eslintrc.js",
     "lint-ide": "npm run lint || exit 0",
     "test": "mocha",
-    "prepare": "npm run rebuild"
+    "prepare": "npm run patchTypeScript && npm run rebuild",
+    "patchTypeScript": "npx ts-patch --persist install"
   },
   "dependencies": {
     "@manuth/package-json-editor": "^1.4.7",
@@ -58,7 +59,7 @@
     "random-js": "^2.1.0",
     "rimraf": "^3.0.2",
     "ts-nameof": "^5.0.0",
-    "tslint": "^6.1.3",
-    "ttypescript": "^1.5.12"
+    "ts-patch": "^1.3.3",
+    "tslint": "^6.1.3"
   }
 }
