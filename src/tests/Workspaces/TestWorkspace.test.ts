@@ -19,24 +19,27 @@ export function TestWorkspaceTests(testContext: ITestContext): void
         () =>
         {
             let tester: TestLanguageServiceTester;
+            let workspaceContainer: TestWorkspace;
             let workspace: TestWorkspace;
 
             suiteSetup(
-                () =>
+                async () =>
                 {
                     tester = new TestLanguageServiceTester();
+                    workspaceContainer = await tester.CreateTemporaryWorkspace();
                 });
 
             suiteTeardown(
                 async () =>
                 {
+                    await workspaceContainer.Dispose();
                     await tester.Dispose();
                 });
 
             setup(
-                () =>
+                async () =>
                 {
-                    workspace = new TestWorkspace(tester, tester.WorkingDirectory);
+                    workspace = new TestWorkspace(tester, workspaceContainer.WorkspacePath);
                 });
 
             teardown(
@@ -49,17 +52,18 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                 nameof<TestWorkspace>((workspace) => workspace.Install),
                 () =>
                 {
-                    let typeScriptPackageName: string;
+                    let typeScriptPackageName = "typescript";
                     let versionNumber: string;
                     let packageFileName: string;
-                    let tempPackageFileName = "typescript";
+                    let packageFileBaseName = "package.json";
+                    let tempPackageFileName: string;
 
                     suiteSetup(
                         async () =>
                         {
                             versionNumber = randexp(/\d+\.\d+\.\d+/);
-                            packageFileName = tester.MakePath("package.json");
-                            tempPackageFileName = tester.MakePath("_package.json");
+                            packageFileName = workspaceContainer.MakePath(packageFileBaseName);
+                            tempPackageFileName = workspaceContainer.MakePath(`_${packageFileBaseName}`);
 
                             if (await pathExists(packageFileName))
                             {
@@ -83,7 +87,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         });
 
                     test(
-                        `Checking whether a \`package.json\`-file containing \`${tempPackageFileName}\` is created if it doesn't exist…`,
+                        `Checking whether a \`${packageFileBaseName}\`-file containing \`${typeScriptPackageName}\` is created if it doesn't exist…`,
                         async function()
                         {
                             this.slow(10 * 1000);
@@ -95,7 +99,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         });
 
                     test(
-                        `Checking whether \`${tempPackageFileName}\` is added to existing \`package.json\`-files if it isn't present…`,
+                        `Checking whether \`${typeScriptPackageName}\` is added to existing \`${packageFileBaseName}\`-files if it isn't present…`,
                         async function()
                         {
                             this.slow(10 * 1000);
@@ -109,7 +113,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         });
 
                     test(
-                        `Checking whether the \`${tempPackageFileName}\`-dependency version is left untouched if it already exists in the \`package.json\`-file…`,
+                        `Checking whether the \`${typeScriptPackageName}\`-dependency version is left untouched if it already exists in the \`${packageFileBaseName}\`-file…`,
                         async function()
                         {
                             this.slow(15 * 1000);
@@ -138,7 +142,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         {
                             this.timeout(1.5 * 60 * 1000);
                             this.slow(45 * 1000);
-                            ok((await tester.AnalyzeCode("let x: sting")).Diagnostics.length > 0);
+                            ok((await workspace.AnalyzeCode("let x: sting")).Diagnostics.length > 0);
                         });
                 });
         });
