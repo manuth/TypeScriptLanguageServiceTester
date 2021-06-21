@@ -90,8 +90,8 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         `Checking whether a \`${packageFileBaseName}\`-file containing \`${typeScriptPackageName}\` is created if it doesn't exist…`,
                         async function()
                         {
-                            this.slow(10 * 1000);
-                            this.timeout(20 * 1000);
+                            this.slow(25 * 1000);
+                            this.timeout(50 * 1000);
                             ok(!(await pathExists(packageFileName)));
                             await workspace.Install();
                             ok(await pathExists(packageFileName));
@@ -102,8 +102,8 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         `Checking whether \`${typeScriptPackageName}\` is added to existing \`${packageFileBaseName}\`-files if it isn't present…`,
                         async function()
                         {
-                            this.slow(10 * 1000);
-                            this.timeout(20 * 1000);
+                            this.slow(25 * 1000);
+                            this.timeout(50 * 1000);
                             let npmPackage = new Package();
                             npmPackage.FileName = packageFileName;
                             await writeJSON(npmPackage.FileName, npmPackage.ToJSON());
@@ -116,8 +116,8 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         `Checking whether the \`${typeScriptPackageName}\`-dependency version is left untouched if it already exists in the \`${packageFileBaseName}\`-file…`,
                         async function()
                         {
-                            this.slow(15 * 1000);
-                            this.timeout(30 * 1000);
+                            this.slow(25 * 1000);
+                            this.timeout(50 * 1000);
                             let npmPackage = new Package();
                             npmPackage.FileName = packageFileName;
                             npmPackage.Dependencies.Add(typeScriptPackageName, versionNumber);
