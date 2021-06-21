@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## TypeScriptLanguageServiceTester [Unreleased]
+### Breaking
+  - Fixed spelling errors
+
+### Fixed
+  - Spelling errors
+  - Broken `package-json`-script
+
+### Added
+  - Support for the Test Explorer UI
+
+### Updated
+  - The `README`-file
+  - All dependencies
 
 [Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v2.0.1...dev)
 
