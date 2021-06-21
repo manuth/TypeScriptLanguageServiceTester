@@ -33,7 +33,7 @@ export class ESLintWorkspace extends TestWorkspace
         {
             if (!result.AllDependencies.Has(dependency))
             {
-                result.DevelpomentDependencies.Add(
+                result.DevelopmentDependencies.Add(
                     dependency,
                     basePackage.AllDependencies.Get(dependency));
             }

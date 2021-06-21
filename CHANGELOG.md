@@ -6,7 +6,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## TypeScriptLanguageServiceTester [Unreleased]
 
-[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v2.0.1...dev)
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v3.0.0...dev)
+
+## TypeScriptLanguageServiceTester v3.0.0
+### Breaking
+  - Fixed spelling errors
+
+### Fixed
+  - Spelling errors
+  - Broken `package-json`-script
+
+### Added
+  - Support for the Test Explorer UI
+
+### Updated
+  - The `README`-file
+  - All dependencies
+
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v2.0.1...v3.0.0)
 
 ## TypeScriptLanguageServiceTester v2.0.1
 ### Removed

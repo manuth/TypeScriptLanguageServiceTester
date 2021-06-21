@@ -15,28 +15,31 @@ import { TestLanguageServiceTester } from "../TestLanguageServiceTester";
 export function TestWorkspaceTests(testContext: ITestContext): void
 {
     suite(
-        "TestWorkspace",
+        nameof(TestWorkspace),
         () =>
         {
             let tester: TestLanguageServiceTester;
+            let workspaceContainer: TestWorkspace;
             let workspace: TestWorkspace;
 
             suiteSetup(
-                () =>
+                async () =>
                 {
                     tester = new TestLanguageServiceTester();
+                    workspaceContainer = await tester.CreateTemporaryWorkspace();
                 });
 
             suiteTeardown(
                 async () =>
                 {
+                    await workspaceContainer.Dispose();
                     await tester.Dispose();
                 });
 
             setup(
-                () =>
+                async () =>
                 {
-                    workspace = new TestWorkspace(tester, tester.WorkingDirectory);
+                    workspace = new TestWorkspace(tester, workspaceContainer.WorkspacePath);
                 });
 
             teardown(
@@ -46,21 +49,21 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                 });
 
             suite(
-                "Install",
+                nameof<TestWorkspace>((workspace) => workspace.Install),
                 () =>
                 {
-                    let typeScriptPackageName: string;
+                    let typeScriptPackageName = "typescript";
                     let versionNumber: string;
                     let packageFileName: string;
+                    let packageFileBaseName = "package.json";
                     let tempPackageFileName: string;
 
                     suiteSetup(
                         async () =>
                         {
-                            typeScriptPackageName = "typescript";
                             versionNumber = randexp(/\d+\.\d+\.\d+/);
-                            packageFileName = tester.MakePath("package.json");
-                            tempPackageFileName = tester.MakePath("_package.json");
+                            packageFileName = workspaceContainer.MakePath(packageFileBaseName);
+                            tempPackageFileName = workspaceContainer.MakePath(`_${packageFileBaseName}`);
 
                             if (await pathExists(packageFileName))
                             {
@@ -84,11 +87,11 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         });
 
                     test(
-                        "Checking whether a `package.json`-file containing `typescript` is created if it doesn't exist…",
+                        `Checking whether a \`${packageFileBaseName}\`-file containing \`${typeScriptPackageName}\` is created if it doesn't exist…`,
                         async function()
                         {
-                            this.slow(10 * 1000);
-                            this.timeout(20 * 1000);
+                            this.slow(25 * 1000);
+                            this.timeout(50 * 1000);
                             ok(!(await pathExists(packageFileName)));
                             await workspace.Install();
                             ok(await pathExists(packageFileName));
@@ -96,11 +99,11 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         });
 
                     test(
-                        "Checking whether `typescript` is added to existing `package.json`-files if it isn't present…",
+                        `Checking whether \`${typeScriptPackageName}\` is added to existing \`${packageFileBaseName}\`-files if it isn't present…`,
                         async function()
                         {
-                            this.slow(10 * 1000);
-                            this.timeout(20 * 1000);
+                            this.slow(25 * 1000);
+                            this.timeout(50 * 1000);
                             let npmPackage = new Package();
                             npmPackage.FileName = packageFileName;
                             await writeJSON(npmPackage.FileName, npmPackage.ToJSON());
@@ -110,11 +113,11 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         });
 
                     test(
-                        "Checking whether the `typescript`-dependency version is left untouched if it already exists in the `package.json`-file…",
+                        `Checking whether the \`${typeScriptPackageName}\`-dependency version is left untouched if it already exists in the \`${packageFileBaseName}\`-file…`,
                         async function()
                         {
-                            this.slow(15 * 1000);
-                            this.timeout(30 * 1000);
+                            this.slow(25 * 1000);
+                            this.timeout(50 * 1000);
                             let npmPackage = new Package();
                             npmPackage.FileName = packageFileName;
                             npmPackage.Dependencies.Add(typeScriptPackageName, versionNumber);
@@ -122,7 +125,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                             await workspace.Install();
                             strictEqual(new Package(npmPackage.FileName).AllDependencies.Get(typeScriptPackageName), versionNumber);
                             npmPackage.Dependencies.Remove(typeScriptPackageName);
-                            npmPackage.DevelpomentDependencies.Add(typeScriptPackageName, versionNumber);
+                            npmPackage.DevelopmentDependencies.Add(typeScriptPackageName, versionNumber);
                             await writeJSON(npmPackage.FileName, npmPackage.ToJSON());
                             await workspace.Install();
                             strictEqual(new Package(npmPackage.FileName).AllDependencies.Get(typeScriptPackageName), versionNumber);
@@ -130,7 +133,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                 });
 
             suite(
-                "AnalyzeCode",
+                nameof<TestWorkspace>((workspace) => workspace.AnalyzeCode),
                 () =>
                 {
                     test(
@@ -139,7 +142,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         {
                             this.timeout(1.5 * 60 * 1000);
                             this.slow(45 * 1000);
-                            ok((await tester.AnalyzeCode("let x: sting")).Diagnostics.length > 0);
+                            ok((await workspace.AnalyzeCode("let x: sting")).Diagnostics.length > 0);
                         });
                 });
         });

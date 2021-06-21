@@ -9,7 +9,7 @@ import { CodeAction } from "../../../Diagnostics/Actions/CodeAction";
 export function CodeActionTests(): void
 {
     suite(
-        "CodeAction",
+        nameof(CodeAction),
         () =>
         {
             let random: Random;
@@ -45,7 +45,7 @@ export function CodeActionTests(): void
                 });
 
             suite(
-                "CodeAction",
+                nameof(nameof<CodeAction>((action) => action.CodeAction)),
                 () =>
                 {
                     test(
@@ -58,7 +58,7 @@ export function CodeActionTests(): void
                 });
 
             suite(
-                "IsCodeFixAction",
+                nameof(CodeAction.IsCodeFixAction),
                 () =>
                 {
                     test(

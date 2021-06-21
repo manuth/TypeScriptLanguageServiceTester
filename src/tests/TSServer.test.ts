@@ -10,7 +10,7 @@ import { TestConstants } from "./TestConstants";
 export function TSServerTests(): void
 {
     suite(
-        "TSServer",
+        nameof(TSServer),
         () =>
         {
             let tsServer: TSServer;
@@ -45,11 +45,11 @@ export function TSServerTests(): void
                 });
 
             suite(
-                "Disposed",
+                nameof<TSServer>((server) => server.Disposed),
                 () =>
                 {
                     test(
-                        "Checking whether the value is `false` while the server is running…",
+                        `Checking whether the value is \`${false}\` while the server is running…`,
                         () =>
                         {
                             ok(!tsServer.Disposed);
@@ -57,7 +57,7 @@ export function TSServerTests(): void
                 });
 
             suite(
-                "MakePath",
+                nameof<TSServer>((server) => server.MakePath),
                 () =>
                 {
                     test(
@@ -70,7 +70,7 @@ export function TSServerTests(): void
                 });
 
             suite(
-                "Send",
+                nameof<TSServer>((server) => server.Send),
                 () =>
                 {
                     let file: string;
@@ -172,7 +172,7 @@ export function TSServerTests(): void
                 });
 
             suite(
-                "WaitEvent",
+                nameof<TSServer>((server) => server.WaitEvent),
                 () =>
                 {
                     test(
@@ -186,7 +186,7 @@ export function TSServerTests(): void
                 });
 
             suite(
-                "Dispose",
+                nameof<TSServer>((server) => server.Dispose),
                 () =>
                 {
                     test(
@@ -199,7 +199,7 @@ export function TSServerTests(): void
                         });
 
                     test(
-                        "Checking whether `Disposed` is true after the disposal…",
+                        `Checking whether \`${nameof<TSServer>((server) => server.Disposed)}\` is true after the disposal…`,
                         async function()
                         {
                             this.timeout(5 * 1000);

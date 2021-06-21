@@ -250,6 +250,9 @@ export class TSServer
     /**
      * Sends a request to the server.
      *
+     * @template T
+     * The type of the request.
+     *
      * @param request
      * The request to send.
      *

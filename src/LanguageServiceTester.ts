@@ -143,6 +143,9 @@ export abstract class LanguageServiceTester
     /**
      * Performs an on-the-fly configuration update of the specified plugin.
      *
+     * @template TName
+     * The name of the plugin to configure.
+     *
      * @param name
      * The name of the plugin to configure.
      *
