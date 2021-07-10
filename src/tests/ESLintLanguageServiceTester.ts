@@ -1,3 +1,4 @@
+import { Linter } from "eslint";
 import { TSConfigJSON } from "types-tsconfig";
 import { ESLintWorkspace } from "./ESLintWorkspace";
 import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
@@ -43,7 +44,7 @@ export class ESLintLanguageServiceTester extends TestLanguageServiceTester
      * @param eslintRules
      * The eslint-rules to apply.
      */
-    public override async Configure(tsConfig?: TSConfigJSON, eslintRules?: Record<string, unknown>): Promise<void>
+    public override async Configure(tsConfig?: TSConfigJSON, eslintRules?: Linter.RulesRecord): Promise<void>
     {
         return this.DefaultWorkspace.Configure(tsConfig, eslintRules);
     }

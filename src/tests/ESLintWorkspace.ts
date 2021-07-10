@@ -1,4 +1,5 @@
 import { Package } from "@manuth/package-json-editor";
+import { Linter } from "eslint";
 import { writeJSON } from "fs-extra";
 import merge = require("lodash.merge");
 import { TSConfigJSON } from "types-tsconfig";
@@ -53,7 +54,7 @@ export class ESLintWorkspace extends TestWorkspace
      * @param eslintRules
      * The eslint-rules to apply.
      */
-    public override async Configure(tsConfig?: TSConfigJSON, eslintRules?: Record<string, any>): Promise<void>
+    public override async Configure(tsConfig?: TSConfigJSON, eslintRules?: Linter.RulesRecord): Promise<void>
     {
         await super.Configure(
             merge<TSConfigJSON, TSConfigJSON>(
@@ -80,6 +81,6 @@ export class ESLintWorkspace extends TestWorkspace
                 rules: {
                     ...eslintRules
                 }
-            });
+            } as Linter.Config);
     }
 }
