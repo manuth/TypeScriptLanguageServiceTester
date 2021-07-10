@@ -66,7 +66,11 @@ export class TSServer
     public constructor(workingDirectory: string)
     {
         this.WorkingDirectory = workingDirectory;
-        ensureDirSync(dirname(this.LogFileName));
+
+        if (this.LogLevel)
+        {
+            ensureDirSync(dirname(this.LogFileName));
+        }
 
         this.serverProcess = fork(
             this.TypeScriptServerPath,
