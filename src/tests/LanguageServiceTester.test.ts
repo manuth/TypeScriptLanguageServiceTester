@@ -165,6 +165,7 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                             }
 
                             context.ESLintTester.Configure(
+                                undefined,
                                 {
                                     [ruleName]: "warn"
                                 });

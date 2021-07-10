@@ -33,6 +33,7 @@ export function DiagnosticTests(context: ITestContext): void
                     incorrectCode = "let x;;;";
 
                     await tester.Configure(
+                        undefined,
                         {
                             [fixableRule]: "warn"
                         });

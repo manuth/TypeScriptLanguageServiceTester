@@ -1,5 +1,6 @@
 import { TempDirectory } from "@manuth/temp-files";
-import { ensureDirSync } from "fs-extra";
+import { ensureDirSync, writeJSON } from "fs-extra";
+import { fileName, TSConfigJSON } from "types-tsconfig";
 import type ts = require("typescript/lib/tsserverlibrary");
 import { DiagnosticsResponseAnalyzer } from "./Diagnostics/DiagnosticsResponseAnalyzer";
 import { TSServer } from "./TSServer";
@@ -139,6 +140,17 @@ export class LanguageServiceTester
     public MakePath(...path: string[]): string
     {
         return this.DefaultWorkspace.MakePath(...path);
+    }
+
+    /**
+     * Configures the workspace.
+     *
+     * @param tsConfig
+     * The TypeScript-settings to apply.
+     */
+    public async Configure(tsConfig?: TSConfigJSON): Promise<void>
+    {
+        return writeJSON(this.MakePath(fileName), tsConfig ?? {});
     }
 
     /**

@@ -1,7 +1,8 @@
 import { spawnSync } from "child_process";
 import { Package } from "@manuth/package-json-editor";
-import { ensureFile, pathExistsSync, writeFile } from "fs-extra";
+import { ensureFile, pathExistsSync, writeFile, writeJSON } from "fs-extra";
 import npmWhich = require("npm-which");
+import { fileName, TSConfigJSON } from "types-tsconfig";
 import type ts = require("typescript/lib/tsserverlibrary");
 import { join } from "upath";
 import { Constants } from "../Constants";
@@ -154,6 +155,17 @@ export class TestWorkspace
     public MakePath(...path: string[]): string
     {
         return join(this.WorkspacePath, ...path);
+    }
+
+    /**
+     * Configures the workspace.
+     *
+     * @param tsConfig
+     * The TypeScript-settings to apply.
+     */
+    public async Configure(tsConfig?: TSConfigJSON): Promise<void>
+    {
+        return writeJSON(this.MakePath(fileName), tsConfig ?? {});
     }
 
     /**

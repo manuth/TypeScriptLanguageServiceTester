@@ -1,5 +1,7 @@
 import { Package } from "@manuth/package-json-editor";
 import { writeJSON } from "fs-extra";
+import merge = require("lodash.merge");
+import { TSConfigJSON } from "types-tsconfig";
 import { Constants } from "../Constants";
 import { TestWorkspace } from "../Workspaces/TestWorkspace";
 
@@ -45,23 +47,27 @@ export class ESLintWorkspace extends TestWorkspace
     /**
      * Configures the workspace.
      *
+     * @param tsConfig
+     * The TypeScript-settings to apply.
+     *
      * @param eslintRules
-     * The eslint-rules to configure.
+     * The eslint-rules to apply.
      */
-    public async Configure(eslintRules?: Record<string, any>): Promise<void>
+    public override async Configure(tsConfig?: TSConfigJSON, eslintRules?: Record<string, any>): Promise<void>
     {
-        await writeJSON(
-            this.MakePath("tsconfig.json"),
-            {
-                compilerOptions: {
-                    allowJs: true,
-                    plugins: [
-                        {
-                            name: this.TypeScriptPluginName
-                        }
-                    ]
-                }
-            });
+        await super.Configure(
+            merge<TSConfigJSON, TSConfigJSON>(
+                {
+                    compilerOptions: {
+                        allowJs: true,
+                        plugins: [
+                            {
+                                name: this.TypeScriptPluginName
+                            }
+                        ]
+                    }
+                },
+                tsConfig));
 
         return writeJSON(
             this.MakePath(".eslintrc"),
