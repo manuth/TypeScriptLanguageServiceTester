@@ -2,6 +2,9 @@ import { ok, strictEqual } from "assert";
 import { Package } from "@manuth/package-json-editor";
 import { move, pathExists, remove, writeJSON } from "fs-extra";
 import { randexp } from "randexp";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { CompilerOptions } from "types-tsconfig";
+import { Diagnostic } from "../../Diagnostics/Diagnostic";
 import { TestWorkspace } from "../../Workspaces/TestWorkspace";
 import { ITestContext } from "../ITestContext";
 import { TestLanguageServiceTester } from "../TestLanguageServiceTester";
@@ -129,6 +132,46 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                             await writeJSON(npmPackage.FileName, npmPackage.ToJSON());
                             await workspace.Install();
                             strictEqual(new Package(npmPackage.FileName).AllDependencies.Get(typeScriptPackageName), versionNumber);
+                        });
+                });
+
+            suite(
+                nameof<TestWorkspace>((workspace) => workspace.Configure),
+                () =>
+                {
+                    test(
+                        "Checking whether the options of the `tsconfig.json`-file can be modified…",
+                        async () =>
+                        {
+                            /**
+                             * Filters all diagnostics which are related to the {@link CompilerOptions.noImplicitAny `noImplicitAny`}-option.
+                             *
+                             * @param diagnostics
+                             * The diagnostics to filter.
+                             *
+                             * @returns
+                             * The diagnostics which are related to the {@link CompilerOptions.noImplicitAny `noImplicitAny`}-option.
+                             */
+                            function FilterNoImplicitAny(diagnostics: Diagnostic[]): Diagnostic[]
+                            {
+                                return diagnostics.filter(
+                                    (diagnostic) =>
+                                    {
+                                        return diagnostic.Code === 7006;
+                                    });
+                            }
+
+                            for (let noImplicitAny of [true, false])
+                            {
+                                await workspace.Configure(
+                                    {
+                                        compilerOptions: {
+                                            noImplicitAny
+                                        }
+                                    });
+
+                                strictEqual(FilterNoImplicitAny((await workspace.AnalyzeCode("function test(x) { }")).Diagnostics).length, noImplicitAny ? 1 : 0);
+                            }
                         });
                 });
 
