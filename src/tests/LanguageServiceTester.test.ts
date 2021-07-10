@@ -5,7 +5,7 @@ import { copy, pathExists, remove } from "fs-extra";
 import npmWhich = require("npm-which");
 import { Diagnostic } from "../Diagnostics/Diagnostic";
 import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer";
-import { LanguageServiceTester } from "../LanguageServiceTester";
+import type { LanguageServiceTester } from "../LanguageServiceTester";
 import { ITestContext } from "./ITestContext";
 import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
 

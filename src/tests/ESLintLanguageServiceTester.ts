@@ -7,6 +7,17 @@ import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
 export class ESLintLanguageServiceTester extends TestLanguageServiceTester
 {
     /**
+     * Initializes a new instance of the {@link ESLintLanguageServiceTester `ESLintLanguageServiceTester`} class.
+     *
+     * @param workingDirectory
+     * The working directory to set for the default workspace.
+     */
+    public constructor(workingDirectory?: string)
+    {
+        super(workingDirectory);
+    }
+
+    /**
      * @inheritdoc
      */
     public override get DefaultWorkspace(): ESLintWorkspace

@@ -8,12 +8,17 @@ import { TestWorkspace } from "./Workspaces/TestWorkspace";
 /**
  * Provides functions for testing the plugin.
  */
-export abstract class LanguageServiceTester
+export class LanguageServiceTester
 {
     /**
      * The working directory to set for the tsserver.
      */
     private workingDirectory: string;
+
+    /**
+     * The error-codes to test.
+     */
+    private errorCodes: number[] = [];
 
     /**
      * The typescript-server for testing.
@@ -91,9 +96,20 @@ export abstract class LanguageServiceTester
     }
 
     /**
-     * Gets the error-codes to test.
+     * Gets or sets the error-codes to test.
      */
-    public abstract get ErrorCodes(): number[];
+    public get ErrorCodes(): number[]
+    {
+        return this.errorCodes;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public set ErrorCodes(value)
+    {
+        this.errorCodes = value;
+    }
 
     /**
      * Gets a set of temporary workspaces which are attached to this tester.
