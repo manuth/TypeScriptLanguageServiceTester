@@ -168,8 +168,11 @@ export function TestWorkspaceTests(testContext: ITestContext): void
 
                     test(
                         `Checking whether the options of the \`${fileName}\`-file can be modified…`,
-                        async () =>
+                        async function()
                         {
+                            this.timeout(15 * 1000);
+                            this.slow(7.5 * 1000);
+
                             /**
                              * Filters all diagnostics which are related to the {@link CompilerOptions.noImplicitAny `noImplicitAny`}-option.
                              *
