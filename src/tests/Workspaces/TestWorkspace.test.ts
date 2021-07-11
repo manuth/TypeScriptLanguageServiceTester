@@ -180,12 +180,27 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                 () =>
                 {
                     test(
-                        "Checking whether diagnostics can be looked up…",
+                        "Checking whether semantic diagnostics can be looked up…",
                         async function()
                         {
                             this.timeout(1.5 * 60 * 1000);
                             this.slow(45 * 1000);
-                            ok((await workspace.AnalyzeCode("let x: sting")).Diagnostics.length > 0);
+
+                            await workspace.Configure(
+                                {
+                                    compilerOptions: {
+                                        noImplicitAny: true
+                                    }
+                                });
+
+                            ok((await workspace.AnalyzeCode("function lel(x) { }")).CodeAnalysisResult.SemanticDiagnosticsResponse.body.length > 0);
+                        });
+
+                    test(
+                        "Checking whether syntactic diagnostics can be looked up…",
+                        async () =>
+                        {
+                            ok((await workspace.AnalyzeCode("let x: string<string>;")).CodeAnalysisResult.SyntacticDiagnosticsResponse.body.length > 0);
                         });
                 });
         });
