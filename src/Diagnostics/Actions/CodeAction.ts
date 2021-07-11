@@ -94,7 +94,7 @@ export class CodeAction
      */
     public static IsCodeFixAction(codeAction: server.protocol.CodeAction | server.protocol.CodeFixAction): codeAction is server.protocol.CodeFixAction
     {
-        let key: keyof server.protocol.CodeFixAction = "fixName";
+        let key = nameof<server.protocol.CodeFixAction>((action) => action.fixName) as keyof server.protocol.CodeFixAction;
         return key in codeAction;
     }
 }

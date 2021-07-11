@@ -1,7 +1,9 @@
 import { Package } from "@manuth/package-json-editor";
+import { Constants as PluginConstants } from "@manuth/typescript-eslint-plugin";
 import { Linter } from "eslint";
 import { writeJSON } from "fs-extra";
 import merge = require("lodash.merge");
+import { fileName } from "types-eslintrc";
 import { TSConfigJSON } from "types-tsconfig";
 import { Constants } from "../Constants";
 import { TestWorkspace } from "../Workspaces/TestWorkspace";
@@ -16,7 +18,7 @@ export class ESLintWorkspace extends TestWorkspace
      */
     public get TypeScriptPluginName(): string
     {
-        return "@manuth/typescript-eslint-plugin";
+        return PluginConstants.Package.Name;
     }
 
     /**
@@ -71,7 +73,7 @@ export class ESLintWorkspace extends TestWorkspace
                 tsConfig));
 
         return writeJSON(
-            this.MakePath(".eslintrc"),
+            this.MakePath(fileName),
             {
                 root: true,
                 env: {

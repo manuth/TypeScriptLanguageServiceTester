@@ -1,4 +1,6 @@
 import { deepStrictEqual, ok, strictEqual } from "assert";
+import { ESLintRule } from "@manuth/eslint-plugin-typescript";
+import { Constants } from "@manuth/typescript-eslint-plugin";
 import { server } from "typescript/lib/tsserverlibrary";
 import { FixResponseAnalyzer } from "../../Diagnostics/Actions/FixResponseAnalyzer";
 import { Diagnostic } from "../../Diagnostics/Diagnostic";
@@ -29,8 +31,8 @@ export function DiagnosticTests(context: ITestContext): void
                 async () =>
                 {
                     tester = context.ESLintTester;
-                    fixableRule = "no-extra-semi";
-                    incorrectCode = "let x;;;";
+                    fixableRule = ESLintRule.NoTrailingSpaces;
+                    incorrectCode = "  ";
 
                     await tester.Configure(
                         undefined,
@@ -54,7 +56,7 @@ export function DiagnosticTests(context: ITestContext): void
                             let parsedDiagnostic = new Diagnostic(response, diagnostic);
 
                             if (
-                                parsedDiagnostic.Source === "eslint" &&
+                                parsedDiagnostic.Source === Constants.ErrorSource &&
                                 parsedDiagnostic.Message.includes(fixableRule))
                             {
                                 result.push(diagnostic);

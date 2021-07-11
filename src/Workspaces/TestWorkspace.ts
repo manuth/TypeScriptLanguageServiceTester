@@ -85,7 +85,7 @@ export class TestWorkspace
      */
     protected get PackageFileName(): string
     {
-        return this.MakePath("package.json");
+        return this.MakePath(Package.FileName);
     }
 
     /**
@@ -130,7 +130,7 @@ export class TestWorkspace
     public async Install(): Promise<void>
     {
         let npmPackage = this.InstallerPackage;
-        await writeFile(this.MakePath("package.json"), JSON.stringify(npmPackage.ToJSON(), null, 2));
+        await writeFile(this.MakePath(Package.FileName), JSON.stringify(npmPackage.ToJSON(), null, 2));
 
         spawnSync(
             npmWhich(this.MakePath()).sync("npm"),

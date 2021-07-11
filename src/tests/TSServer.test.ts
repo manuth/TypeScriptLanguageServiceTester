@@ -181,7 +181,7 @@ export function TSServerTests(): void
                         {
                             this.timeout(4 * 1000);
                             this.slow(3 * 1000);
-                            await tsServer.WaitEvent("typingsInstallerPid");
+                            await tsServer.WaitEvent(TestConstants.TestEvent);
                         });
                 });
 

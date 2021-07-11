@@ -3,7 +3,7 @@ import { Package } from "@manuth/package-json-editor";
 import { move, pathExists, remove, writeJSON } from "fs-extra";
 import { randexp } from "randexp";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { CompilerOptions } from "types-tsconfig";
+import { CompilerOptions, fileName } from "types-tsconfig";
 import { Diagnostic } from "../../Diagnostics/Diagnostic";
 import { TestWorkspace } from "../../Workspaces/TestWorkspace";
 import { ITestContext } from "../ITestContext";
@@ -140,7 +140,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                 () =>
                 {
                     test(
-                        "Checking whether the options of the `tsconfig.json`-file can be modified…",
+                        `Checking whether the options of the \`${fileName}\`-file can be modified…`,
                         async () =>
                         {
                             /**

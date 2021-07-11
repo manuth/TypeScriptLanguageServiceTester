@@ -1,6 +1,8 @@
 import { doesNotThrow, ok, strictEqual, throws } from "assert";
 import { spawnSync } from "child_process";
+import { ESLintRule } from "@manuth/eslint-plugin-typescript";
 import { TempDirectory, TempFile } from "@manuth/temp-files";
+import { Constants } from "@manuth/typescript-eslint-plugin";
 import { copy, pathExists, remove } from "fs-extra";
 import npmWhich = require("npm-which");
 import { Diagnostic } from "../Diagnostics/Diagnostic";
@@ -146,8 +148,8 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                         {
                             this.timeout(1.5 * 60 * 1000);
                             this.slow(45 * 1000);
-                            let incorrectCode = "let x;;;";
-                            let ruleName = "no-extra-semi";
+                            let incorrectCode = "  ";
+                            let ruleName = ESLintRule.NoTrailingSpaces;
 
                             /**
                              * Filters the diagnostics for `eslint`-diagnostics.
@@ -161,7 +163,7 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                             function FilterESLintDiagnostics(response: DiagnosticsResponseAnalyzer): Diagnostic[]
                             {
                                 return response.Diagnostics.filter(
-                                    (diagnostic) => diagnostic.Source === "eslint");
+                                    (diagnostic) => diagnostic.Source === Constants.ErrorSource);
                             }
 
                             context.ESLintTester.Configure(
