@@ -16,7 +16,7 @@ steps:
   - name: lint
     image: node
     depends_on:
-      - build
+      - install
     commands:
       - npm run lint
   - name: test
