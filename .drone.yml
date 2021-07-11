@@ -9,6 +9,8 @@ steps:
       - npm install --unsafe-perm
   - name: build
     image: node
+    depends_on:
+      - install
     commands:
       - npm run build
   - name: lint
@@ -70,6 +72,8 @@ steps:
         - tag
   - name: prepare release notes
     image: alpine
+    depends_on:
+      - prepare release
     commands:
       - export TagName=$$(cat TagName.txt)
       - export TagHeading="/## \(.* \($${TagName}\|\[$${TagName}\]\)\)\$/"
@@ -83,6 +87,8 @@ steps:
         - tag
   - name: publish release
     image: plugins/github-release
+    depends_on:
+      - prepare release notes
     commands: []
     settings:
       api_key:
