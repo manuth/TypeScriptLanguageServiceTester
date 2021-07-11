@@ -1,4 +1,6 @@
 import { doesNotReject, ok, rejects, strictEqual } from "assert";
+import { TempFile } from "@manuth/temp-files";
+import { readFile } from "fs-extra";
 import { server } from "typescript/lib/tsserverlibrary";
 import { join } from "upath";
 import { TSServer } from "../TSServer";
@@ -36,10 +38,80 @@ export function TSServerTests(): void
                         "Logging",
                         () =>
                         {
-                            test(
-                                "Checking whether the logging can be customized",
-                                async () =>
+                            let customLogFile: TempFile;
+                            let logDisabled: TSServer;
+                            let logEnabled: TSServer;
+
+                            suiteSetup(
+                                () =>
                                 {
+                                    customLogFile = new TempFile();
+                                });
+
+                            suiteTeardown(
+                                () =>
+                                {
+                                    customLogFile.Dispose();
+                                });
+
+                            setup(
+                                () =>
+                                {
+                                    logDisabled = new class extends TSServer
+                                    {
+                                        /**
+                                         * @inheritdoc
+                                         */
+                                        public override get LogLevel(): keyof typeof server.LogLevel
+                                        {
+                                            return null;
+                                        }
+                                    }(TestConstants.TestWorkspaceDirectory);
+
+                                    logEnabled = new class extends TSServer
+                                    {
+                                        /**
+                                         * @inheritdoc
+                                         */
+                                        public override get LogLevel(): keyof typeof server.LogLevel
+                                        {
+                                            return server.LogLevel[server.LogLevel.verbose] as keyof typeof server.LogLevel;
+                                        }
+
+                                        /**
+                                         * @inheritdoc
+                                         */
+                                        public override get LogFileName(): string
+                                        {
+                                            return customLogFile.FullName;
+                                        }
+                                    }(TestConstants.TestWorkspaceDirectory);
+                                });
+
+                            teardown(
+                                async function()
+                                {
+                                    this.timeout(10 * 1000);
+                                    await logDisabled.Dispose();
+                                    await logEnabled.Dispose();
+                                });
+
+                            test(
+                                "Checking whether the logging can be customized…",
+                                async function()
+                                {
+                                    this.timeout(4 * 1000);
+                                    this.slow(3 * 1000);
+                                    let event = TestConstants.TestEvent;
+
+                                    await Promise.all(
+                                        [
+                                            logDisabled.WaitEvent(event),
+                                            logEnabled.WaitEvent(event)
+                                        ]);
+
+                                    strictEqual((await readFile(logDisabled.LogFileName)).toString().length, 0);
+                                    ok((await readFile(logEnabled.LogFileName)).toString().length > 0);
                                 });
                         });
                 });
@@ -181,7 +253,7 @@ export function TSServerTests(): void
                         {
                             this.timeout(4 * 1000);
                             this.slow(3 * 1000);
-                            await tsServer.WaitEvent("typingsInstallerPid");
+                            await tsServer.WaitEvent(TestConstants.TestEvent);
                         });
                 });
 

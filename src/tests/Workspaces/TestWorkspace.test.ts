@@ -1,7 +1,12 @@
 import { ok, strictEqual } from "assert";
 import { Package } from "@manuth/package-json-editor";
+import { TempFile } from "@manuth/temp-files";
 import { move, pathExists, remove, writeJSON } from "fs-extra";
 import { randexp } from "randexp";
+import { Project, SourceFile } from "ts-morph";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { CompilerOptions, fileName } from "types-tsconfig";
+import { Diagnostic } from "../../Diagnostics/Diagnostic";
 import { TestWorkspace } from "../../Workspaces/TestWorkspace";
 import { ITestContext } from "../ITestContext";
 import { TestLanguageServiceTester } from "../TestLanguageServiceTester";
@@ -133,16 +138,106 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                 });
 
             suite(
-                nameof<TestWorkspace>((workspace) => workspace.AnalyzeCode),
+                nameof<TestWorkspace>((workspace) => workspace.Configure),
                 () =>
                 {
                     test(
-                        "Checking whether diagnostics can be looked up…",
+                        `Checking whether the options of the \`${fileName}\`-file can be modified…`,
+                        async () =>
+                        {
+                            /**
+                             * Filters all diagnostics which are related to the {@link CompilerOptions.noImplicitAny `noImplicitAny`}-option.
+                             *
+                             * @param diagnostics
+                             * The diagnostics to filter.
+                             *
+                             * @returns
+                             * The diagnostics which are related to the {@link CompilerOptions.noImplicitAny `noImplicitAny`}-option.
+                             */
+                            function FilterNoImplicitAny(diagnostics: Diagnostic[]): Diagnostic[]
+                            {
+                                return diagnostics.filter(
+                                    (diagnostic) =>
+                                    {
+                                        return diagnostic.Code === 7006;
+                                    });
+                            }
+
+                            for (let noImplicitAny of [true, false])
+                            {
+                                await workspace.Configure(
+                                    {
+                                        compilerOptions: {
+                                            noImplicitAny
+                                        }
+                                    });
+
+                                strictEqual(FilterNoImplicitAny((await workspace.AnalyzeCode("function test(x) { }")).Diagnostics).length, noImplicitAny ? 1 : 0);
+                            }
+                        });
+                });
+
+            suite(
+                nameof<TestWorkspace>((workspace) => workspace.AnalyzeCode),
+                () =>
+                {
+                    let tempFile: TempFile;
+                    let file: SourceFile;
+
+                    setup(
+                        () =>
+                        {
+                            tempFile = new TempFile(
+                                {
+                                    Suffix: ".ts"
+                                });
+
+                            file = new Project().createSourceFile(
+                                tempFile.FullName,
+                                null,
+                                {
+                                    overwrite: true
+                                });
+                        });
+
+                    teardown(
+                        () =>
+                        {
+                            tempFile.Dispose();
+                        });
+
+                    test(
+                        "Checking whether semantic diagnostics can be looked up…",
                         async function()
                         {
                             this.timeout(1.5 * 60 * 1000);
                             this.slow(45 * 1000);
-                            ok((await workspace.AnalyzeCode("let x: sting")).Diagnostics.length > 0);
+
+                            await workspace.Configure(
+                                {
+                                    compilerOptions: {
+                                        noImplicitAny: true
+                                    }
+                                });
+
+                            file.addFunction(
+                                {
+                                    name: "test",
+                                    parameters: [
+                                        {
+                                            name: "test"
+                                        }
+                                    ]
+                                });
+
+                            ok((await workspace.AnalyzeCode(file.print())).CodeAnalysisResult.SemanticDiagnosticsResponse.body.length > 0);
+                        });
+
+                    test(
+                        "Checking whether syntactic diagnostics can be looked up…",
+                        async () =>
+                        {
+                            ok((await workspace.AnalyzeCode("let<> x = 1;")).CodeAnalysisResult.SyntacticDiagnosticsResponse.body.length > 0);
                         });
                 });
         });

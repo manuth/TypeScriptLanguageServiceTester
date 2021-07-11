@@ -3,6 +3,7 @@ import { TSServer } from "../TSServer";
 import { TestWorkspace } from "../Workspaces/TestWorkspace";
 import { CodeAction } from "./Actions/CodeAction";
 import { Diagnostic } from "./Diagnostic";
+import { ICodeAnalysisResult } from "./ICodeAnalysisResult";
 
 /**
  * Provides the functionality to analyze a diagnostic-response.
@@ -10,9 +11,9 @@ import { Diagnostic } from "./Diagnostic";
 export class DiagnosticsResponseAnalyzer
 {
     /**
-     * The response to analyze.
+     * The result to analysis.
      */
-    private diagnosticsResponse: server.protocol.SemanticDiagnosticsSyncResponse;
+    private codeAnalysisResult: Readonly<ICodeAnalysisResult>;
 
     /**
      * The workspace of this diagnostic-response.
@@ -32,7 +33,7 @@ export class DiagnosticsResponseAnalyzer
     /**
      * Initializes a new instance of the {@link DiagnosticsResponseAnalyzer `DiagnosticsResponseAnalyzer`} class.
      *
-     * @param diagnosticsResponse
+     * @param codeAnalysisResult
      * The response to analyze.
      *
      * @param workspace
@@ -44,9 +45,9 @@ export class DiagnosticsResponseAnalyzer
      * @param fileName
      * The name of the file of the response.
      */
-    public constructor(diagnosticsResponse: server.protocol.SemanticDiagnosticsSyncResponse, workspace: TestWorkspace, scriptKind: server.protocol.ScriptKindName, fileName: string)
+    public constructor(codeAnalysisResult: ICodeAnalysisResult, workspace: TestWorkspace, scriptKind: server.protocol.ScriptKindName, fileName: string)
     {
-        this.diagnosticsResponse = diagnosticsResponse;
+        this.codeAnalysisResult = codeAnalysisResult;
         this.workspace = workspace;
         this.scriptKind = scriptKind;
         this.fileName = fileName;
@@ -85,11 +86,11 @@ export class DiagnosticsResponseAnalyzer
     }
 
     /**
-     * Gets the response to analyze.
+     * Gets the result of the analysis.
      */
-    public get DiagnosticsResponse(): server.protocol.SemanticDiagnosticsSyncResponse
+    public get CodeAnalysisResult(): ICodeAnalysisResult
     {
-        return this.diagnosticsResponse;
+        return this.codeAnalysisResult;
     }
 
     /**
@@ -97,8 +98,11 @@ export class DiagnosticsResponseAnalyzer
      */
     public get Diagnostics(): Diagnostic[]
     {
-        let diagnostics: Array<server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition>;
-        diagnostics = this.DiagnosticsResponse.body;
+        let diagnostics: Array<server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition> = [
+            ...this.CodeAnalysisResult.SemanticDiagnosticsResponse.body,
+            ...this.CodeAnalysisResult.SyntacticDiagnosticsResponse.body
+        ];
+
         return diagnostics.map((diagnostic) => new Diagnostic(this, diagnostic));
     }
 

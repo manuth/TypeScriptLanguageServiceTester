@@ -66,7 +66,11 @@ export class TSServer
     public constructor(workingDirectory: string)
     {
         this.WorkingDirectory = workingDirectory;
-        ensureDirSync(dirname(this.LogFileName));
+
+        if (this.LogLevel)
+        {
+            ensureDirSync(dirname(this.LogFileName));
+        }
 
         this.serverProcess = fork(
             this.TypeScriptServerPath,
@@ -340,6 +344,8 @@ export class TSServer
         if (this.requestResolverCollection.size === 0)
         {
             this.serverProcess.stdin.end();
+            this.logFile?.Dispose();
+            this.logFile = null;
             this.disposed = true;
             this.disposalRequested = false;
         }

@@ -1,5 +1,6 @@
 import { TempDirectory } from "@manuth/temp-files";
-import { ensureDirSync } from "fs-extra";
+import { ensureDirSync, writeJSON } from "fs-extra";
+import { fileName, TSConfigJSON } from "types-tsconfig";
 import type ts = require("typescript/lib/tsserverlibrary");
 import { DiagnosticsResponseAnalyzer } from "./Diagnostics/DiagnosticsResponseAnalyzer";
 import { TSServer } from "./TSServer";
@@ -8,12 +9,17 @@ import { TestWorkspace } from "./Workspaces/TestWorkspace";
 /**
  * Provides functions for testing the plugin.
  */
-export abstract class LanguageServiceTester
+export class LanguageServiceTester
 {
     /**
      * The working directory to set for the tsserver.
      */
     private workingDirectory: string;
+
+    /**
+     * The error-codes to test.
+     */
+    private errorCodes: number[] = [];
 
     /**
      * The typescript-server for testing.
@@ -91,9 +97,20 @@ export abstract class LanguageServiceTester
     }
 
     /**
-     * Gets the error-codes to test.
+     * Gets or sets the error-codes to test.
      */
-    public abstract get ErrorCodes(): number[];
+    public get ErrorCodes(): number[]
+    {
+        return this.errorCodes;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public set ErrorCodes(value)
+    {
+        this.errorCodes = value;
+    }
 
     /**
      * Gets a set of temporary workspaces which are attached to this tester.
@@ -123,6 +140,17 @@ export abstract class LanguageServiceTester
     public MakePath(...path: string[]): string
     {
         return this.DefaultWorkspace.MakePath(...path);
+    }
+
+    /**
+     * Configures the workspace.
+     *
+     * @param tsConfig
+     * The TypeScript-settings to apply.
+     */
+    public async Configure(tsConfig?: TSConfigJSON): Promise<void>
+    {
+        return writeJSON(this.MakePath(fileName), tsConfig ?? {});
     }
 
     /**

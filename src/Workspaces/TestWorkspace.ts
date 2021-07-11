@@ -1,7 +1,8 @@
 import { spawnSync } from "child_process";
 import { Package } from "@manuth/package-json-editor";
-import { ensureFile, pathExistsSync, writeFile } from "fs-extra";
+import { ensureFile, pathExistsSync, writeFile, writeJSON } from "fs-extra";
 import npmWhich = require("npm-which");
+import { fileName, TSConfigJSON } from "types-tsconfig";
 import type ts = require("typescript/lib/tsserverlibrary");
 import { join } from "upath";
 import { Constants } from "../Constants";
@@ -84,7 +85,7 @@ export class TestWorkspace
      */
     protected get PackageFileName(): string
     {
-        return this.MakePath("package.json");
+        return this.MakePath(Package.FileName);
     }
 
     /**
@@ -129,7 +130,7 @@ export class TestWorkspace
     public async Install(): Promise<void>
     {
         let npmPackage = this.InstallerPackage;
-        await writeFile(this.MakePath("package.json"), JSON.stringify(npmPackage.ToJSON(), null, 2));
+        await writeFile(this.MakePath(Package.FileName), JSON.stringify(npmPackage.ToJSON(), null, 2));
 
         spawnSync(
             npmWhich(this.MakePath()).sync("npm"),
@@ -154,6 +155,17 @@ export class TestWorkspace
     public MakePath(...path: string[]): string
     {
         return join(this.WorkspacePath, ...path);
+    }
+
+    /**
+     * Configures the workspace.
+     *
+     * @param tsConfig
+     * The TypeScript-settings to apply.
+     */
+    public async Configure(tsConfig?: TSConfigJSON): Promise<void>
+    {
+        return writeJSON(this.MakePath(fileName), tsConfig ?? {});
     }
 
     /**
@@ -211,17 +223,33 @@ export class TestWorkspace
         await ensureFile(file);
         await this.SendFile(file, code, scriptKind);
 
+        let semanticDiagnostics = this.TSServer.Send<ts.server.protocol.SemanticDiagnosticsSyncRequest>(
+            {
+                type: "request",
+                command: this.TSServerLibrary.server.protocol.CommandTypes.SemanticDiagnosticsSync,
+                arguments: {
+                    file,
+                    includeLinePosition: false
+                }
+            },
+            true);
+
+        let syntacticDiagnostics = this.TSServer.Send<ts.server.protocol.SyntacticDiagnosticsSyncRequest>(
+            {
+                type: "request",
+                command: this.TSServerLibrary.server.protocol.CommandTypes.SyntacticDiagnosticsSync,
+                arguments: {
+                    file,
+                    includeLinePosition: false
+                }
+            },
+            true);
+
         return new DiagnosticsResponseAnalyzer(
-            await this.TSServer.Send<ts.server.protocol.SemanticDiagnosticsSyncRequest>(
-                {
-                    type: "request",
-                    command: this.TSServerLibrary.server.protocol.CommandTypes.SemanticDiagnosticsSync,
-                    arguments: {
-                        file,
-                        includeLinePosition: false
-                    }
-                },
-                true),
+            {
+                SemanticDiagnosticsResponse: await semanticDiagnostics,
+                SyntacticDiagnosticsResponse: await syntacticDiagnostics
+            },
             this,
             scriptKind,
             file);

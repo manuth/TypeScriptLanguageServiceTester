@@ -16,6 +16,6 @@ export abstract class Constants
      */
     public static get Package(): Package
     {
-        return new Package(join(Constants.PackageDirectory, "package.json"));
+        return new Package(join(Constants.PackageDirectory, Package.FileName));
     }
 }

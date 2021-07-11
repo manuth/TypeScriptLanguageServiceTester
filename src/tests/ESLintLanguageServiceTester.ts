@@ -1,3 +1,5 @@
+import { Linter } from "eslint";
+import { TSConfigJSON } from "types-tsconfig";
 import { ESLintWorkspace } from "./ESLintWorkspace";
 import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
 
@@ -6,6 +8,17 @@ import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
  */
 export class ESLintLanguageServiceTester extends TestLanguageServiceTester
 {
+    /**
+     * Initializes a new instance of the {@link ESLintLanguageServiceTester `ESLintLanguageServiceTester`} class.
+     *
+     * @param workingDirectory
+     * The working directory to set for the default workspace.
+     */
+    public constructor(workingDirectory?: string)
+    {
+        super(workingDirectory);
+    }
+
     /**
      * @inheritdoc
      */
@@ -25,12 +38,15 @@ export class ESLintLanguageServiceTester extends TestLanguageServiceTester
     /**
      * Configures the default workspace.
      *
+     * @param tsConfig
+     * The TypeScript-settings to apply.
+     *
      * @param eslintRules
      * The eslint-rules to apply.
      */
-    public async Configure(eslintRules?: Record<string, unknown>): Promise<void>
+    public override async Configure(tsConfig?: TSConfigJSON, eslintRules?: Linter.RulesRecord): Promise<void>
     {
-        return this.DefaultWorkspace.Configure(eslintRules);
+        return this.DefaultWorkspace.Configure(tsConfig, eslintRules);
     }
 
     /**

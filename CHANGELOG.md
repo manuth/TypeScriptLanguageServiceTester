@@ -6,7 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## TypeScriptLanguageServiceTester [Unreleased]
 
-[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v3.0.1...dev)
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v4.0.0...dev)
+
+## TypeScriptLanguageServiceTester v4.0.0
+### Breaking
+  - Include syntactic diagnostics in the `TestWorkspace.AnalyzeCode`-result
+
+### Added
+  - Support to instantiate `LanguageServiceTester`s without creating an own class
+  - Support for updating `tsconfig`-settings of `TestWorkspace`s
+
+### Updated
+  - All dependencies
+
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v3.0.1...v4.0.0)
 
 ## TypeScriptLanguageServiceTester v3.0.1
 ### Fixed

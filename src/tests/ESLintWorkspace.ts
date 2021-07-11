@@ -1,5 +1,10 @@
 import { Package } from "@manuth/package-json-editor";
+import { Constants as PluginConstants } from "@manuth/typescript-eslint-plugin";
+import { Linter } from "eslint";
 import { writeJSON } from "fs-extra";
+import merge = require("lodash.merge");
+import { fileName } from "types-eslintrc";
+import { TSConfigJSON } from "types-tsconfig";
 import { Constants } from "../Constants";
 import { TestWorkspace } from "../Workspaces/TestWorkspace";
 
@@ -13,7 +18,7 @@ export class ESLintWorkspace extends TestWorkspace
      */
     public get TypeScriptPluginName(): string
     {
-        return "@manuth/typescript-eslint-plugin";
+        return PluginConstants.Package.Name;
     }
 
     /**
@@ -45,26 +50,30 @@ export class ESLintWorkspace extends TestWorkspace
     /**
      * Configures the workspace.
      *
+     * @param tsConfig
+     * The TypeScript-settings to apply.
+     *
      * @param eslintRules
-     * The eslint-rules to configure.
+     * The eslint-rules to apply.
      */
-    public async Configure(eslintRules?: Record<string, any>): Promise<void>
+    public override async Configure(tsConfig?: TSConfigJSON, eslintRules?: Linter.RulesRecord): Promise<void>
     {
-        await writeJSON(
-            this.MakePath("tsconfig.json"),
-            {
-                compilerOptions: {
-                    allowJs: true,
-                    plugins: [
-                        {
-                            name: this.TypeScriptPluginName
-                        }
-                    ]
-                }
-            });
+        await super.Configure(
+            merge<TSConfigJSON, TSConfigJSON>(
+                {
+                    compilerOptions: {
+                        allowJs: true,
+                        plugins: [
+                            {
+                                name: this.TypeScriptPluginName
+                            }
+                        ]
+                    }
+                },
+                tsConfig));
 
         return writeJSON(
-            this.MakePath(".eslintrc"),
+            this.MakePath(fileName),
             {
                 root: true,
                 env: {
@@ -74,6 +83,6 @@ export class ESLintWorkspace extends TestWorkspace
                 rules: {
                     ...eslintRules
                 }
-            });
+            } as Linter.Config);
     }
 }

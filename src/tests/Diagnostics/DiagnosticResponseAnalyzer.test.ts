@@ -1,4 +1,5 @@
 import { ok, strictEqual } from "assert";
+import { ESLintRule } from "@manuth/eslint-plugin-typescript";
 import isEqual = require("lodash.isequal");
 import { DiagnosticsResponseAnalyzer } from "../../Diagnostics/DiagnosticsResponseAnalyzer";
 import { ESLintLanguageServiceTester } from "../ESLintLanguageServiceTester";
@@ -27,12 +28,13 @@ export function DiagnosticResponseAnalyzerTests(context: ITestContext): void
                 async () =>
                 {
                     tester = context.ESLintTester;
-                    fixableRule1 = "no-extra-semi";
-                    fixableRule2 = "spaced-comment";
-                    incorrectCode1 = "let x;;;";
+                    fixableRule1 = ESLintRule.NoTrailingSpaces;
+                    fixableRule2 = ESLintRule.SpacedComment;
+                    incorrectCode1 = "  ";
                     incorrectCode2 = "//Hello World";
 
                     await tester.Configure(
+                        undefined,
                         {
                             [fixableRule1]: "warn",
                             [fixableRule2]: "warn"
@@ -56,7 +58,12 @@ export function DiagnosticResponseAnalyzerTests(context: ITestContext): void
                         "Checking whether all diagnostics are returned…",
                         () =>
                         {
-                            strictEqual(response.Diagnostics.length, response.DiagnosticsResponse.body.length);
+                            strictEqual(
+                                response.Diagnostics.length,
+                                [
+                                    ...response.CodeAnalysisResult.SemanticDiagnosticsResponse.body,
+                                    ...response.CodeAnalysisResult.SyntacticDiagnosticsResponse.body
+                                ].length);
                         });
                 });
 
