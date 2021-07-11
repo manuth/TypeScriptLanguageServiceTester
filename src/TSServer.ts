@@ -344,6 +344,8 @@ export class TSServer
         if (this.requestResolverCollection.size === 0)
         {
             this.serverProcess.stdin.end();
+            this.logFile?.Dispose();
+            this.logFile = null;
             this.disposed = true;
             this.disposalRequested = false;
         }
