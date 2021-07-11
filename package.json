@@ -1,6 +1,6 @@
 {
   "name": "@manuth/typescript-languageservice-tester",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Provides components for testing the typescript language-server and language-services.",
   "author": "Manuel Thalmann <m@nuth.ch>",
   "main": "lib/index.js",
