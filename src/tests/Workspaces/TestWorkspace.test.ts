@@ -60,7 +60,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                     let typeScriptPackageName = "typescript";
                     let versionNumber: string;
                     let packageFileName: string;
-                    let packageFileBaseName = "package.json";
+                    let packageFileBaseName = Package.FileName;
                     let tempPackageFileName: string;
 
                     suiteSetup(
@@ -141,6 +141,31 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                 nameof<TestWorkspace>((workspace) => workspace.Configure),
                 () =>
                 {
+                    let tempFile: TempFile;
+                    let file: SourceFile;
+
+                    setup(
+                        () =>
+                        {
+                            tempFile = new TempFile(
+                                {
+                                    Suffix: ".ts"
+                                });
+
+                            file = new Project().createSourceFile(
+                                tempFile.FullName,
+                                null,
+                                {
+                                    overwrite: true
+                                });
+                        });
+
+                    teardown(
+                        () =>
+                        {
+                            tempFile.Dispose();
+                        });
+
                     test(
                         `Checking whether the options of the \`${fileName}\`-file can be modified…`,
                         async () =>
@@ -163,6 +188,16 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                                     });
                             }
 
+                            file.addFunction(
+                                {
+                                    name: "test",
+                                    parameters: [
+                                        {
+                                            name: "test"
+                                        }
+                                    ]
+                                });
+
                             for (let noImplicitAny of [true, false])
                             {
                                 await workspace.Configure(
@@ -172,7 +207,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                                         }
                                     });
 
-                                strictEqual(FilterNoImplicitAny((await workspace.AnalyzeCode("function test(x) { }")).Diagnostics).length, noImplicitAny ? 1 : 0);
+                                strictEqual(FilterNoImplicitAny((await workspace.AnalyzeCode(file.print())).Diagnostics).length, noImplicitAny ? 1 : 0);
                             }
                         });
                 });
