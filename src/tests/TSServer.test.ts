@@ -37,15 +37,13 @@ export function TSServerTests(): void
                         "Logging",
                         () =>
                         {
-                            test(
-                                "Checking whether the logging can be customized",
-                                async function()
-                                {
-                                    this.timeout(4 * 1000);
-                                    this.slow(3 * 1000);
-                                    let event = TestConstants.TestEvent;
+                            let logDisabled: TSServer;
+                            let logEnabled: TSServer;
 
-                                    let logDisabled = new class extends TSServer
+                            setup(
+                                () =>
+                                {
+                                    logDisabled = new class extends TSServer
                                     {
                                         /**
                                          * @inheritdoc
@@ -56,7 +54,7 @@ export function TSServerTests(): void
                                         }
                                     }(TestConstants.TestWorkspaceDirectory);
 
-                                    let logEnabled = new class extends TSServer
+                                    logEnabled = new class extends TSServer
                                     {
                                         /**
                                          * @inheritdoc
@@ -66,15 +64,31 @@ export function TSServerTests(): void
                                             return server.LogLevel[server.LogLevel.verbose] as keyof typeof server.LogLevel;
                                         }
                                     }(TestConstants.TestWorkspaceDirectory);
+                                });
 
-                                    Promise.all(
+                            teardown(
+                                async function()
+                                {
+                                    this.timeout(10 * 1000);
+                                    await logDisabled.Dispose();
+                                    await logEnabled.Dispose();
+                                });
+
+                            test(
+                                "Checking whether the logging can be customized",
+                                async function()
+                                {
+                                    this.timeout(4 * 1000);
+                                    this.slow(3 * 1000);
+                                    let event = TestConstants.TestEvent;
+
+                                    await Promise.all(
                                         [
                                             logDisabled.WaitEvent(event),
                                             logEnabled.WaitEvent(event)
                                         ]);
 
                                     strictEqual((await readFile(logDisabled.LogFileName)).toString().length, 0);
-                                    console.log((await readFile(logEnabled.LogFileName)).toString());
                                     ok((await readFile(logEnabled.LogFileName)).toString().length > 0);
                                 });
                         });
