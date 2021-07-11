@@ -13,14 +13,21 @@ steps:
       - npm run build
   - name: lint
     image: node
+    depends_on:
+      - build
     commands:
       - npm run lint
   - name: test
     image: node
+    depends_on:
+      - build
     commands:
       - npm run test
   - name: publish package to npm
     image: node
+    depends_on:
+      - lint
+      - test
     environment:
       NPM_TOKEN:
         from_secret: npm_token
@@ -34,6 +41,9 @@ steps:
         - refs/tags/v[0-9]*.[0-9]*.[0-9]*
   - name: publish package to github
     image: node
+    depends_on:
+      - lint
+      - test
     environment:
       GITHUB_TOKEN:
         from_secret: github_packages_token
@@ -48,6 +58,9 @@ steps:
         - refs/tags/v[0-9]*.[0-9]*.[0-9]*
   - name: prepare release
     image: node
+    depends_on:
+      - lint
+      - test
     commands:
       - npm pack
       - npm install escape-string-regexp --no-save
