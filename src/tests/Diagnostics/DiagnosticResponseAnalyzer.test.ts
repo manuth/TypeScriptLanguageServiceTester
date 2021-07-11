@@ -58,7 +58,12 @@ export function DiagnosticResponseAnalyzerTests(context: ITestContext): void
                         "Checking whether all diagnostics are returned…",
                         () =>
                         {
-                            strictEqual(response.Diagnostics.length, response.DiagnosticsResponse.body.length);
+                            strictEqual(
+                                response.Diagnostics.length,
+                                [
+                                    ...response.CodeAnalysisResult.SemanticDiagnosticsResponse.body,
+                                    ...response.CodeAnalysisResult.SyntacticDiagnosticsResponse.body
+                                ].length);
                         });
                 });
 

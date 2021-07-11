@@ -223,17 +223,33 @@ export class TestWorkspace
         await ensureFile(file);
         await this.SendFile(file, code, scriptKind);
 
+        let semanticDiagnostics = this.TSServer.Send<ts.server.protocol.SemanticDiagnosticsSyncRequest>(
+            {
+                type: "request",
+                command: this.TSServerLibrary.server.protocol.CommandTypes.SemanticDiagnosticsSync,
+                arguments: {
+                    file,
+                    includeLinePosition: false
+                }
+            },
+            true);
+
+        let syntacticDiagnostics = this.TSServer.Send<ts.server.protocol.SyntacticDiagnosticsSyncRequest>(
+            {
+                type: "request",
+                command: this.TSServerLibrary.server.protocol.CommandTypes.SyntacticDiagnosticsSync,
+                arguments: {
+                    file,
+                    includeLinePosition: false
+                }
+            },
+            true);
+
         return new DiagnosticsResponseAnalyzer(
-            await this.TSServer.Send<ts.server.protocol.SemanticDiagnosticsSyncRequest>(
-                {
-                    type: "request",
-                    command: this.TSServerLibrary.server.protocol.CommandTypes.SemanticDiagnosticsSync,
-                    arguments: {
-                        file,
-                        includeLinePosition: false
-                    }
-                },
-                true),
+            {
+                SemanticDiagnosticsResponse: await semanticDiagnostics,
+                SyntacticDiagnosticsResponse: await syntacticDiagnostics
+            },
             this,
             scriptKind,
             file);
