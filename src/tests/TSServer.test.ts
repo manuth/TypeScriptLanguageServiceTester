@@ -1,4 +1,5 @@
 import { doesNotReject, ok, rejects, strictEqual } from "assert";
+import { TempFile } from "@manuth/temp-files";
 import { readFile } from "fs-extra";
 import { server } from "typescript/lib/tsserverlibrary";
 import { join } from "upath";
@@ -37,8 +38,21 @@ export function TSServerTests(): void
                         "Logging",
                         () =>
                         {
+                            let customLogFile: TempFile;
                             let logDisabled: TSServer;
                             let logEnabled: TSServer;
+
+                            suiteSetup(
+                                () =>
+                                {
+                                    customLogFile = new TempFile();
+                                });
+
+                            suiteTeardown(
+                                () =>
+                                {
+                                    customLogFile.Dispose();
+                                });
 
                             setup(
                                 () =>
@@ -63,6 +77,14 @@ export function TSServerTests(): void
                                         {
                                             return server.LogLevel[server.LogLevel.verbose] as keyof typeof server.LogLevel;
                                         }
+
+                                        /**
+                                         * @inheritdoc
+                                         */
+                                        public override get LogFileName(): string
+                                        {
+                                            return customLogFile.FullName;
+                                        }
                                     }(TestConstants.TestWorkspaceDirectory);
                                 });
 
@@ -75,7 +97,7 @@ export function TSServerTests(): void
                                 });
 
                             test(
-                                "Checking whether the logging can be customized",
+                                "Checking whether the logging can be customized…",
                                 async function()
                                 {
                                     this.timeout(4 * 1000);
