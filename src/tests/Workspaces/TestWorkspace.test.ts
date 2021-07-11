@@ -1,7 +1,9 @@
 import { ok, strictEqual } from "assert";
 import { Package } from "@manuth/package-json-editor";
+import { TempFile } from "@manuth/temp-files";
 import { move, pathExists, remove, writeJSON } from "fs-extra";
 import { randexp } from "randexp";
+import { Project, SourceFile } from "ts-morph";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CompilerOptions, fileName } from "types-tsconfig";
 import { Diagnostic } from "../../Diagnostics/Diagnostic";
@@ -179,6 +181,31 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                 nameof<TestWorkspace>((workspace) => workspace.AnalyzeCode),
                 () =>
                 {
+                    let tempFile: TempFile;
+                    let file: SourceFile;
+
+                    setup(
+                        () =>
+                        {
+                            tempFile = new TempFile(
+                                {
+                                    Suffix: ".ts"
+                                });
+
+                            file = new Project().createSourceFile(
+                                tempFile.FullName,
+                                null,
+                                {
+                                    overwrite: true
+                                });
+                        });
+
+                    teardown(
+                        () =>
+                        {
+                            tempFile.Dispose();
+                        });
+
                     test(
                         "Checking whether semantic diagnostics can be looked up…",
                         async function()
@@ -193,14 +220,24 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                                     }
                                 });
 
-                            ok((await workspace.AnalyzeCode("function lel(x) { }")).CodeAnalysisResult.SemanticDiagnosticsResponse.body.length > 0);
+                            file.addFunction(
+                                {
+                                    name: "test",
+                                    parameters: [
+                                        {
+                                            name: "test"
+                                        }
+                                    ]
+                                });
+
+                            ok((await workspace.AnalyzeCode(file.print())).CodeAnalysisResult.SemanticDiagnosticsResponse.body.length > 0);
                         });
 
                     test(
                         "Checking whether syntactic diagnostics can be looked up…",
                         async () =>
                         {
-                            ok((await workspace.AnalyzeCode("let x: string<string>;")).CodeAnalysisResult.SyntacticDiagnosticsResponse.body.length > 0);
+                            ok((await workspace.AnalyzeCode("let<> x = 1;")).CodeAnalysisResult.SyntacticDiagnosticsResponse.body.length > 0);
                         });
                 });
         });
