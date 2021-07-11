@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## TypeScriptLanguageServiceTester [Unreleased]
+### Breaking
+  - Include syntactic diagnostics in the `TestWorkspace.AnalyzeCode`-result
+
+### Added
+  - Support to instantiate `LanguageServiceTester`s without creating an own class
+  - Support for updating `tsconfig`-settings of `TestWorkspace`s
+
+### Updated
+  - All dependencies
 
 [Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v3.0.1...dev)
 
