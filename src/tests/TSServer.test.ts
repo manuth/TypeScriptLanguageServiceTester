@@ -1,4 +1,5 @@
 import { doesNotReject, ok, rejects, strictEqual } from "assert";
+import { readFile } from "fs-extra";
 import { server } from "typescript/lib/tsserverlibrary";
 import { join } from "upath";
 import { TSServer } from "../TSServer";
@@ -38,8 +39,43 @@ export function TSServerTests(): void
                         {
                             test(
                                 "Checking whether the logging can be customized",
-                                async () =>
+                                async function()
                                 {
+                                    this.timeout(4 * 1000);
+                                    this.slow(3 * 1000);
+                                    let event = TestConstants.TestEvent;
+
+                                    let logDisabled = new class extends TSServer
+                                    {
+                                        /**
+                                         * @inheritdoc
+                                         */
+                                        public override get LogLevel(): keyof typeof server.LogLevel
+                                        {
+                                            return null;
+                                        }
+                                    }(TestConstants.TestWorkspaceDirectory);
+
+                                    let logEnabled = new class extends TSServer
+                                    {
+                                        /**
+                                         * @inheritdoc
+                                         */
+                                        public override get LogLevel(): keyof typeof server.LogLevel
+                                        {
+                                            return server.LogLevel[server.LogLevel.verbose] as keyof typeof server.LogLevel;
+                                        }
+                                    }(TestConstants.TestWorkspaceDirectory);
+
+                                    Promise.all(
+                                        [
+                                            logDisabled.WaitEvent(event),
+                                            logEnabled.WaitEvent(event)
+                                        ]);
+
+                                    strictEqual((await readFile(logDisabled.LogFileName)).toString().length, 0);
+                                    console.log((await readFile(logEnabled.LogFileName)).toString());
+                                    ok((await readFile(logEnabled.LogFileName)).toString().length > 0);
                                 });
                         });
                 });
