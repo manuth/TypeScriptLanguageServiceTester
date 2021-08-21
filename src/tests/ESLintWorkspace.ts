@@ -58,31 +58,33 @@ export class ESLintWorkspace extends TestWorkspace
      */
     public override async Configure(tsConfig?: TSConfigJSON, eslintRules?: Linter.RulesRecord): Promise<void>
     {
-        await super.Configure(
-            merge<TSConfigJSON, TSConfigJSON>(
-                {
-                    compilerOptions: {
-                        allowJs: true,
-                        plugins: [
-                            {
-                                name: this.TypeScriptPluginName
+        await Promise.all(
+            [
+                super.Configure(
+                    merge<TSConfigJSON, TSConfigJSON>(
+                        {
+                            compilerOptions: {
+                                allowJs: true,
+                                plugins: [
+                                    {
+                                        name: this.TypeScriptPluginName
+                                    }
+                                ]
                             }
-                        ]
-                    }
-                },
-                tsConfig));
-
-        return writeJSON(
-            this.MakePath(fileName),
-            {
-                root: true,
-                env: {
-                    node: true,
-                    es6: true
-                },
-                rules: {
-                    ...eslintRules
-                }
-            } as Linter.Config);
+                        },
+                        tsConfig)),
+                writeJSON(
+                    this.MakePath(fileName),
+                    {
+                        root: true,
+                        env: {
+                            node: true,
+                            es6: true
+                        },
+                        rules: {
+                            ...eslintRules
+                        }
+                    } as Linter.Config)
+            ]);
     }
 }
