@@ -108,3 +108,8 @@ dist
 
 # Unit-Tests
 test/
+
+# Temporary release-assets
+.tagName.txt
+.releaseNotes.md
+.releaseTitle.md
