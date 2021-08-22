@@ -11,7 +11,7 @@ import { ITestContext } from "../ITestContext";
  * @param context
  * The test-context.
  */
-export function DiagnosticResponseAnalyzerTests(context: ITestContext): void
+export function DiagnosticsResponseAnalyzerTests(context: ITestContext): void
 {
     suite(
         nameof(DiagnosticsResponseAnalyzer),
