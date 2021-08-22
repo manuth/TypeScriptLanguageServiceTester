@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## TypeScriptLanguageServiceTester [Unreleased]
+### Fixed
+  - All vulnerabilities in dependencies
+
+### Updated
+  - All dependencies
+  - Release-scripts in drone-pipelines
+  - Settings to disable time-outs during mocha unit-tests
 
 [Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v4.0.2...dev)
 
