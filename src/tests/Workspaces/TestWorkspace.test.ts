@@ -272,8 +272,10 @@ export function TestWorkspaceTests(testContext: ITestContext): void
 
                     test(
                         "Checking whether syntactic diagnostics can be looked up…",
-                        async () =>
+                        async function()
                         {
+                            this.timeout(2 * 1000);
+                            this.slow(1 * 1000);
                             ok((await workspace.AnalyzeCode("let<> x = 1;")).CodeAnalysisResult.SyntacticDiagnosticsResponse.body.length > 0);
                         });
                 });
