@@ -1,7 +1,7 @@
 import { DiagnosticTests } from "./Diagnostics";
-import { ESLintLanguageServiceTester } from "./ESLintLanguageServiceTester";
 import { ITestContext } from "./ITestContext";
 import { LanguageServiceTesterTests } from "./LanguageServiceTester.test";
+import { TSLintLanguageServiceTester } from "./TSLintLanguageServiceTester";
 import { TSServerTests } from "./TSServer.test";
 import { WorkspaceTests } from "./Workspaces";
 
@@ -10,22 +10,22 @@ suite(
     () =>
     {
         let testContext: ITestContext = {
-            ESLintTester: null
+            TSLintTester: null
         };
 
         suiteSetup(
             async function()
             {
                 this.timeout(1.5 * 60 * 1000);
-                testContext.ESLintTester = new ESLintLanguageServiceTester();
-                await testContext.ESLintTester.Install();
+                testContext.TSLintTester = new TSLintLanguageServiceTester();
+                await testContext.TSLintTester.Install();
             });
 
         suiteTeardown(
             async function()
             {
                 this.timeout(10 * 1000);
-                await testContext.ESLintTester.Dispose();
+                await testContext.TSLintTester.Dispose();
             });
 
         TSServerTests();

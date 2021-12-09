@@ -147,7 +147,7 @@ export function TSServerTests(): void
                 {
                     let file: string;
 
-                    suiteSetup(
+                    setup(
                         () =>
                         {
                             file = tsServer.MakePath("index.ts");

@@ -4,8 +4,7 @@ import { TempFile } from "@manuth/temp-files";
 import { move, pathExists, remove, writeJSON } from "fs-extra";
 import { randexp } from "randexp";
 import { Project, SourceFile } from "ts-morph";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CompilerOptions, fileName } from "types-tsconfig";
+import { fileName } from "types-tsconfig";
 import { Diagnostic } from "../../Diagnostics/Diagnostic";
 import { TestWorkspace } from "../../Workspaces/TestWorkspace";
 import { ITestContext } from "../ITestContext";
@@ -273,8 +272,10 @@ export function TestWorkspaceTests(testContext: ITestContext): void
 
                     test(
                         "Checking whether syntactic diagnostics can be looked up…",
-                        async () =>
+                        async function()
                         {
+                            this.timeout(2 * 1000);
+                            this.slow(1 * 1000);
                             ok((await workspace.AnalyzeCode("let<> x = 1;")).CodeAnalysisResult.SyntacticDiagnosticsResponse.body.length > 0);
                         });
                 });

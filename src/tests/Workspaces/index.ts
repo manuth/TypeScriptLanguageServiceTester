@@ -1,3 +1,4 @@
+import { basename } from "path";
 import { ITestContext } from "../ITestContext";
 import { TestWorkspaceTests } from "./TestWorkspace.test";
 
@@ -10,7 +11,7 @@ import { TestWorkspaceTests } from "./TestWorkspace.test";
 export function WorkspaceTests(testContext: ITestContext): void
 {
     suite(
-        "Workspaces",
+        basename(__dirname),
         () =>
         {
             TestWorkspaceTests(testContext);

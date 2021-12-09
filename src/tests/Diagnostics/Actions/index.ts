@@ -1,3 +1,4 @@
+import { basename } from "path";
 import { CodeActionTests } from "./CodeAction.test";
 import { FixResponseAnalyzerTests } from "./FixResponseAnalyzer.test";
 
@@ -7,7 +8,7 @@ import { FixResponseAnalyzerTests } from "./FixResponseAnalyzer.test";
 export function ActionTests(): void
 {
     suite(
-        "Actions",
+        basename(__dirname),
         () =>
         {
             CodeActionTests();

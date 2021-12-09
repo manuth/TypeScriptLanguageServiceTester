@@ -1,7 +1,8 @@
+import { basename } from "path";
 import { ITestContext } from "../ITestContext";
 import { ActionTests } from "./Actions";
 import { DiagnosticTests as DiagnosticClassTests } from "./Diagnostic.test";
-import { DiagnosticResponseAnalyzerTests } from "./DiagnosticResponseAnalyzer.test";
+import { DiagnosticsResponseAnalyzerTests } from "./DiagnosticsResponseAnalyzer.test";
 
 /**
  * Registers tests for diagnostics.
@@ -12,11 +13,11 @@ import { DiagnosticResponseAnalyzerTests } from "./DiagnosticResponseAnalyzer.te
 export function DiagnosticTests(context: ITestContext): void
 {
     suite(
-        "Diagnostics",
+        basename(__dirname),
         () =>
         {
             DiagnosticClassTests(context);
-            DiagnosticResponseAnalyzerTests(context);
+            DiagnosticsResponseAnalyzerTests(context);
             ActionTests();
         });
 }

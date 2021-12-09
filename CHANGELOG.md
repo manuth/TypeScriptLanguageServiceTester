@@ -6,7 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## TypeScriptLanguageServiceTester [Unreleased]
 
-[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v4.0.3...dev)
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v4.0.4...dev)
+
+## TypeScriptLanguageServiceTester v4.0.4
+### Updated
+  - All dependencies
+  - Linting environment
+  - Tests by using the `typescript-tslint-plugin` as an example
+  - Test-timeouts
+
+### Fixed
+  - Vulnerabilities in dependencies
+  - Incorrect drone pipelines
+  - Broken tests
+
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v4.0.3...v4.0.4)
 
 ## TypeScriptLanguageServiceTester v4.0.3
 ### Fixed
