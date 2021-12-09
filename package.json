@@ -42,7 +42,6 @@
   "devDependencies": {
     "@manuth/eslint-plugin-typescript": "^3.2.4",
     "@manuth/tsconfig": "^2.0.2",
-    "@manuth/typescript-eslint-plugin": "^1.4.1",
     "@types/eslint": "^7.28.0",
     "@types/fs-extra": "^9.0.12",
     "@types/lodash.isequal": "^4.5.5",
