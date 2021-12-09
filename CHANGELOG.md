@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## TypeScriptLanguageServiceTester [Unreleased]
+### Updated
+  - All dependencies
+  - Linting environment
+  - Tests by using the `typescript-tslint-plugin` as an example
+  - Test-timeouts
+
+### Fixed
+  - Vulnerabilities in dependencies
+  - Incorrect drone pipelines
+  - Broken tests
 
 [Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v4.0.3...dev)
 
