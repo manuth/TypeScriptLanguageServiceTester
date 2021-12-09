@@ -1,4 +1,4 @@
-import { ESLintLanguageServiceTester } from "./ESLintLanguageServiceTester";
+import { TSLintLanguageServiceTester } from "./TSLintLanguageServiceTester";
 
 /**
  * Provides a test-context.
@@ -6,7 +6,7 @@ import { ESLintLanguageServiceTester } from "./ESLintLanguageServiceTester";
 export interface ITestContext
 {
     /**
-     * A component for testing eslint-diagnostics.
+     * A component for testing tslint-diagnostics.
      */
-    ESLintTester: ESLintLanguageServiceTester;
+    TSLintTester: TSLintLanguageServiceTester;
 }

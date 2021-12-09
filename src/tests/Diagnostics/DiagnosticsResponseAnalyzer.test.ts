@@ -1,9 +1,8 @@
 import { ok, strictEqual } from "assert";
-import { ESLintRule } from "@manuth/eslint-plugin-typescript";
 import isEqual = require("lodash.isequal");
 import { DiagnosticsResponseAnalyzer } from "../../Diagnostics/DiagnosticsResponseAnalyzer";
-import { ESLintLanguageServiceTester } from "../ESLintLanguageServiceTester";
 import { ITestContext } from "../ITestContext";
+import { TSLintLanguageServiceTester } from "../TSLintLanguageServiceTester";
 
 /**
  * Registers tests for the {@link DiagnosticsResponseAnalyzer `DiagnosticsResponseAnalyzer`} class.
@@ -17,7 +16,7 @@ export function DiagnosticsResponseAnalyzerTests(context: ITestContext): void
         nameof(DiagnosticsResponseAnalyzer),
         () =>
         {
-            let tester: ESLintLanguageServiceTester;
+            let tester: TSLintLanguageServiceTester;
             let fixableRule1: string;
             let fixableRule2: string;
             let incorrectCode1: string;
@@ -27,17 +26,19 @@ export function DiagnosticsResponseAnalyzerTests(context: ITestContext): void
             suiteSetup(
                 async () =>
                 {
-                    tester = context.ESLintTester;
-                    fixableRule1 = ESLintRule.NoTrailingSpaces;
-                    fixableRule2 = ESLintRule.SpacedComment;
+                    tester = context.TSLintTester;
+                    fixableRule1 = "no-trailing-whitespace";
+                    fixableRule2 = "comment-format";
                     incorrectCode1 = "  ";
                     incorrectCode2 = "//Hello World";
 
                     await tester.Configure(
                         undefined,
                         {
-                            [fixableRule1]: "warn",
-                            [fixableRule2]: "warn"
+                            [fixableRule1]: true,
+                            [fixableRule2]: {
+                                "check-space": true
+                            }
                         });
                 });
 

@@ -1,24 +1,22 @@
 import { Package } from "@manuth/package-json-editor";
-import { Constants as PluginConstants } from "@manuth/typescript-eslint-plugin";
-import { Linter } from "eslint";
 import { writeJSON } from "fs-extra";
 import merge = require("lodash.merge");
-import { fileName } from "types-eslintrc";
+import { Configuration } from "tslint";
 import { TSConfigJSON } from "types-tsconfig";
 import { Constants } from "../Constants";
 import { TestWorkspace } from "../Workspaces/TestWorkspace";
 
 /**
- * Represents an eslint-workspace.
+ * Represents an tslint-workspace.
  */
-export class ESLintWorkspace extends TestWorkspace
+export class TSLintWorkspace extends TestWorkspace
 {
     /**
      * Gets the name of the typescript-plugin.
      */
     public get TypeScriptPluginName(): string
     {
-        return PluginConstants.Package.Name;
+        return "typescript-tslint-plugin";
     }
 
     /**
@@ -30,7 +28,7 @@ export class ESLintWorkspace extends TestWorkspace
         let basePackage = Constants.Package;
 
         let dependencies = [
-            "eslint",
+            "tslint",
             this.TypeScriptPluginName
         ];
 
@@ -53,10 +51,10 @@ export class ESLintWorkspace extends TestWorkspace
      * @param tsConfig
      * The TypeScript-settings to apply.
      *
-     * @param eslintRules
-     * The eslint-rules to apply.
+     * @param tslintConfig
+     * The tslint configuration to apply.
      */
-    public override async Configure(tsConfig?: TSConfigJSON, eslintRules?: Linter.RulesRecord): Promise<void>
+    public override async Configure(tsConfig?: TSConfigJSON, tslintConfig?: Configuration.RawConfigFile): Promise<void>
     {
         await Promise.all(
             [
@@ -74,17 +72,10 @@ export class ESLintWorkspace extends TestWorkspace
                         },
                         tsConfig)),
                 writeJSON(
-                    this.MakePath(fileName),
+                    this.MakePath(Configuration.JSON_CONFIG_FILENAME),
                     {
-                        root: true,
-                        env: {
-                            node: true,
-                            es6: true
-                        },
-                        rules: {
-                            ...eslintRules
-                        }
-                    } as Linter.Config)
+                        ...tslintConfig
+                    })
             ]);
     }
 }

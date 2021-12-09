@@ -1,11 +1,9 @@
 import { deepStrictEqual, ok, strictEqual } from "assert";
-import { ESLintRule } from "@manuth/eslint-plugin-typescript";
-import { Constants } from "@manuth/typescript-eslint-plugin";
 import { server } from "typescript/lib/tsserverlibrary";
 import { FixResponseAnalyzer } from "../../Diagnostics/Actions/FixResponseAnalyzer";
 import { Diagnostic } from "../../Diagnostics/Diagnostic";
-import { ESLintLanguageServiceTester } from "../ESLintLanguageServiceTester";
 import { ITestContext } from "../ITestContext";
+import { TSLintLanguageServiceTester } from "../TSLintLanguageServiceTester";
 
 /**
  * Registers tests for the {@link Diagnostic `Diagnostic`} class.
@@ -19,7 +17,7 @@ export function DiagnosticTests(context: ITestContext): void
         nameof(Diagnostic),
         () =>
         {
-            let tester: ESLintLanguageServiceTester;
+            let tester: TSLintLanguageServiceTester;
             let fixableRule: string;
             let incorrectCode: string;
             let diagnostic: server.protocol.Diagnostic;
@@ -30,14 +28,16 @@ export function DiagnosticTests(context: ITestContext): void
             suiteSetup(
                 async () =>
                 {
-                    tester = context.ESLintTester;
-                    fixableRule = ESLintRule.NoTrailingSpaces;
+                    tester = context.TSLintTester;
+                    fixableRule = "no-trailing-whitespace";
                     incorrectCode = "  ";
 
                     await tester.Configure(
                         undefined,
                         {
-                            [fixableRule]: "warn"
+                            rules: {
+                                [fixableRule]: true
+                            }
                         });
                 });
 
@@ -47,7 +47,7 @@ export function DiagnosticTests(context: ITestContext): void
                     this.timeout(20 * 1000);
                     let response = await tester.AnalyzeCode(incorrectCode);
 
-                    let eslintFilter = (rawResponse: server.protocol.SemanticDiagnosticsSyncResponse): Array<server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition> =>
+                    let tslintFilter = (rawResponse: server.protocol.SemanticDiagnosticsSyncResponse): Array<server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition> =>
                     {
                         let result: Array<server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition> = [];
 
@@ -56,7 +56,7 @@ export function DiagnosticTests(context: ITestContext): void
                             let parsedDiagnostic = new Diagnostic(response, diagnostic);
 
                             if (
-                                parsedDiagnostic.Source === Constants.ErrorSource &&
+                                parsedDiagnostic.Source === "tslint" &&
                                 parsedDiagnostic.Message.includes(fixableRule))
                             {
                                 result.push(diagnostic);
@@ -66,7 +66,7 @@ export function DiagnosticTests(context: ITestContext): void
                         return result;
                     };
 
-                    diagnostic = eslintFilter(await tester.TSServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
+                    diagnostic = tslintFilter(await tester.TSServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
                         {
                             type: "request",
                             command: server.protocol.CommandTypes.SemanticDiagnosticsSync,
@@ -77,7 +77,7 @@ export function DiagnosticTests(context: ITestContext): void
                         },
                         true))[0] as any;
 
-                    diagnosticWithLinePosition = eslintFilter(await tester.TSServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
+                    diagnosticWithLinePosition = tslintFilter(await tester.TSServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
                         {
                             type: "request",
                             command: server.protocol.CommandTypes.SemanticDiagnosticsSync,

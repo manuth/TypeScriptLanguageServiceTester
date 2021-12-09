@@ -38,7 +38,7 @@ You can perform a live-update of plugin-configurations by invoking the `Language
 (
     async () =>
     {
-        await tester.ConfigurePlugin("@manuth/typescript-eslint-plugin", { logLevel: "verbose" });
+        await tester.ConfigurePlugin("typescript-eslint-language-service", { watchDirs: "." });
     })();
 ```
 
@@ -59,7 +59,7 @@ import { writeFile } from "fs-extra";
                 compilerOptions: {
                     plugins: [
                         {
-                            name: "@manuth/typescript-eslint-plugin"
+                            name: "typescript-eslint-language-service"
                         }
                     ]
                 }

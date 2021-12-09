@@ -1,8 +1,6 @@
 import { doesNotThrow, ok, strictEqual, throws } from "assert";
 import { spawnSync } from "child_process";
-import { ESLintRule } from "@manuth/eslint-plugin-typescript";
 import { TempDirectory, TempFile } from "@manuth/temp-files";
-import { Constants } from "@manuth/typescript-eslint-plugin";
 import { copy, pathExists, remove } from "fs-extra";
 import npmWhich = require("npm-which");
 import { Diagnostic } from "../Diagnostics/Diagnostic";
@@ -139,7 +137,7 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                     setup(
                         async () =>
                         {
-                            await context.ESLintTester.Configure();
+                            await context.TSLintTester.Configure();
                         });
 
                     test(
@@ -149,38 +147,40 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                             this.timeout(1.5 * 60 * 1000);
                             this.slow(45 * 1000);
                             let incorrectCode = "  ";
-                            let ruleName = ESLintRule.NoTrailingSpaces;
+                            let ruleName = "no-trailing-whitespace";
 
                             /**
-                             * Filters the diagnostics for `eslint`-diagnostics.
+                             * Filters the diagnostics for `tslint`-diagnostics.
                              *
                              * @param response
                              * The response to filter.
                              *
                              * @returns
-                             * All diagnostics related to `eslint`.
+                             * All diagnostics related to `tslint`.
                              */
-                            function FilterESLintDiagnostics(response: DiagnosticsResponseAnalyzer): Diagnostic[]
+                            function FilterTSLintDiagnostics(response: DiagnosticsResponseAnalyzer): Diagnostic[]
                             {
                                 return response.Diagnostics.filter(
-                                    (diagnostic) => diagnostic.Source === Constants.ErrorSource);
+                                    (diagnostic) => diagnostic.Source === "tslint");
                             }
 
-                            context.ESLintTester.Configure(
+                            context.TSLintTester.Configure(
                                 undefined,
                                 {
-                                    [ruleName]: "warn"
+                                    rules: {
+                                        [ruleName]: true
+                                    }
                                 });
 
-                            ok(FilterESLintDiagnostics(await context.ESLintTester.AnalyzeCode(incorrectCode, "JS")).length > 0);
+                            strictEqual(FilterTSLintDiagnostics(await context.TSLintTester.AnalyzeCode(incorrectCode, "JS")).length, 0);
 
-                            await context.ESLintTester.ConfigurePlugin(
-                                context.ESLintTester.DefaultWorkspace.TypeScriptPluginName,
+                            await context.TSLintTester.ConfigurePlugin(
+                                context.TSLintTester.DefaultWorkspace.TypeScriptPluginName,
                                 {
-                                    ignoreJavaScript: true
+                                    jsEnable: true
                                 });
 
-                            strictEqual(FilterESLintDiagnostics(await context.ESLintTester.AnalyzeCode(incorrectCode, "JS")).length, 0);
+                            ok(FilterTSLintDiagnostics(await context.TSLintTester.AnalyzeCode(incorrectCode, "JS")).length > 0);
                         });
                 });
         });
