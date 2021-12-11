@@ -26,7 +26,7 @@
     "lint-ide": "npm run lint || exit 0",
     "test": "mocha",
     "prepare": "npm run patchTypeScript && npm run rebuild",
-    "patchTypeScript": "ts-patch install && ts-patch --persist"
+    "patchTypeScript": "ts-patch install"
   },
   "dependencies": {
     "@manuth/package-json-editor": "^2.2.3",
