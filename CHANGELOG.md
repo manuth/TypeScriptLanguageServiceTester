@@ -6,7 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## TypeScriptLanguageServiceTester [Unreleased]
 
-[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v4.0.4...dev)
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v4.0.5...dev)
+
+## TypeScriptLanguageServiceTester v4.0.5
+### Updated
+  - All dependencies
+  - Drone pipeline in order to prevent inconsistent changelogs
+
+### Fixed
+  - Vulnerabilities in dependencies
+
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v4.0.4...v4.0.5)
 
 ## TypeScriptLanguageServiceTester v4.0.4
 ### Updated
