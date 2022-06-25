@@ -1,6 +1,7 @@
 {
   "name": "@manuth/typescript-languageservice-tester",
-  "version": "4.0.5",
+  "version": "5.0.0",
+  "type": "module",
   "description": "Provides components for testing the typescript language-server and language-services.",
   "author": "Manuel Thalmann <m@nuth.ch>",
   "main": "lib/index.js",
@@ -21,7 +22,7 @@
     "rebuild": "npm run clean && npm run build",
     "watch": "npm run build -- --watch",
     "clean": "npm run build -- --clean && rimraf ./lib",
-    "lint": "eslint --max-warnings 0 ./src .eslintrc.js",
+    "lint": "eslint --max-warnings 0 ./src .eslintrc.cjs",
     "lint-ide": "npm run lint || exit 0",
     "test": "mocha",
     "prepare": "npm run patchTypeScript && npm run rebuild",

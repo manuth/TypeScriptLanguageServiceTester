@@ -1,8 +1,8 @@
-import { basename } from "path";
-import { ITestContext } from "../ITestContext";
-import { ActionTests } from "./Actions";
-import { DiagnosticTests as DiagnosticClassTests } from "./Diagnostic.test";
-import { DiagnosticsResponseAnalyzerTests } from "./DiagnosticsResponseAnalyzer.test";
+import { basename } from "node:path";
+import { ITestContext } from "../ITestContext.js";
+import { ActionTests } from "./Actions/index.js";
+import { DiagnosticTests as DiagnosticClassTests } from "./Diagnostic.test.js";
+import { DiagnosticsResponseAnalyzerTests } from "./DiagnosticsResponseAnalyzer.test.js";
 
 /**
  * Registers tests for diagnostics.
@@ -13,7 +13,7 @@ import { DiagnosticsResponseAnalyzerTests } from "./DiagnosticsResponseAnalyzer.
 export function DiagnosticTests(context: ITestContext): void
 {
     suite(
-        basename(__dirname),
+        basename(new URL(".", import.meta.url).pathname),
         () =>
         {
             DiagnosticClassTests(context);

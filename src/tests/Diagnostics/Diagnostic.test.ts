@@ -1,9 +1,9 @@
-import { deepStrictEqual, ok, strictEqual } from "assert";
-import { server } from "typescript/lib/tsserverlibrary";
-import { FixResponseAnalyzer } from "../../Diagnostics/Actions/FixResponseAnalyzer";
-import { Diagnostic } from "../../Diagnostics/Diagnostic";
-import { ITestContext } from "../ITestContext";
-import { TSLintLanguageServiceTester } from "../TSLintLanguageServiceTester";
+import { deepStrictEqual, ok, strictEqual } from "node:assert";
+import ts from "typescript/lib/tsserverlibrary.js";
+import { FixResponseAnalyzer } from "../../Diagnostics/Actions/FixResponseAnalyzer.js";
+import { Diagnostic } from "../../Diagnostics/Diagnostic.js";
+import { ITestContext } from "../ITestContext.js";
+import { TSLintLanguageServiceTester } from "../TSLintLanguageServiceTester.js";
 
 /**
  * Registers tests for the {@link Diagnostic `Diagnostic`} class.
@@ -20,9 +20,9 @@ export function DiagnosticTests(context: ITestContext): void
             let tester: TSLintLanguageServiceTester;
             let fixableRule: string;
             let incorrectCode: string;
-            let diagnostic: server.protocol.Diagnostic;
+            let diagnostic: ts.server.protocol.Diagnostic;
             let diagnosticWrapper: Diagnostic;
-            let diagnosticWithLinePosition: server.protocol.DiagnosticWithLinePosition;
+            let diagnosticWithLinePosition: ts.server.protocol.DiagnosticWithLinePosition;
             let diagnosticWithLinePositionWrapper: Diagnostic;
 
             suiteSetup(
@@ -47,9 +47,9 @@ export function DiagnosticTests(context: ITestContext): void
                     this.timeout(20 * 1000);
                     let response = await tester.AnalyzeCode(incorrectCode);
 
-                    let tslintFilter = (rawResponse: server.protocol.SemanticDiagnosticsSyncResponse): Array<server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition> =>
+                    let tslintFilter = (rawResponse: ts.server.protocol.SemanticDiagnosticsSyncResponse): Array<ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition> =>
                     {
-                        let result: Array<server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition> = [];
+                        let result: Array<ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition> = [];
 
                         for (let diagnostic of rawResponse.body)
                         {
@@ -66,10 +66,10 @@ export function DiagnosticTests(context: ITestContext): void
                         return result;
                     };
 
-                    diagnostic = tslintFilter(await tester.TSServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
+                    diagnostic = tslintFilter(await tester.TSServer.Send<ts.server.protocol.SemanticDiagnosticsSyncRequest>(
                         {
                             type: "request",
-                            command: server.protocol.CommandTypes.SemanticDiagnosticsSync,
+                            command: ts.server.protocol.CommandTypes.SemanticDiagnosticsSync,
                             arguments: {
                                 file: response.FileName,
                                 includeLinePosition: false
@@ -77,10 +77,10 @@ export function DiagnosticTests(context: ITestContext): void
                         },
                         true))[0] as any;
 
-                    diagnosticWithLinePosition = tslintFilter(await tester.TSServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
+                    diagnosticWithLinePosition = tslintFilter(await tester.TSServer.Send<ts.server.protocol.SemanticDiagnosticsSyncRequest>(
                         {
                             type: "request",
-                            command: server.protocol.CommandTypes.SemanticDiagnosticsSync,
+                            command: ts.server.protocol.CommandTypes.SemanticDiagnosticsSync,
                             arguments: {
                                 file: response.FileName,
                                 includeLinePosition: true

@@ -1,14 +1,17 @@
-import { spawnSync } from "child_process";
+import { spawnSync } from "node:child_process";
 import { Package } from "@manuth/package-json-editor";
-import { ensureFile, pathExistsSync, writeFile, writeJSON } from "fs-extra";
-import npmWhich = require("npm-which");
+import fs from "fs-extra";
+import npmWhich from "npm-which";
 import { fileName, TSConfigJSON } from "types-tsconfig";
-import type ts = require("typescript/lib/tsserverlibrary");
-import { join } from "upath";
-import { Constants } from "../Constants";
-import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer";
-import { LanguageServiceTester } from "../LanguageServiceTester";
-import { TSServer } from "../TSServer";
+import type ts from "typescript/lib/tsserverlibrary.js";
+import upath from "upath";
+import { Constants } from "../Constants.js";
+import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer.js";
+import { LanguageServiceTester } from "../LanguageServiceTester.js";
+import { TSServer } from "../TSServer.js";
+
+const { ensureFile, pathExistsSync, writeFile, writeJSON } = fs;
+const { join } = upath;
 
 /**
  * Represents a workspace for testing purposes.

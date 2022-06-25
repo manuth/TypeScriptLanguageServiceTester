@@ -1,8 +1,8 @@
-import { ok, strictEqual } from "assert";
-import isEqual = require("lodash.isequal");
-import { DiagnosticsResponseAnalyzer } from "../../Diagnostics/DiagnosticsResponseAnalyzer";
-import { ITestContext } from "../ITestContext";
-import { TSLintLanguageServiceTester } from "../TSLintLanguageServiceTester";
+import { ok, strictEqual } from "node:assert";
+import isEqual from "lodash.isequal";
+import { DiagnosticsResponseAnalyzer } from "../../Diagnostics/DiagnosticsResponseAnalyzer.js";
+import { ITestContext } from "../ITestContext.js";
+import { TSLintLanguageServiceTester } from "../TSLintLanguageServiceTester.js";
 
 /**
  * Registers tests for the {@link DiagnosticsResponseAnalyzer `DiagnosticsResponseAnalyzer`} class.

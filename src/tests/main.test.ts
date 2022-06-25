@@ -1,9 +1,9 @@
-import { DiagnosticTests } from "./Diagnostics";
-import { ITestContext } from "./ITestContext";
-import { LanguageServiceTesterTests } from "./LanguageServiceTester.test";
-import { TSLintLanguageServiceTester } from "./TSLintLanguageServiceTester";
-import { TSServerTests } from "./TSServer.test";
-import { WorkspaceTests } from "./Workspaces";
+import { DiagnosticTests } from "./Diagnostics/index.js";
+import { ITestContext } from "./ITestContext.js";
+import { LanguageServiceTesterTests } from "./LanguageServiceTester.test.js";
+import { TSLintLanguageServiceTester } from "./TSLintLanguageServiceTester.js";
+import { TSServerTests } from "./TSServer.test.js";
+import { WorkspaceTests } from "./Workspaces/index.js";
 
 suite(
     "TypeScriptLanguageServiceTester",

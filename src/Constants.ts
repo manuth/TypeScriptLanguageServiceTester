@@ -1,5 +1,8 @@
+import { fileURLToPath } from "node:url";
 import { Package } from "@manuth/package-json-editor";
-import { join } from "upath";
+import upath from "upath";
+
+const { join } = upath;
 
 /**
  * Provides constants for the package.
@@ -9,7 +12,7 @@ export abstract class Constants
     /**
      * The path to the directory of this package.
      */
-    public static readonly PackageDirectory = join(__dirname, "..");
+    public static readonly PackageDirectory = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 
     /**
      * The `package.json` file.

@@ -1,6 +1,6 @@
-import isEqual = require("lodash.isequal");
-import type { server } from "typescript/lib/tsserverlibrary";
-import { CodeAction } from "./CodeAction";
+import isEqual from "lodash.isequal";
+import type { server } from "typescript/lib/tsserverlibrary.js";
+import { CodeAction } from "./CodeAction.js";
 
 /**
  * Provides the functionality to analyze a fix-response.
