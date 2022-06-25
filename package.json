@@ -1,6 +1,6 @@
 {
   "name": "@manuth/typescript-languageservice-tester",
-  "version": "4.0.5",
+  "version": "5.0.0",
   "type": "module",
   "description": "Provides components for testing the typescript language-server and language-services.",
   "author": "Manuel Thalmann <m@nuth.ch>",

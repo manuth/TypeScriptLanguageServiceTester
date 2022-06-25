@@ -5,10 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## TypeScriptLanguageServiceTester [Unreleased]
+
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v5.0.0...dev)
+
+## TypeScriptLanguageServiceTester v5.0.0
 ### Breaking
   - Update the package to an ESModule
 
-[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v4.0.5...dev)
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v4.0.5...v5.0.0)
 
 ## TypeScriptLanguageServiceTester v4.0.5
 ### Updated
