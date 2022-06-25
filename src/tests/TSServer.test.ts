@@ -1,10 +1,13 @@
 import { doesNotReject, ok, rejects, strictEqual } from "assert";
 import { TempFile } from "@manuth/temp-files";
-import { readFile } from "fs-extra";
-import { server } from "typescript/lib/tsserverlibrary";
-import { join } from "upath";
-import { TSServer } from "../TSServer";
-import { TestConstants } from "./TestConstants";
+import fs from "fs-extra";
+import ts from "typescript/lib/tsserverlibrary.js";
+import upath from "upath";
+import { TSServer } from "../TSServer.js";
+import { TestConstants } from "./TestConstants.js";
+
+const { readFile } = fs;
+const { join } = upath;
 
 /**
  * Registers tests for the {@link TSServer `TSServer`} class.
@@ -62,7 +65,7 @@ export function TSServerTests(): void
                                         /**
                                          * @inheritdoc
                                          */
-                                        public override get LogLevel(): keyof typeof server.LogLevel
+                                        public override get LogLevel(): keyof typeof ts.server.LogLevel
                                         {
                                             return null;
                                         }
@@ -73,9 +76,9 @@ export function TSServerTests(): void
                                         /**
                                          * @inheritdoc
                                          */
-                                        public override get LogLevel(): keyof typeof server.LogLevel
+                                        public override get LogLevel(): keyof typeof ts.server.LogLevel
                                         {
-                                            return server.LogLevel[server.LogLevel.verbose] as keyof typeof server.LogLevel;
+                                            return ts.server.LogLevel[ts.server.LogLevel.verbose] as keyof typeof ts.server.LogLevel;
                                         }
 
                                         /**
@@ -160,10 +163,10 @@ export function TSServerTests(): void
                             await doesNotReject(
                                 async () =>
                                 {
-                                    return tsServer.Send<server.protocol.OpenRequest>(
+                                    return tsServer.Send<ts.server.protocol.OpenRequest>(
                                         {
                                             type: "request",
-                                            command: server.protocol.CommandTypes.Open,
+                                            command: ts.server.protocol.CommandTypes.Open,
                                             arguments: {
                                                 file
                                             }
@@ -182,20 +185,20 @@ export function TSServerTests(): void
                             await doesNotReject(
                                 async () =>
                                 {
-                                    await tsServer.Send<server.protocol.OpenRequest>(
+                                    await tsServer.Send<ts.server.protocol.OpenRequest>(
                                         {
                                             type: "request",
-                                            command: server.protocol.CommandTypes.Open,
+                                            command: ts.server.protocol.CommandTypes.Open,
                                             arguments: {
                                                 file
                                             }
                                         },
                                         false);
 
-                                    await tsServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
+                                    await tsServer.Send<ts.server.protocol.SemanticDiagnosticsSyncRequest>(
                                         {
                                             type: "request",
-                                            command: server.protocol.CommandTypes.SemanticDiagnosticsSync,
+                                            command: ts.server.protocol.CommandTypes.SemanticDiagnosticsSync,
                                             arguments: {
                                                 file,
                                                 includeLinePosition: true
@@ -212,10 +215,10 @@ export function TSServerTests(): void
                             this.timeout(3 * 1000);
                             this.slow(2 * 1000);
 
-                            tsServer.Send<server.protocol.SemanticDiagnosticsSyncRequest>(
+                            tsServer.Send<ts.server.protocol.SemanticDiagnosticsSyncRequest>(
                                 {
                                     type: "request",
-                                    command: server.protocol.CommandTypes.SemanticDiagnosticsSync,
+                                    command: ts.server.protocol.CommandTypes.SemanticDiagnosticsSync,
                                     arguments: {
                                         file,
                                         includeLinePosition: true

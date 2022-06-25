@@ -1,7 +1,7 @@
 import { Configuration } from "tslint";
 import { TSConfigJSON } from "types-tsconfig";
-import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
-import { TSLintWorkspace } from "./TSLintWorkspace";
+import { TestLanguageServiceTester } from "./TestLanguageServiceTester.js";
+import { TSLintWorkspace } from "./TSLintWorkspace.js";
 
 /**
  * Provides the functionality to test the tslint languageservice.

@@ -1,6 +1,6 @@
 import { basename } from "path";
-import { ITestContext } from "../ITestContext";
-import { TestWorkspaceTests } from "./TestWorkspace.test";
+import { ITestContext } from "../ITestContext.js";
+import { TestWorkspaceTests } from "./TestWorkspace.test.js";
 
 /**
  * Registers tests for workspaces.
@@ -11,7 +11,7 @@ import { TestWorkspaceTests } from "./TestWorkspace.test";
 export function WorkspaceTests(testContext: ITestContext): void
 {
     suite(
-        basename(__dirname),
+        basename(new URL(".", import.meta.url).pathname),
         () =>
         {
             TestWorkspaceTests(testContext);

@@ -1,4 +1,4 @@
-import { server } from "typescript/lib/tsserverlibrary";
+import { server } from "typescript/lib/tsserverlibrary.js";
 
 /**
  * Represents the result of a code-analysis.

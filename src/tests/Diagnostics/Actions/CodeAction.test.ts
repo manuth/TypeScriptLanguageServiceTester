@@ -1,7 +1,7 @@
 import { ok, strictEqual } from "assert";
 import { Random } from "random-js";
-import { server } from "typescript/lib/tsserverlibrary";
-import { CodeAction } from "../../../Diagnostics/Actions/CodeAction";
+import { server } from "typescript/lib/tsserverlibrary.js";
+import { CodeAction } from "../../../Diagnostics/Actions/CodeAction.js";
 
 /**
  * Registers tests for the {@link CodeAction `CodeAction`} test.

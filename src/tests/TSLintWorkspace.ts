@@ -1,10 +1,12 @@
 import { Package } from "@manuth/package-json-editor";
-import { writeJSON } from "fs-extra";
-import merge = require("lodash.merge");
+import fs from "fs-extra";
+import merge from "lodash.merge";
 import { Configuration } from "tslint";
 import { TSConfigJSON } from "types-tsconfig";
-import { Constants } from "../Constants";
-import { TestWorkspace } from "../Workspaces/TestWorkspace";
+import { Constants } from "../Constants.js";
+import { TestWorkspace } from "../Workspaces/TestWorkspace.js";
+
+const { writeJSON } = fs;
 
 /**
  * Represents an tslint-workspace.

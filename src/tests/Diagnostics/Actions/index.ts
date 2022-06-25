@@ -1,6 +1,6 @@
 import { basename } from "path";
-import { CodeActionTests } from "./CodeAction.test";
-import { FixResponseAnalyzerTests } from "./FixResponseAnalyzer.test";
+import { CodeActionTests } from "./CodeAction.test.js";
+import { FixResponseAnalyzerTests } from "./FixResponseAnalyzer.test.js";
 
 /**
  * Registers tests for actions.
@@ -8,7 +8,7 @@ import { FixResponseAnalyzerTests } from "./FixResponseAnalyzer.test";
 export function ActionTests(): void
 {
     suite(
-        basename(__dirname),
+        basename(new URL(".", import.meta.url).pathname),
         () =>
         {
             CodeActionTests();

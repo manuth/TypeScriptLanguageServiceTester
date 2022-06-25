@@ -1,8 +1,8 @@
 import { ok } from "assert";
 import { Random } from "random-js";
-import { server } from "typescript/lib/tsserverlibrary";
-import { CodeAction } from "../../../Diagnostics/Actions/CodeAction";
-import { FixResponseAnalyzer } from "../../../Diagnostics/Actions/FixResponseAnalyzer";
+import ts from "typescript/lib/tsserverlibrary.js";
+import { CodeAction } from "../../../Diagnostics/Actions/CodeAction.js";
+import { FixResponseAnalyzer } from "../../../Diagnostics/Actions/FixResponseAnalyzer.js";
 
 /**
  * Registers tests for the {@link FixResponseAnalyzer `FixResponseAnalyzer`} class.
@@ -14,7 +14,7 @@ export function FixResponseAnalyzerTests(): void
         () =>
         {
             let random: Random;
-            let fixes: Array<server.protocol.CodeAction | server.protocol.CodeFixAction>;
+            let fixes: Array<ts.server.protocol.CodeAction | ts.server.protocol.CodeFixAction>;
             let response: FixResponseAnalyzer;
 
             suiteSetup(
@@ -31,7 +31,7 @@ export function FixResponseAnalyzerTests(): void
 
                     for (let i = random.integer(0, 10); i--; i > 0)
                     {
-                        let fix: server.protocol.CodeAction | server.protocol.CodeFixAction;
+                        let fix: ts.server.protocol.CodeAction | ts.server.protocol.CodeFixAction;
 
                         fix = {
                             description: random.string(10),
@@ -58,7 +58,7 @@ export function FixResponseAnalyzerTests(): void
                             type: "response",
                             success: true,
                             request_seq: 0,
-                            command: server.protocol.CommandTypes.GetCodeFixes,
+                            command: ts.server.protocol.CommandTypes.GetCodeFixes,
                             body: fixes
                         });
                 });
@@ -131,7 +131,7 @@ export function FixResponseAnalyzerTests(): void
                                 randomString: random.string(10)
                             };
 
-                            let fix: server.protocol.CodeFixAction = {
+                            let fix: ts.server.protocol.CodeFixAction = {
                                 ...fixes[0],
                                 fixName: random.string(10),
                                 fixId

@@ -1,4 +1,4 @@
-import type { server } from "typescript/lib/tsserverlibrary";
+import type { server } from "typescript/lib/tsserverlibrary.js";
 
 /**
  * Represents a code-action.

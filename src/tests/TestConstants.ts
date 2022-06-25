@@ -1,5 +1,7 @@
-import { join } from "upath";
-import { Constants } from "../Constants";
+import upath from "upath";
+import { Constants } from "../Constants.js";
+
+const { join } = upath;
 
 /**
  * Provides constants for the end-to-end tests.

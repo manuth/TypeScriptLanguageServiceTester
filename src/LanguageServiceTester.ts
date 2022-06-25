@@ -1,10 +1,12 @@
 import { TempDirectory } from "@manuth/temp-files";
-import { ensureDirSync, writeJSON } from "fs-extra";
+import fs from "fs-extra";
 import { fileName, TSConfigJSON } from "types-tsconfig";
-import type ts = require("typescript/lib/tsserverlibrary");
-import { DiagnosticsResponseAnalyzer } from "./Diagnostics/DiagnosticsResponseAnalyzer";
-import { TSServer } from "./TSServer";
-import { TestWorkspace } from "./Workspaces/TestWorkspace";
+import type ts from "typescript/lib/tsserverlibrary.js";
+import { DiagnosticsResponseAnalyzer } from "./Diagnostics/DiagnosticsResponseAnalyzer.js";
+import { TSServer } from "./TSServer.js";
+import { TestWorkspace } from "./Workspaces/TestWorkspace.js";
+
+const { ensureDirSync, writeJSON } = fs;
 
 /**
  * Provides functions for testing the plugin.

@@ -1,4 +1,4 @@
-import { TSLintLanguageServiceTester } from "./TSLintLanguageServiceTester";
+import { TSLintLanguageServiceTester } from "./TSLintLanguageServiceTester.js";
 
 /**
  * Provides a test-context.

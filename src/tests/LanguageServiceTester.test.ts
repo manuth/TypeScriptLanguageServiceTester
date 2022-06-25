@@ -1,13 +1,14 @@
 import { doesNotThrow, ok, strictEqual, throws } from "assert";
 import { spawnSync } from "child_process";
+import { fileURLToPath } from "url";
 import { TempDirectory, TempFile } from "@manuth/temp-files";
 import { copy, pathExists, remove } from "fs-extra";
-import npmWhich = require("npm-which");
-import { Diagnostic } from "../Diagnostics/Diagnostic";
-import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer";
-import type { LanguageServiceTester } from "../LanguageServiceTester";
-import { ITestContext } from "./ITestContext";
-import { TestLanguageServiceTester } from "./TestLanguageServiceTester";
+import npmWhich from "npm-which";
+import { Diagnostic } from "../Diagnostics/Diagnostic.js";
+import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer.js";
+import type { LanguageServiceTester } from "../LanguageServiceTester.js";
+import { ITestContext } from "./ITestContext.js";
+import { TestLanguageServiceTester } from "./TestLanguageServiceTester.js";
 
 /**
  * Registers tests for the {@link LanguageServiceTester `LanguageServiceTester`} class.
@@ -64,7 +65,7 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                         async function()
                         {
                             this.timeout(1.5 * 60 * 1000);
-                            npmPath = npmWhich(__dirname).sync("npm");
+                            npmPath = npmWhich(fileURLToPath(new URL(".", import.meta.url))).sync("npm");
                             tempGlobalDir = new TempDirectory();
                             globalConfigPath = JSON.parse(spawnSync(npmPath, ["config", "list", "-g", "--json"]).stdout.toString().trim())["globalconfig"];
 

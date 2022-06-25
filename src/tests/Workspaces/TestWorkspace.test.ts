@@ -1,14 +1,17 @@
 import { ok, strictEqual } from "assert";
 import { Package } from "@manuth/package-json-editor";
 import { TempFile } from "@manuth/temp-files";
-import { move, pathExists, remove, writeJSON } from "fs-extra";
-import { randexp } from "randexp";
+import fs from "fs-extra";
+import RandExp from "randexp";
 import { Project, SourceFile } from "ts-morph";
 import { fileName } from "types-tsconfig";
-import { Diagnostic } from "../../Diagnostics/Diagnostic";
-import { TestWorkspace } from "../../Workspaces/TestWorkspace";
-import { ITestContext } from "../ITestContext";
-import { TestLanguageServiceTester } from "../TestLanguageServiceTester";
+import { Diagnostic } from "../../Diagnostics/Diagnostic.js";
+import { TestWorkspace } from "../../Workspaces/TestWorkspace.js";
+import { ITestContext } from "../ITestContext.js";
+import { TestLanguageServiceTester } from "../TestLanguageServiceTester.js";
+
+const { move, pathExists, remove, writeJSON } = fs;
+const { randexp } = RandExp;
 
 /**
  * Registers tests for the {@link TestWorkspace `TestWorkspace`} class.

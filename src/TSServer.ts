@@ -4,8 +4,10 @@ import { createRequire } from "module";
 import { createInterface } from "readline";
 import { TempFile } from "@manuth/temp-files";
 import { ensureDirSync } from "fs-extra";
-import type ts = require("typescript/lib/tsserverlibrary");
-import { dirname, join } from "upath";
+import type ts from "typescript/lib/tsserverlibrary.js";
+import upath from "upath";
+
+const { dirname, join } = upath;
 
 /**
  * Provides an implementation of the ts-server for testing.
@@ -177,7 +179,7 @@ export class TSServer
      */
     public get TSServerLibrary(): typeof ts
     {
-        return require(this.TypeScriptLibraryPackageName);
+        return createRequire(import.meta.url)(this.TypeScriptLibraryPackageName);
     }
 
     /**

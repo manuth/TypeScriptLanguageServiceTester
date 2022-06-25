@@ -1,5 +1,5 @@
-import { LanguageServiceTester } from "../LanguageServiceTester";
-import { TestConstants } from "./TestConstants";
+import { LanguageServiceTester } from "../LanguageServiceTester.js";
+import { TestConstants } from "./TestConstants.js";
 
 /**
  * Provides an implementation of the {@link LanguageServiceTester `LanguageServiceTester`} class for testing.
