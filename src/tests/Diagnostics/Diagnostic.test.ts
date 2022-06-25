@@ -1,4 +1,4 @@
-import { deepStrictEqual, ok, strictEqual } from "assert";
+import { deepStrictEqual, ok, strictEqual } from "node:assert";
 import ts from "typescript/lib/tsserverlibrary.js";
 import { FixResponseAnalyzer } from "../../Diagnostics/Actions/FixResponseAnalyzer.js";
 import { Diagnostic } from "../../Diagnostics/Diagnostic.js";

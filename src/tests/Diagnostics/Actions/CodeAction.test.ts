@@ -1,4 +1,4 @@
-import { ok, strictEqual } from "assert";
+import { ok, strictEqual } from "node:assert";
 import { Random } from "random-js";
 import { server } from "typescript/lib/tsserverlibrary.js";
 import { CodeAction } from "../../../Diagnostics/Actions/CodeAction.js";

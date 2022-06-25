@@ -1,4 +1,4 @@
-import { ok, strictEqual } from "assert";
+import { ok, strictEqual } from "node:assert";
 import { Package } from "@manuth/package-json-editor";
 import { TempFile } from "@manuth/temp-files";
 import fs from "fs-extra";

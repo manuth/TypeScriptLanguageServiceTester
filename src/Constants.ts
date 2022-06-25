@@ -1,4 +1,4 @@
-import { fileURLToPath } from "url";
+import { fileURLToPath } from "node:url";
 import { Package } from "@manuth/package-json-editor";
 import upath from "upath";
 

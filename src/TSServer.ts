@@ -1,7 +1,7 @@
-import { ChildProcess, fork } from "child_process";
-import { EventEmitter } from "events";
-import { createRequire } from "module";
-import { createInterface } from "readline";
+import { ChildProcess, fork } from "node:child_process";
+import { EventEmitter } from "node:events";
+import { createRequire } from "node:module";
+import { createInterface } from "node:readline";
 import { TempFile } from "@manuth/temp-files";
 import { ensureDirSync } from "fs-extra";
 import type ts from "typescript/lib/tsserverlibrary.js";

@@ -1,4 +1,4 @@
-import { basename } from "path";
+import { basename } from "node:path";
 import { CodeActionTests } from "./CodeAction.test.js";
 import { FixResponseAnalyzerTests } from "./FixResponseAnalyzer.test.js";
 

@@ -1,4 +1,4 @@
-import { doesNotReject, ok, rejects, strictEqual } from "assert";
+import { doesNotReject, ok, rejects, strictEqual } from "node:assert";
 import { TempFile } from "@manuth/temp-files";
 import fs from "fs-extra";
 import ts from "typescript/lib/tsserverlibrary.js";

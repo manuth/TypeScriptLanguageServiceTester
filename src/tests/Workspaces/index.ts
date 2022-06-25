@@ -1,4 +1,4 @@
-import { basename } from "path";
+import { basename } from "node:path";
 import { ITestContext } from "../ITestContext.js";
 import { TestWorkspaceTests } from "./TestWorkspace.test.js";
 

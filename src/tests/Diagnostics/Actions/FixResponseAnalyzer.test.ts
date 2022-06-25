@@ -1,4 +1,4 @@
-import { ok } from "assert";
+import { ok } from "node:assert";
 import { Random } from "random-js";
 import ts from "typescript/lib/tsserverlibrary.js";
 import { CodeAction } from "../../../Diagnostics/Actions/CodeAction.js";

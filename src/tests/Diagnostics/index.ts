@@ -1,4 +1,4 @@
-import { basename } from "path";
+import { basename } from "node:path";
 import { ITestContext } from "../ITestContext.js";
 import { ActionTests } from "./Actions/index.js";
 import { DiagnosticTests as DiagnosticClassTests } from "./Diagnostic.test.js";

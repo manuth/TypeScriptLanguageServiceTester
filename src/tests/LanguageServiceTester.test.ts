@@ -1,6 +1,6 @@
-import { doesNotThrow, ok, strictEqual, throws } from "assert";
-import { spawnSync } from "child_process";
-import { fileURLToPath } from "url";
+import { doesNotThrow, ok, strictEqual, throws } from "node:assert";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { TempDirectory, TempFile } from "@manuth/temp-files";
 import { copy, pathExists, remove } from "fs-extra";
 import npmWhich from "npm-which";

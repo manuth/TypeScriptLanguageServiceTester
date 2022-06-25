@@ -1,4 +1,4 @@
-import { spawnSync } from "child_process";
+import { spawnSync } from "node:child_process";
 import { Package } from "@manuth/package-json-editor";
 import fs from "fs-extra";
 import npmWhich from "npm-which";
