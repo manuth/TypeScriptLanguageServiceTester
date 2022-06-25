@@ -14,32 +14,23 @@ The `LanguageServiceTester` allows you to analyze code for ensuring all expected
 A `LanguageServiceTester` can be initialized by passing a directory to run the `tsserver` in:
 
 ```ts
-import { join } from "upath";
 import { LanguageServiceTester } from "@manuth/typescript-languageservice-tester";
 
-let tester = new LanguageServiceTester(join(__dirname, "tmp"));
+let tester = new LanguageServiceTester("/tmp/test-workspace");
 ```
 
 ### Installing dependencies
 If `typescript` is not installed in your workspace, you can install it using the `LanguageServiceTester.Install` method:
 
 ```ts
-(
-    async () =>
-    {
-        await tester.Install();
-    })();
+await tester.Install();
 ```
 
 ### Live-Updating Plugins
 You can perform a live-update of plugin-configurations by invoking the `LanguageServiceTester.ConfigurePlugin` by passing the plugin-name and the configuration to apply at runtime:
 
 ```ts
-(
-    async () =>
-    {
-        await tester.ConfigurePlugin("typescript-eslint-language-service", { watchDirs: "." });
-    })();
+await tester.ConfigurePlugin("typescript-eslint-language-service", { watchDirs: "." });
 ```
 
 ### Analyzing Diagnostics
@@ -50,35 +41,27 @@ You can optionally pass a script-kind (such as `TS`, `JSX` etc.) and a file-name
 ```ts
 import { writeFile } from "fs-extra";
 
-(
-    async () =>
+await writeFile(
+    tester.MakePath("tsconfig.json"),
     {
-        await writeFile(
-            tester.MakePath("tsconfig.json"),
-            {
-                compilerOptions: {
-                    plugins: [
-                        {
-                            name: "typescript-eslint-language-service"
-                        }
-                    ]
+        compilerOptions: {
+            plugins: [
+                {
+                    name: "typescript-eslint-language-service"
                 }
-            });
+            ]
+        }
+    });
 
-        let diagnosticResponse = await AnalyzeCode("let x;;;");
-    })();
+let diagnosticResponse = await AnalyzeCode("let x;;;");
 ```
 
 ### Getting Code-Fixes
 You can then either get all code-fixes for the analyzed code or code-fixes for a specific diagnostic:
 
 ```ts
-(
-    async () =>
-    {
-        await diagnosticResponse.GetCodeFixes();
-        await diagnosticResponse.Diagnostics[0].GetCodeFixes();
-    })();
+await diagnosticResponse.GetCodeFixes();
+await diagnosticResponse.Diagnostics[0].GetCodeFixes();
 ```
 
 ## Running and controlling a `TSServer`
@@ -86,7 +69,7 @@ You can run an instance of `typescript/lib/tsserver` by creating a new instance 
 The `TSServer` class allows you to communicate with the `tsserver` by sending requests and awaiting answers or events:
 
 ```ts
-let tsServer = new TSServer(__dirname);
+let tsServer = new TSServer("/tmp/test-workspace");
 ```
 
 ### Sending Requests
@@ -116,7 +99,7 @@ let response = await tsServer.Send<server.protocol.SemanticDiagnosticsSyncReques
         type: "request",
         command: server.protocol.CommandTypes.SemanticDiagnosticsSync,
         arguments: {
-            file: join(__dirname, "example.js"),
+            file: "/tmp/test-workspace/example.js",
             includeLinePosition: false
         }
     });
