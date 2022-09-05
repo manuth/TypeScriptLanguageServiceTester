@@ -29,7 +29,7 @@
     "patchTypeScript": "ts-patch install"
   },
   "dependencies": {
-    "@manuth/package-json-editor": "^2.2.5",
+    "@manuth/package-json-editor": "^3.0.2",
     "@manuth/temp-files": "^2.0.8",
     "fs-extra": "^10.1.0",
     "lodash.isequal": "^4.5.0",
