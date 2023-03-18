@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## TypeScriptLanguageServiceTester [Unreleased]
+### Updated
+  - All dependencies
+  - `TSServer` to not reload the project after opening a file
+  - Development environment to migrate from Drone CI to Woodpecker CI
+
+### Removed
+  - Dependabot
 
 [Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v5.0.0...dev)
 
