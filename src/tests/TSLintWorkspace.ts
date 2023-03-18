@@ -72,7 +72,7 @@ export class TSLintWorkspace extends TestWorkspace
                                 ]
                             }
                         },
-                        tsConfig)),
+                        (tsConfig ?? {}))),
                 writeJSON(
                     this.MakePath(Configuration.JSON_CONFIG_FILENAME),
                     {

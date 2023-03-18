@@ -5,7 +5,7 @@ import { ITestContext } from "../ITestContext.js";
 import { TSLintLanguageServiceTester } from "../TSLintLanguageServiceTester.js";
 
 /**
- * Registers tests for the {@link DiagnosticsResponseAnalyzer `DiagnosticsResponseAnalyzer`} class.
+ * Registers tests for the {@linkcode DiagnosticsResponseAnalyzer} class.
  *
  * @param context
  * The test-context.
@@ -35,9 +35,14 @@ export function DiagnosticsResponseAnalyzerTests(context: ITestContext): void
                     await tester.Configure(
                         undefined,
                         {
-                            [fixableRule1]: true,
-                            [fixableRule2]: {
-                                "check-space": true
+                            rules: {
+                                [fixableRule1]: true,
+                                [fixableRule2]: [
+                                    true,
+                                    {
+                                        "check-space": true
+                                    }
+                                ]
                             }
                         });
                 });
@@ -62,8 +67,8 @@ export function DiagnosticsResponseAnalyzerTests(context: ITestContext): void
                             strictEqual(
                                 response.Diagnostics.length,
                                 [
-                                    ...response.CodeAnalysisResult.SemanticDiagnosticsResponse.body,
-                                    ...response.CodeAnalysisResult.SyntacticDiagnosticsResponse.body
+                                    ...(response.CodeAnalysisResult.SemanticDiagnosticsResponse.body ?? []),
+                                    ...(response.CodeAnalysisResult.SyntacticDiagnosticsResponse.body ?? [])
                                 ].length);
                         });
                 });

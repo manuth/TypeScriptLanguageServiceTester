@@ -4,7 +4,7 @@ import { server } from "typescript/lib/tsserverlibrary.js";
 import { CodeAction } from "../../../Diagnostics/Actions/CodeAction.js";
 
 /**
- * Registers tests for the {@link CodeAction `CodeAction`} test.
+ * Registers tests for the {@linkcode CodeAction} test.
  */
 export function CodeActionTests(): void
 {

@@ -26,12 +26,12 @@ export class LanguageServiceTester
     /**
      * The typescript-server for testing.
      */
-    private tsServer: TSServer = null;
+    private tsServer: TSServer | null = null;
 
     /**
      * The default workspace for testing.
      */
-    private defaultWorkspace: TestWorkspace = null;
+    private defaultWorkspace: TestWorkspace | null = null;
 
     /**
      * A set of temporary workspaces which are attached to this tester.
@@ -44,7 +44,7 @@ export class LanguageServiceTester
     private readonly tempDirectories: TempDirectory[] = [];
 
     /**
-     * Initializes a new instance of the {@link LanguageServiceTester `LanguageServiceTester`} class.
+     * Initializes a new instance of the {@linkcode LanguageServiceTester} class.
      *
      * @param workingDirectory
      * The working directory to set for the default workspace.

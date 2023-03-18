@@ -1,9 +1,9 @@
 import type { server } from "typescript/lib/tsserverlibrary.js";
-import { TSServer } from "../TSServer.js";
-import { TestWorkspace } from "../Workspaces/TestWorkspace.js";
 import { CodeAction } from "./Actions/CodeAction.js";
 import { Diagnostic } from "./Diagnostic.js";
 import { ICodeAnalysisResult } from "./ICodeAnalysisResult.js";
+import { TSServer } from "../TSServer.js";
+import { TestWorkspace } from "../Workspaces/TestWorkspace.js";
 
 /**
  * Provides the functionality to analyze a diagnostic-response.
@@ -31,7 +31,7 @@ export class DiagnosticsResponseAnalyzer
     private fileName: string;
 
     /**
-     * Initializes a new instance of the {@link DiagnosticsResponseAnalyzer `DiagnosticsResponseAnalyzer`} class.
+     * Initializes a new instance of the {@linkcode DiagnosticsResponseAnalyzer} class.
      *
      * @param codeAnalysisResult
      * The response to analyze.
@@ -99,8 +99,8 @@ export class DiagnosticsResponseAnalyzer
     public get Diagnostics(): Diagnostic[]
     {
         let diagnostics: Array<server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition> = [
-            ...this.CodeAnalysisResult.SemanticDiagnosticsResponse.body,
-            ...this.CodeAnalysisResult.SyntacticDiagnosticsResponse.body
+            ...(this.CodeAnalysisResult.SemanticDiagnosticsResponse.body ?? []),
+            ...(this.CodeAnalysisResult.SyntacticDiagnosticsResponse.body ?? [])
         ];
 
         return diagnostics.map((diagnostic) => new Diagnostic(this, diagnostic));

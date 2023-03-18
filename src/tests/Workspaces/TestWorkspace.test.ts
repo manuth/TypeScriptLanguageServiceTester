@@ -4,6 +4,8 @@ import { TempFile } from "@manuth/temp-files";
 import fs from "fs-extra";
 import RandExp from "randexp";
 import { Project, SourceFile } from "ts-morph";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { TsConfigJson } from "type-fest";
 import { fileName } from "types-tsconfig";
 import { Diagnostic } from "../../Diagnostics/Diagnostic.js";
 import { TestWorkspace } from "../../Workspaces/TestWorkspace.js";
@@ -14,7 +16,7 @@ const { move, pathExists, remove, writeJSON } = fs;
 const { randexp } = RandExp;
 
 /**
- * Registers tests for the {@link TestWorkspace `TestWorkspace`} class.
+ * Registers tests for the {@linkcode TestWorkspace} class.
  *
  * @param testContext
  * The test-context.
@@ -156,7 +158,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
 
                             file = new Project().createSourceFile(
                                 tempFile.FullName,
-                                null,
+                                undefined,
                                 {
                                     overwrite: true
                                 });
@@ -176,13 +178,13 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                             this.slow(7.5 * 1000);
 
                             /**
-                             * Filters all diagnostics which are related to the {@link CompilerOptions.noImplicitAny `noImplicitAny`}-option.
+                             * Filters all diagnostics which are related to the {@linkcode TsConfigJson.CompilerOptions.noImplicitAny `noImplicitAny`}-option.
                              *
                              * @param diagnostics
                              * The diagnostics to filter.
                              *
                              * @returns
-                             * The diagnostics which are related to the {@link CompilerOptions.noImplicitAny `noImplicitAny`}-option.
+                             * The diagnostics which are related to the {@linkcode TsConfigJson.CompilerOptions.noImplicitAny `noImplicitAny`}-option.
                              */
                             function FilterNoImplicitAny(diagnostics: Diagnostic[]): Diagnostic[]
                             {
@@ -234,7 +236,7 @@ export function TestWorkspaceTests(testContext: ITestContext): void
 
                             file = new Project().createSourceFile(
                                 tempFile.FullName,
-                                null,
+                                undefined,
                                 {
                                     overwrite: true
                                 });
@@ -270,7 +272,9 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                                     ]
                                 });
 
-                            ok((await workspace.AnalyzeCode(file.print())).CodeAnalysisResult.SemanticDiagnosticsResponse.body.length > 0);
+                            let result = (await workspace.AnalyzeCode(file.print())).CodeAnalysisResult;
+                            ok(result.SemanticDiagnosticsResponse.body);
+                            ok(result.SemanticDiagnosticsResponse.body.length > 0);
                         });
 
                     test(
@@ -279,7 +283,9 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                         {
                             this.timeout(2 * 1000);
                             this.slow(1 * 1000);
-                            ok((await workspace.AnalyzeCode("let<> x = 1;")).CodeAnalysisResult.SyntacticDiagnosticsResponse.body.length > 0);
+                            let result = (await workspace.AnalyzeCode("let<> x = 1;")).CodeAnalysisResult;
+                            ok(result.SyntacticDiagnosticsResponse.body);
+                            ok(result.SyntacticDiagnosticsResponse.body.length > 0);
                         });
                 });
         });
