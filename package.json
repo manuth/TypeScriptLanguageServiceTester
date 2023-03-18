@@ -35,6 +35,7 @@
     "lodash.isequal": "^4.5.0",
     "lodash.merge": "^4.6.2",
     "npm-which": "^3.0.1",
+    "type-fest": "^3.6.1",
     "types-tsconfig": "^2.0.2",
     "typescript": "^4.9.5",
     "upath": "^2.0.1"

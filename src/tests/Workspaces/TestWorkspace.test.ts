@@ -4,6 +4,8 @@ import { TempFile } from "@manuth/temp-files";
 import fs from "fs-extra";
 import RandExp from "randexp";
 import { Project, SourceFile } from "ts-morph";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { TsConfigJson } from "type-fest";
 import { fileName } from "types-tsconfig";
 import { Diagnostic } from "../../Diagnostics/Diagnostic.js";
 import { TestWorkspace } from "../../Workspaces/TestWorkspace.js";
@@ -176,13 +178,13 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                             this.slow(7.5 * 1000);
 
                             /**
-                             * Filters all diagnostics which are related to the {@link CompilerOptions.noImplicitAny `noImplicitAny`}-option.
+                             * Filters all diagnostics which are related to the {@link TsConfigJson.CompilerOptions.noImplicitAny `noImplicitAny`}-option.
                              *
                              * @param diagnostics
                              * The diagnostics to filter.
                              *
                              * @returns
-                             * The diagnostics which are related to the {@link CompilerOptions.noImplicitAny `noImplicitAny`}-option.
+                             * The diagnostics which are related to the {@link TsConfigJson.CompilerOptions.noImplicitAny `noImplicitAny`}-option.
                              */
                             function FilterNoImplicitAny(diagnostics: Diagnostic[]): Diagnostic[]
                             {
