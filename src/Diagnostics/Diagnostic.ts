@@ -89,7 +89,7 @@ export class Diagnostic
     /**
      * Gets the error code of the diagnostic.
      */
-    public get Code(): number
+    public get Code(): number | undefined
     {
         return this.Diagnostic.code;
     }
@@ -97,10 +97,10 @@ export class Diagnostic
     /**
      * Gets the source of the diagnostic.
      */
-    public get Source(): string
+    public get Source(): string | undefined
     {
         return {
-            source: null,
+            source: undefined,
             ...this.Diagnostic
         }.source;
     }
@@ -128,7 +128,7 @@ export class Diagnostic
      */
     public get RelatedInformation(): server.protocol.DiagnosticRelatedInformation[]
     {
-        return this.Diagnostic.relatedInformation;
+        return this.Diagnostic.relatedInformation ?? [];
     }
 
     /**

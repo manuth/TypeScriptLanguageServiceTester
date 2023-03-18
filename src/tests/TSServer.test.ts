@@ -65,9 +65,9 @@ export function TSServerTests(): void
                                         /**
                                          * @inheritdoc
                                          */
-                                        public override get LogLevel(): keyof typeof ts.server.LogLevel
+                                        public override get LogLevel(): keyof typeof ts.server.LogLevel | undefined
                                         {
-                                            return null;
+                                            return undefined;
                                         }
                                     }(TestConstants.TestWorkspaceDirectory);
 

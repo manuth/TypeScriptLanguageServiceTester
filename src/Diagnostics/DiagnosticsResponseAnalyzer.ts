@@ -99,8 +99,8 @@ export class DiagnosticsResponseAnalyzer
     public get Diagnostics(): Diagnostic[]
     {
         let diagnostics: Array<server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition> = [
-            ...this.CodeAnalysisResult.SemanticDiagnosticsResponse.body,
-            ...this.CodeAnalysisResult.SyntacticDiagnosticsResponse.body
+            ...(this.CodeAnalysisResult.SemanticDiagnosticsResponse.body ?? []),
+            ...(this.CodeAnalysisResult.SyntacticDiagnosticsResponse.body ?? [])
         ];
 
         return diagnostics.map((diagnostic) => new Diagnostic(this, diagnostic));

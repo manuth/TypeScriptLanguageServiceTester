@@ -62,8 +62,8 @@ export function DiagnosticsResponseAnalyzerTests(context: ITestContext): void
                             strictEqual(
                                 response.Diagnostics.length,
                                 [
-                                    ...response.CodeAnalysisResult.SemanticDiagnosticsResponse.body,
-                                    ...response.CodeAnalysisResult.SyntacticDiagnosticsResponse.body
+                                    ...(response.CodeAnalysisResult.SemanticDiagnosticsResponse.body ?? []),
+                                    ...(response.CodeAnalysisResult.SyntacticDiagnosticsResponse.body ?? [])
                                 ].length);
                         });
                 });

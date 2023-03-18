@@ -51,7 +51,7 @@ export function DiagnosticTests(context: ITestContext): void
                     {
                         let result: Array<ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition> = [];
 
-                        for (let diagnostic of rawResponse.body)
+                        for (let diagnostic of rawResponse.body ?? [])
                         {
                             let parsedDiagnostic = new Diagnostic(response, diagnostic);
 

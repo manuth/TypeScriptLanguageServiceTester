@@ -137,6 +137,7 @@ export function FixResponseAnalyzerTests(): void
                                 fixId
                             };
 
+                            response.FixResponse.body ??= [];
                             response.FixResponse.body.push(fix);
                             ok(response.HasCombinedFix(fixId));
                         });

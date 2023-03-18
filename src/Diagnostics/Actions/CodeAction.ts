@@ -32,11 +32,11 @@ export class CodeAction
     /**
      * Gets the name of the fix.
      */
-    public get FixName(): string
+    public get FixName(): string | undefined
     {
         return CodeAction.IsCodeFixAction(this.CodeAction) ?
             this.CodeAction.fixName :
-            null;
+            undefined;
     }
 
     /**
@@ -52,11 +52,11 @@ export class CodeAction
     /**
      * Gets a description for the fix-all action.
      */
-    public get FixAllDescription(): string
+    public get FixAllDescription(): string | undefined
     {
         return CodeAction.IsCodeFixAction(this.CodeAction) ?
             this.CodeAction.fixAllDescription :
-            null;
+            undefined;
     }
 
     /**
@@ -80,7 +80,7 @@ export class CodeAction
      */
     public get Commands(): unknown[]
     {
-        return this.CodeAction.commands;
+        return this.CodeAction.commands ?? [];
     }
 
     /**

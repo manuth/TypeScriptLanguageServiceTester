@@ -56,7 +56,7 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                     let npmPath: string;
                     let tempGlobalDir: TempDirectory;
                     let globalConfigPath: string;
-                    let globalConfigBackup: TempFile;
+                    let globalConfigBackup: TempFile | null;
                     let globalModulePath: string;
                     let tempDir: TempDirectory;
                     let tester: TestLanguageServiceTester;

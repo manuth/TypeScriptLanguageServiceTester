@@ -10,7 +10,7 @@ suite(
     () =>
     {
         let testContext: ITestContext = {
-            TSLintTester: null
+            TSLintTester: undefined as any
         };
 
         suiteSetup(

@@ -1,7 +1,7 @@
 import { ChildProcess, fork } from "node:child_process";
 import { EventEmitter } from "node:events";
 import { createRequire } from "node:module";
-import { createInterface } from "node:readline";
+import { createInterface, ReadLineOptions } from "node:readline";
 import { TempFile } from "@manuth/temp-files";
 import { ensureDirSync } from "fs-extra";
 import type ts from "typescript/lib/tsserverlibrary.js";
@@ -22,7 +22,7 @@ export class TSServer
     /**
      * The log-file.
      */
-    private logFile: TempFile = null;
+    private logFile: TempFile | null = null;
 
     /**
      * The server-process.
@@ -98,7 +98,7 @@ export class TSServer
                     "exit",
                     (code) =>
                     {
-                        resolve(code);
+                        resolve(code ?? 0);
                     });
 
                 this.serverProcess.on(
@@ -109,13 +109,13 @@ export class TSServer
                     });
             });
 
-        this.serverProcess.stdout.setEncoding("utf-8");
+        this.serverProcess.stdout?.setEncoding("utf-8");
 
         createInterface(
             {
                 input: this.serverProcess.stdout,
                 output: this.serverProcess.stdin
-            }).on(
+            } as ReadLineOptions).on(
                 "line",
                 (input) =>
                 {
@@ -138,7 +138,7 @@ export class TSServer
                                     {
                                         let resolver = this.requestResolverCollection.get(response.request_seq);
                                         this.requestResolverCollection.delete(response.request_seq);
-                                        resolver(response);
+                                        resolver?.(response);
 
                                         if (this.disposalRequested && (this.requestResolverCollection.size === 0))
                                         {
@@ -185,7 +185,7 @@ export class TSServer
     /**
      * Gets the verbosity of the log.
      */
-    public get LogLevel(): keyof typeof ts.server.LogLevel
+    public get LogLevel(): keyof typeof ts.server.LogLevel | undefined
     {
         let logLevel = this.TSServerLibrary.server.LogLevel;
         return logLevel[logLevel.verbose] as keyof typeof ts.server.LogLevel;
@@ -304,7 +304,8 @@ export class TSServer
      */
     public async Send<T extends ts.server.protocol.Request>(request: Omit<T, "seq"> & Partial<T>, responseExpected?: boolean): Promise<ts.server.protocol.Response | void>
     {
-        request.seq = request.seq ?? this.sequenceNumber++;
+        let realRequest: T = request as T;
+        realRequest.seq = request.seq ?? this.sequenceNumber++;
 
         if (this.Disposed)
         {
@@ -316,13 +317,13 @@ export class TSServer
         }
         else
         {
-            let result = new Promise<ts.server.protocol.Response>(
+            let result = new Promise<ts.server.protocol.Response | void>(
                 (resolve) =>
                 {
                     if (responseExpected)
                     {
                         this.requestResolverCollection.set(
-                            request.seq,
+                            realRequest.seq,
                             (response) =>
                             {
                                 resolve(response);
@@ -330,11 +331,11 @@ export class TSServer
                     }
                     else
                     {
-                        resolve(null);
+                        resolve();
                     }
                 });
 
-            this.serverProcess.stdin.write(`${JSON.stringify(request)}\n`);
+            this.serverProcess.stdin?.write(`${JSON.stringify(request)}\n`);
             return result;
         }
     }
@@ -379,7 +380,7 @@ export class TSServer
 
         if (this.requestResolverCollection.size === 0)
         {
-            this.serverProcess.stdin.end();
+            this.serverProcess.stdin?.end();
             this.logFile?.Dispose();
             this.logFile = null;
             this.disposed = true;

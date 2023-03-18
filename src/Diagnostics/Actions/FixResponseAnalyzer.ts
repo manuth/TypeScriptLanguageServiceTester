@@ -36,7 +36,7 @@ export class FixResponseAnalyzer
      */
     public get Fixes(): CodeAction[]
     {
-        return this.FixResponse.body.map((codeAction) => new CodeAction(codeAction));
+        return this.FixResponse.body?.map((codeAction) => new CodeAction(codeAction)) ?? [];
     }
 
     /**
