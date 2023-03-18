@@ -5,7 +5,7 @@ import { ITestContext } from "../ITestContext.js";
 import { TSLintLanguageServiceTester } from "../TSLintLanguageServiceTester.js";
 
 /**
- * Registers tests for the {@link DiagnosticsResponseAnalyzer `DiagnosticsResponseAnalyzer`} class.
+ * Registers tests for the {@linkcode DiagnosticsResponseAnalyzer} class.
  *
  * @param context
  * The test-context.

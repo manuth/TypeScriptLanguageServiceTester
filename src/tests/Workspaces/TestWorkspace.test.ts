@@ -16,7 +16,7 @@ const { move, pathExists, remove, writeJSON } = fs;
 const { randexp } = RandExp;
 
 /**
- * Registers tests for the {@link TestWorkspace `TestWorkspace`} class.
+ * Registers tests for the {@linkcode TestWorkspace} class.
  *
  * @param testContext
  * The test-context.
@@ -178,13 +178,13 @@ export function TestWorkspaceTests(testContext: ITestContext): void
                             this.slow(7.5 * 1000);
 
                             /**
-                             * Filters all diagnostics which are related to the {@link TsConfigJson.CompilerOptions.noImplicitAny `noImplicitAny`}-option.
+                             * Filters all diagnostics which are related to the {@linkcode TsConfigJson.CompilerOptions.noImplicitAny `noImplicitAny`}-option.
                              *
                              * @param diagnostics
                              * The diagnostics to filter.
                              *
                              * @returns
-                             * The diagnostics which are related to the {@link TsConfigJson.CompilerOptions.noImplicitAny `noImplicitAny`}-option.
+                             * The diagnostics which are related to the {@linkcode TsConfigJson.CompilerOptions.noImplicitAny `noImplicitAny`}-option.
                              */
                             function FilterNoImplicitAny(diagnostics: Diagnostic[]): Diagnostic[]
                             {

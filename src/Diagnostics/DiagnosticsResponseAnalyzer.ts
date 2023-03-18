@@ -31,7 +31,7 @@ export class DiagnosticsResponseAnalyzer
     private fileName: string;
 
     /**
-     * Initializes a new instance of the {@link DiagnosticsResponseAnalyzer `DiagnosticsResponseAnalyzer`} class.
+     * Initializes a new instance of the {@linkcode DiagnosticsResponseAnalyzer} class.
      *
      * @param codeAnalysisResult
      * The response to analyze.

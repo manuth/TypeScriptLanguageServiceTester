@@ -10,7 +10,7 @@ const { readFile } = fs;
 const { join } = upath;
 
 /**
- * Registers tests for the {@link TSServer `TSServer`} class.
+ * Registers tests for the {@linkcode TSServer} class.
  */
 export function TSServerTests(): void
 {

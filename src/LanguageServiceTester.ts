@@ -44,7 +44,7 @@ export class LanguageServiceTester
     private readonly tempDirectories: TempDirectory[] = [];
 
     /**
-     * Initializes a new instance of the {@link LanguageServiceTester `LanguageServiceTester`} class.
+     * Initializes a new instance of the {@linkcode LanguageServiceTester} class.
      *
      * @param workingDirectory
      * The working directory to set for the default workspace.

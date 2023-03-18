@@ -20,7 +20,7 @@ export class Diagnostic
     private diagnostic: server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition;
 
     /**
-     * Initializes a new instance of the {@link Diagnostic `Diagnostic`} class.
+     * Initializes a new instance of the {@linkcode Diagnostic} class.
      *
      * @param response
      * The response this diagnostic belongs to.
@@ -132,7 +132,7 @@ export class Diagnostic
     }
 
     /**
-     * Determines whether the specified {@link diagnostic `diagnostic`} is a normal diagnostic.
+     * Determines whether the specified {@linkcode diagnostic} is a normal diagnostic.
      *
      * @param diagnostic
      * The diagnostic to check.

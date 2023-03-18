@@ -11,7 +11,7 @@ import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseA
 import type { LanguageServiceTester } from "../LanguageServiceTester.js";
 
 /**
- * Registers tests for the {@link LanguageServiceTester `LanguageServiceTester`} class.
+ * Registers tests for the {@linkcode LanguageServiceTester} class.
  *
  * @param context
  * The test-context.

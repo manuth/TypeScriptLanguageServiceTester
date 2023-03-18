@@ -9,7 +9,7 @@ import { TSLintWorkspace } from "./TSLintWorkspace.js";
 export class TSLintLanguageServiceTester extends TestLanguageServiceTester
 {
     /**
-     * Initializes a new instance of the {@link TSLintLanguageServiceTester `TSLintLanguageServiceTester`} class.
+     * Initializes a new instance of the {@linkcode TSLintLanguageServiceTester} class.
      *
      * @param workingDirectory
      * The working directory to set for the default workspace.

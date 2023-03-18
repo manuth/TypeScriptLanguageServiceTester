@@ -60,7 +60,7 @@ export class TSServer
     private exitPromise: Promise<number>;
 
     /**
-     * Initializes a new instance of the {@link TSServer `TSServer`} class.
+     * Initializes a new instance of the {@linkcode TSServer} class.
      *
      * @param workingDirectory
      * The directory to open.
