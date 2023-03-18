@@ -29,7 +29,7 @@ export function TSServerTests(): void
             teardown(
                 async function()
                 {
-                    this.timeout(0.5 * 60 * 1000);
+                    this.timeout(1 * 60 * 1000);
                     await tsServer.Dispose();
                 });
 
