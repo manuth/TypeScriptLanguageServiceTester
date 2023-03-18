@@ -372,8 +372,7 @@ export class TSServer
                 {
                     type: "request",
                     command: this.TSServerLibrary.server.protocol.CommandTypes.Exit
-                },
-                false);
+                });
         }
 
         this.disposalRequested = true;

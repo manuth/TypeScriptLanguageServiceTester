@@ -170,8 +170,7 @@ export function TSServerTests(): void
                                             arguments: {
                                                 file
                                             }
-                                        },
-                                        false);
+                                        });
                                 });
                         });
 
@@ -192,8 +191,7 @@ export function TSServerTests(): void
                                             arguments: {
                                                 file
                                             }
-                                        },
-                                        false);
+                                        });
 
                                     await tsServer.Send<ts.server.protocol.SemanticDiagnosticsSyncRequest>(
                                         {
@@ -229,7 +227,7 @@ export function TSServerTests(): void
                             tsServer.Dispose();
 
                             await rejects(
-                                async () => tsServer.Send({ command: "test", type: "request" }, false),
+                                async () => tsServer.Send({ command: "test", type: "request" }),
                                 /about to/);
                         });
 
@@ -242,7 +240,7 @@ export function TSServerTests(): void
                             await tsServer.Dispose();
 
                             await rejects(
-                                async () => tsServer.Send({ command: "test", type: "request" }, false));
+                                async () => tsServer.Send({ command: "test", type: "request" }));
                         });
                 });
 

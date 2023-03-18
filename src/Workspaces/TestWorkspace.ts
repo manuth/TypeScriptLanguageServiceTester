@@ -194,8 +194,7 @@ export class TestWorkspace
                     fileContent: code,
                     scriptKindName: scriptKind ?? "TS"
                 }
-            },
-            false);
+            });
     }
 
     /**
