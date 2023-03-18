@@ -268,7 +268,41 @@ export class TSServer
      * @returns
      * The response of the server.
      */
-    public async Send<T extends ts.server.protocol.Request>(request: Omit<T, "seq"> & Partial<T>, responseExpected: boolean): Promise<ts.server.protocol.Response>
+    public Send<T extends ts.server.protocol.Request>(request: Omit<T, "seq"> & Partial<T>, responseExpected?: false): Promise<void>;
+
+    /**
+     * Sends a request to the server.
+     *
+     * @template T
+     * The type of the request.
+     *
+     * @param request
+     * The request to send.
+     *
+     * @param responseExpected
+     * A value indicating whether an answer is expected.
+     *
+     * @returns
+     * The response of the server.
+     */
+    public Send<T extends ts.server.protocol.Request>(request: Omit<T, "seq"> & Partial<T>, responseExpected: true): Promise<ts.server.protocol.Response>;
+
+    /**
+     * Sends a request to the server.
+     *
+     * @template T
+     * The type of the request.
+     *
+     * @param request
+     * The request to send.
+     *
+     * @param responseExpected
+     * A value indicating whether an answer is expected.
+     *
+     * @returns
+     * The response of the server.
+     */
+    public async Send<T extends ts.server.protocol.Request>(request: Omit<T, "seq"> & Partial<T>, responseExpected?: boolean): Promise<ts.server.protocol.Response | void>
     {
         request.seq = request.seq ?? this.sequenceNumber++;
 
