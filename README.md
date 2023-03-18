@@ -1,6 +1,8 @@
 # TypeScriptLanguageServiceTester
 Provides components for testing the typescript language-server and language-services.
 
+[![status-badge](https://ci.nuth.ch/api/badges/manuth/TypeScriptLanguageServiceTester/status.svg)](https://ci.nuth.ch/manuth/TypeScriptLanguageServiceTester)
+
 ## Installing the package
 This package can be added to your dependencies by invoking:
 
