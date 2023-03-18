@@ -9,18 +9,56 @@ pipeline:
   prepare release:
     image: node
     commands:
-      - npm install @stdlib/utils-escape-regexp-string --no-save
+      - npm install --no-save @stdlib/utils-escape-regexp-string
       - node -e "console.log(require('@stdlib/utils-escape-regexp-string')('${CI_COMMIT_TAG}'))" > .tagName.txt
+      - export TagName=$$(cat .tagName.txt)
+      - echo "/^## \(.* \($${TagName}\|\[$${TagName}\]\)\)\$/" > .tagHeading.txt
+    when:
+      event: tag
+      tag: v[0-9]*.[0-9]*.[0-9]*
+  check release prerequisites:
+    image: node
+    secrets:
+      - npm_token
+      - github_packages_token
+      - github_publish_token
+    commands:
+      - npm install --no-save @octokit/rest
+      - >
+        testNPM() {
+          echo "//registry.npmjs.org/:_authToken=$1" > ~/.npmrc;
+          npm whoami > /dev/null 2>&1;
+          exitCode=$?;
+          rm ~/.npmrc;
+          return "$exitCode";
+        }
+      - >
+        testGitHub() {
+          node --eval 'new (require("@octokit/rest").Octokit({ auth: "'"$1"'" }).request("GET /user").catch(() => process.exit(1))' > /dev/null 2>&1;
+        }
+      - export TagHeading=$$(cat .tagHeading.txt)
+      - '[ ! -z "$$(sed "$${TagHeading}p;d" CHANGELOG.md)" ] || { echo "No Changelog Entries Found!" && false; }'
+      - testNPM $NPM_TOKEN || { echo "The NPM Access Token is invalid!" && false; }
+      - testGitHub $GITHUB_PACKAGES_TOKEN || { echo "The GitHub Package Token is invalid!" && false; }
+      - testGitHub $GITHUB_PUBLISH_TOKEN || { echo "The GitHub Publish Token is invalid!" && false; }
+    when:
+      event: tag
+      tag: v[0-9]*.[0-9]*.[0-9]*
+  create package:
+    image: node
+    group: prepare
+    commands:
+      - npm pack
     when:
       event: tag
       tag: v[0-9]*.[0-9]*.[0-9]*
   prepare release notes:
-    image: node
+    image: alpine
+    group: prepare
     commands:
       - export TagName=$$(cat .tagName.txt)
-      - export TagHeading="/## \(.* \($${TagName}\|\[$${TagName}\]\)\)\$/"
+      - export TagHeading=$$(cat .tagHeading.txt)
       - export HeadingPattern='/## \(.* \(v[0-9.]*\|\[.*\]\)\)/'
-      - '[ ! -z "$$(sed "$${TagHeading}p;d" CHANGELOG.md)" ] || { echo "No Changelog Entries Found!" && false; }'
       - cp -f CHANGELOG.md .releaseNotes.md
       - sed -i "1,$${TagHeading}{ $${TagHeading}P ; d } ; $${HeadingPattern},\$d" .releaseNotes.md
       - cp -f .releaseNotes.md .releaseTitle.md
