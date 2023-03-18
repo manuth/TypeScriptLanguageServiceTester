@@ -111,5 +111,6 @@ test/
 
 # Temporary release-assets
 .tagName.txt
-.releaseNotes.md
+.tagHeading.txt
 .releaseTitle.md
+.releaseNotes.md

@@ -4,14 +4,14 @@ import { fileURLToPath } from "node:url";
 import { TempDirectory, TempFile } from "@manuth/temp-files";
 import { copy, pathExists, remove } from "fs-extra";
 import npmWhich from "npm-which";
+import { ITestContext } from "./ITestContext.js";
+import { TestLanguageServiceTester } from "./TestLanguageServiceTester.js";
 import { Diagnostic } from "../Diagnostics/Diagnostic.js";
 import { DiagnosticsResponseAnalyzer } from "../Diagnostics/DiagnosticsResponseAnalyzer.js";
 import type { LanguageServiceTester } from "../LanguageServiceTester.js";
-import { ITestContext } from "./ITestContext.js";
-import { TestLanguageServiceTester } from "./TestLanguageServiceTester.js";
 
 /**
- * Registers tests for the {@link LanguageServiceTester `LanguageServiceTester`} class.
+ * Registers tests for the {@linkcode LanguageServiceTester} class.
  *
  * @param context
  * The test-context.
@@ -56,7 +56,7 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                     let npmPath: string;
                     let tempGlobalDir: TempDirectory;
                     let globalConfigPath: string;
-                    let globalConfigBackup: TempFile;
+                    let globalConfigBackup: TempFile | null;
                     let globalModulePath: string;
                     let tempDir: TempDirectory;
                     let tester: TestLanguageServiceTester;
@@ -169,6 +169,9 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                                 undefined,
                                 {
                                     rules: {
+                                        [ruleName]: true
+                                    },
+                                    jsRules: {
                                         [ruleName]: true
                                     }
                                 });

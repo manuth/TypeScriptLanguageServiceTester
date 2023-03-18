@@ -6,7 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## TypeScriptLanguageServiceTester [Unreleased]
 
-[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v5.0.0...dev)
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v5.0.1...dev)
+
+## TypeScriptLanguageServiceTester v5.0.1
+### Updated
+  - All dependencies
+  - `TSServer` to not reload the project after opening a file
+  - Development environment to migrate from Drone CI to Woodpecker CI
+
+### Removed
+  - Dependabot
+
+[Show differences](https://github.com/manuth/TypeScriptLanguageServiceTester/compare/v5.0.1...dev)
 
 ## TypeScriptLanguageServiceTester v5.0.0
 ### Breaking

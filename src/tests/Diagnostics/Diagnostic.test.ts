@@ -6,7 +6,7 @@ import { ITestContext } from "../ITestContext.js";
 import { TSLintLanguageServiceTester } from "../TSLintLanguageServiceTester.js";
 
 /**
- * Registers tests for the {@link Diagnostic `Diagnostic`} class.
+ * Registers tests for the {@linkcode Diagnostic} class.
  *
  * @param context
  * The test-context.
@@ -51,7 +51,7 @@ export function DiagnosticTests(context: ITestContext): void
                     {
                         let result: Array<ts.server.protocol.Diagnostic | ts.server.protocol.DiagnosticWithLinePosition> = [];
 
-                        for (let diagnostic of rawResponse.body)
+                        for (let diagnostic of rawResponse.body ?? [])
                         {
                             let parsedDiagnostic = new Diagnostic(response, diagnostic);
 

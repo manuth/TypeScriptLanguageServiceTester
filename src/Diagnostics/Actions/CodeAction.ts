@@ -11,7 +11,7 @@ export class CodeAction
     private codeAction: server.protocol.CodeAction | server.protocol.CodeFixAction;
 
     /**
-     * Initializes a new instance of the {@link CodeAction `CodeAction`} class.
+     * Initializes a new instance of the {@linkcode CodeAction} class.
      *
      * @param codeAction
      * The code-action to represent.
@@ -32,11 +32,11 @@ export class CodeAction
     /**
      * Gets the name of the fix.
      */
-    public get FixName(): string
+    public get FixName(): string | undefined
     {
         return CodeAction.IsCodeFixAction(this.CodeAction) ?
             this.CodeAction.fixName :
-            null;
+            undefined;
     }
 
     /**
@@ -52,11 +52,11 @@ export class CodeAction
     /**
      * Gets a description for the fix-all action.
      */
-    public get FixAllDescription(): string
+    public get FixAllDescription(): string | undefined
     {
         return CodeAction.IsCodeFixAction(this.CodeAction) ?
             this.CodeAction.fixAllDescription :
-            null;
+            undefined;
     }
 
     /**
@@ -76,21 +76,21 @@ export class CodeAction
     }
 
     /**
-     * Gets the commands to pass to the {@link server.protocol.ApplyCodeActionCommandRequest `ApplyCodeActionCommandRequest`}.
+     * Gets the commands to pass to the {@linkcode server.protocol.ApplyCodeActionCommandRequest}.
      */
     public get Commands(): unknown[]
     {
-        return this.CodeAction.commands;
+        return this.CodeAction.commands ?? [];
     }
 
     /**
-     * Determines whether the specified {@link codeAction `codeAction`} is a normal code-action.
+     * Determines whether the specified {@linkcode codeAction} is a normal code-action.
      *
      * @param codeAction
      * The code-action to check.
      *
      * @returns
-     * A value indicating whether the specified {@link codeAction `codeAction`} is a normal code-action.
+     * A value indicating whether the specified {@linkcode codeAction} is a normal code-action.
      */
     public static IsCodeFixAction(codeAction: server.protocol.CodeAction | server.protocol.CodeFixAction): codeAction is server.protocol.CodeFixAction
     {

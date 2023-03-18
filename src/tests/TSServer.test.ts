@@ -3,14 +3,14 @@ import { TempFile } from "@manuth/temp-files";
 import fs from "fs-extra";
 import ts from "typescript/lib/tsserverlibrary.js";
 import upath from "upath";
-import { TSServer } from "../TSServer.js";
 import { TestConstants } from "./TestConstants.js";
+import { TSServer } from "../TSServer.js";
 
 const { readFile } = fs;
 const { join } = upath;
 
 /**
- * Registers tests for the {@link TSServer `TSServer`} class.
+ * Registers tests for the {@linkcode TSServer} class.
  */
 export function TSServerTests(): void
 {
@@ -29,7 +29,7 @@ export function TSServerTests(): void
             teardown(
                 async function()
                 {
-                    this.timeout(10 * 1000);
+                    this.timeout(1 * 60 * 1000);
                     await tsServer.Dispose();
                 });
 
@@ -65,9 +65,9 @@ export function TSServerTests(): void
                                         /**
                                          * @inheritdoc
                                          */
-                                        public override get LogLevel(): keyof typeof ts.server.LogLevel
+                                        public override get LogLevel(): keyof typeof ts.server.LogLevel | undefined
                                         {
-                                            return null;
+                                            return undefined;
                                         }
                                     }(TestConstants.TestWorkspaceDirectory);
 
@@ -158,8 +158,11 @@ export function TSServerTests(): void
 
                     test(
                         "Checking whether commands can be executed…",
-                        async () =>
+                        async function()
                         {
+                            this.timeout(30 * 1000);
+                            this.slow(25 * 1000);
+
                             await doesNotReject(
                                 async () =>
                                 {
@@ -170,8 +173,7 @@ export function TSServerTests(): void
                                             arguments: {
                                                 file
                                             }
-                                        },
-                                        false);
+                                        });
                                 });
                         });
 
@@ -192,8 +194,7 @@ export function TSServerTests(): void
                                             arguments: {
                                                 file
                                             }
-                                        },
-                                        false);
+                                        });
 
                                     await tsServer.Send<ts.server.protocol.SemanticDiagnosticsSyncRequest>(
                                         {
@@ -206,6 +207,36 @@ export function TSServerTests(): void
                                         },
                                         true);
                                 });
+                        });
+
+                    test(
+                        "Checking whether responses of commands are not awaited by default…",
+                        async function()
+                        {
+                            this.timeout(30 * 1000);
+                            this.slow(25 * 1000);
+
+                            await tsServer.Send<ts.server.protocol.OpenRequest>(
+                                {
+                                    type: "request",
+                                    command: ts.server.protocol.CommandTypes.Open,
+                                    arguments: {
+                                        file
+                                    }
+                                });
+
+                            strictEqual(
+                                await (
+                                    async (): Promise<any> => tsServer.Send<ts.server.protocol.SemanticDiagnosticsSyncRequest>(
+                                        {
+                                            type: "request",
+                                            command: ts.server.protocol.CommandTypes.SemanticDiagnosticsSync,
+                                            arguments: {
+                                                file,
+                                                includeLinePosition: true
+                                            }
+                                        }))(),
+                                undefined);
                         });
 
                     test(
@@ -229,7 +260,7 @@ export function TSServerTests(): void
                             tsServer.Dispose();
 
                             await rejects(
-                                async () => tsServer.Send({ command: "test", type: "request" }, false),
+                                async () => tsServer.Send({ command: "test", type: "request" }),
                                 /about to/);
                         });
 
@@ -242,7 +273,7 @@ export function TSServerTests(): void
                             await tsServer.Dispose();
 
                             await rejects(
-                                async () => tsServer.Send({ command: "test", type: "request" }, false));
+                                async () => tsServer.Send({ command: "test", type: "request" }));
                         });
                 });
 

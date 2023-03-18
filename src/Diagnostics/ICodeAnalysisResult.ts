@@ -6,12 +6,12 @@ import { server } from "typescript/lib/tsserverlibrary.js";
 export interface ICodeAnalysisResult
 {
     /**
-     * Gets or sets the response of the {@link server.protocol.CommandTypes.SemanticDiagnosticsSync `SemanticDiagnosticsSync`}-command.
+     * Gets or sets the response of the {@linkcode server.protocol.CommandTypes.SemanticDiagnosticsSync}-command.
      */
     SemanticDiagnosticsResponse: server.protocol.SemanticDiagnosticsSyncResponse;
 
     /**
-     * Gets or sets the response of the {@link server.protocol.CommandTypes.SyntacticDiagnosticsSync `SyntacticDiagnosticsSync`}-command.
+     * Gets or sets the response of the {@linkcode server.protocol.CommandTypes.SyntacticDiagnosticsSync}-command.
      */
     SyntacticDiagnosticsResponse: server.protocol.SyntacticDiagnosticsSyncResponse;
 }

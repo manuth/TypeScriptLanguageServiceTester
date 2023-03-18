@@ -29,7 +29,7 @@ export class TestWorkspace
     private readonly workspacePath: string;
 
     /**
-     * Initializes a new instance of the {@link TestWorkspace `TestWorkspace`} class.
+     * Initializes a new instance of the {@linkcode TestWorkspace} class.
      *
      * @param tester
      * The tester of the workspace.
@@ -194,15 +194,7 @@ export class TestWorkspace
                     fileContent: code,
                     scriptKindName: scriptKind ?? "TS"
                 }
-            },
-            false);
-
-        await this.TSServer.Send(
-            {
-                type: "request",
-                command: this.Tester.TSServer.TSServerLibrary.server.protocol.CommandTypes.ReloadProjects
-            },
-            false);
+            });
     }
 
     /**

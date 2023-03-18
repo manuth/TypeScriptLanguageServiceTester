@@ -1,8 +1,8 @@
 import type { server } from "typescript/lib/tsserverlibrary.js";
-import { TSServer } from "../TSServer.js";
-import { TestWorkspace } from "../Workspaces/TestWorkspace.js";
 import { FixResponseAnalyzer } from "./Actions/FixResponseAnalyzer.js";
 import { DiagnosticsResponseAnalyzer } from "./DiagnosticsResponseAnalyzer.js";
+import { TSServer } from "../TSServer.js";
+import { TestWorkspace } from "../Workspaces/TestWorkspace.js";
 
 /**
  * Represents a typescript-diagnostic.
@@ -20,7 +20,7 @@ export class Diagnostic
     private diagnostic: server.protocol.Diagnostic | server.protocol.DiagnosticWithLinePosition;
 
     /**
-     * Initializes a new instance of the {@link Diagnostic `Diagnostic`} class.
+     * Initializes a new instance of the {@linkcode Diagnostic} class.
      *
      * @param response
      * The response this diagnostic belongs to.
@@ -89,7 +89,7 @@ export class Diagnostic
     /**
      * Gets the error code of the diagnostic.
      */
-    public get Code(): number
+    public get Code(): number | undefined
     {
         return this.Diagnostic.code;
     }
@@ -97,10 +97,10 @@ export class Diagnostic
     /**
      * Gets the source of the diagnostic.
      */
-    public get Source(): string
+    public get Source(): string | undefined
     {
         return {
-            source: null,
+            source: undefined,
             ...this.Diagnostic
         }.source;
     }
@@ -128,11 +128,11 @@ export class Diagnostic
      */
     public get RelatedInformation(): server.protocol.DiagnosticRelatedInformation[]
     {
-        return this.Diagnostic.relatedInformation;
+        return this.Diagnostic.relatedInformation ?? [];
     }
 
     /**
-     * Determines whether the specified {@link diagnostic `diagnostic`} is a normal diagnostic.
+     * Determines whether the specified {@linkcode diagnostic} is a normal diagnostic.
      *
      * @param diagnostic
      * The diagnostic to check.
