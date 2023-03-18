@@ -34,7 +34,7 @@ pipeline:
         }
       - >
         testGitHub() {
-          node --eval 'new (require("@octokit/rest").Octokit({ auth: "'"$1"'" }).request("GET /user").catch(() => process.exit(1))' > /dev/null 2>&1;
+          node --eval 'new (require("@octokit/rest").Octokit)({ auth: "'"$1"'" }).request("GET /user").catch(() => process.exit(1))' > /dev/null 2>&1;
         }
       - export TagHeading=$$(cat .tagHeading.txt)
       - '[ ! -z "$$(sed "$${TagHeading}p;d" CHANGELOG.md)" ] || { echo "No Changelog Entries Found!" && false; }'
