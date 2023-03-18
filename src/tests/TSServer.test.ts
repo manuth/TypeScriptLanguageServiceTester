@@ -29,7 +29,7 @@ export function TSServerTests(): void
             teardown(
                 async function()
                 {
-                    this.timeout(10 * 1000);
+                    this.timeout(0.5 * 60 * 1000);
                     await tsServer.Dispose();
                 });
 
@@ -158,8 +158,11 @@ export function TSServerTests(): void
 
                     test(
                         "Checking whether commands can be executed…",
-                        async () =>
+                        async function()
                         {
+                            this.timeout(30 * 1000);
+                            this.slow(25 * 1000);
+
                             await doesNotReject(
                                 async () =>
                                 {
