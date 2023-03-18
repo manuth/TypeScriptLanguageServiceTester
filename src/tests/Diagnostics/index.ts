@@ -1,8 +1,8 @@
 import { basename } from "node:path";
-import { ITestContext } from "../ITestContext.js";
 import { ActionTests } from "./Actions/index.js";
 import { DiagnosticTests as DiagnosticClassTests } from "./Diagnostic.test.js";
 import { DiagnosticsResponseAnalyzerTests } from "./DiagnosticsResponseAnalyzer.test.js";
+import { ITestContext } from "../ITestContext.js";
 
 /**
  * Registers tests for diagnostics.

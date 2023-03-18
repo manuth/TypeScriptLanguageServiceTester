@@ -1,8 +1,8 @@
 import type { server } from "typescript/lib/tsserverlibrary.js";
-import { TSServer } from "../TSServer.js";
-import { TestWorkspace } from "../Workspaces/TestWorkspace.js";
 import { FixResponseAnalyzer } from "./Actions/FixResponseAnalyzer.js";
 import { DiagnosticsResponseAnalyzer } from "./DiagnosticsResponseAnalyzer.js";
+import { TSServer } from "../TSServer.js";
+import { TestWorkspace } from "../Workspaces/TestWorkspace.js";
 
 /**
  * Represents a typescript-diagnostic.

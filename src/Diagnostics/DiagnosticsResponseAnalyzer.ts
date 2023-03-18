@@ -1,9 +1,9 @@
 import type { server } from "typescript/lib/tsserverlibrary.js";
-import { TSServer } from "../TSServer.js";
-import { TestWorkspace } from "../Workspaces/TestWorkspace.js";
 import { CodeAction } from "./Actions/CodeAction.js";
 import { Diagnostic } from "./Diagnostic.js";
 import { ICodeAnalysisResult } from "./ICodeAnalysisResult.js";
+import { TSServer } from "../TSServer.js";
+import { TestWorkspace } from "../Workspaces/TestWorkspace.js";
 
 /**
  * Provides the functionality to analyze a diagnostic-response.

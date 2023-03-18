@@ -3,8 +3,8 @@ import { TempFile } from "@manuth/temp-files";
 import fs from "fs-extra";
 import ts from "typescript/lib/tsserverlibrary.js";
 import upath from "upath";
-import { TSServer } from "../TSServer.js";
 import { TestConstants } from "./TestConstants.js";
+import { TSServer } from "../TSServer.js";
 
 const { readFile } = fs;
 const { join } = upath;

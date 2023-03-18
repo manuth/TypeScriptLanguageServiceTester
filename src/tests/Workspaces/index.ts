@@ -1,6 +1,6 @@
 import { basename } from "node:path";
-import { ITestContext } from "../ITestContext.js";
 import { TestWorkspaceTests } from "./TestWorkspace.test.js";
+import { ITestContext } from "../ITestContext.js";
 
 /**
  * Registers tests for workspaces.
