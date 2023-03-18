@@ -196,13 +196,6 @@ export class TestWorkspace
                 }
             },
             false);
-
-        await this.TSServer.Send(
-            {
-                type: "request",
-                command: this.Tester.TSServer.TSServerLibrary.server.protocol.CommandTypes.ReloadProjects
-            },
-            false);
     }
 
     /**
