@@ -207,6 +207,36 @@ export function TSServerTests(): void
                         });
 
                     test(
+                        "Checking whether responses of commands are not awaited by default…",
+                        async function()
+                        {
+                            this.timeout(30 * 1000);
+                            this.slow(25 * 1000);
+
+                            await tsServer.Send<ts.server.protocol.OpenRequest>(
+                                {
+                                    type: "request",
+                                    command: ts.server.protocol.CommandTypes.Open,
+                                    arguments: {
+                                        file
+                                    }
+                                });
+
+                            strictEqual(
+                                await (
+                                    async (): Promise<any> => tsServer.Send<ts.server.protocol.SemanticDiagnosticsSyncRequest>(
+                                        {
+                                            type: "request",
+                                            command: ts.server.protocol.CommandTypes.SemanticDiagnosticsSync,
+                                            arguments: {
+                                                file,
+                                                includeLinePosition: true
+                                            }
+                                        }))(),
+                                undefined);
+                        });
+
+                    test(
                         "Checking whether command-execution is blocked when the server is about to dispose…",
                         async function()
                         {
