@@ -35,9 +35,14 @@ export function DiagnosticsResponseAnalyzerTests(context: ITestContext): void
                     await tester.Configure(
                         undefined,
                         {
-                            [fixableRule1]: true,
-                            [fixableRule2]: {
-                                "check-space": true
+                            rules: {
+                                [fixableRule1]: true,
+                                [fixableRule2]: [
+                                    true,
+                                    {
+                                        "check-space": true
+                                    }
+                                ]
                             }
                         });
                 });

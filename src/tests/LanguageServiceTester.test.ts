@@ -170,6 +170,9 @@ export function LanguageServiceTesterTests(context: ITestContext): void
                                 {
                                     rules: {
                                         [ruleName]: true
+                                    },
+                                    jsRules: {
+                                        [ruleName]: true
                                     }
                                 });
 
