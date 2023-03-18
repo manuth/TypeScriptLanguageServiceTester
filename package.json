@@ -18,6 +18,7 @@
     "access": "public"
   },
   "scripts": {
+    "prepare": "ts-patch install",
     "build": "tsc -b tsconfig.build.json",
     "rebuild": "npm run clean && npm run build",
     "watch": "npm run build -- --watch",
@@ -25,9 +26,7 @@
     "lint": "eslint --max-warnings 0 ./src .eslintrc.cjs",
     "lint-ide": "npm run lint || exit 0",
     "test": "mocha",
-    "prepare": "npm run patch-ts",
-    "prepack": "npm run rebuild",
-    "patch-ts": "ts-patch install"
+    "prepack": "npm run rebuild"
   },
   "dependencies": {
     "@manuth/package-json-editor": "^3.1.0",
